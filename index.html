@@ -876,6 +876,7 @@
   <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
   <script>
     const tg = window.Telegram?.WebApp;
+    const BACKEND_URL = 'https://v-hunt-miniapp-production.up.railway.app';
     let isBusy = false;
 
     const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
@@ -1188,6 +1189,74 @@
       document.getElementById('splash').classList.add('hidden');
     }
 
+    async function loadDeals(){
+      try {
+        const response = await fetch(BACKEND_URL + '/api/scanner/live');
+        if (!response.ok) throw new Error('Scanner API ' + response.status);
+        const data = await response.json();
+        if (!data || !Array.isArray(data.deals)) return;
+        renderDeals(data.deals);
+      } catch (error) {
+        console.error('loadDeals error:', error);
+      }
+    }
+
+    function renderDeals(deals){
+      const scannerSection = document.getElementById('scanner');
+      if (!scannerSection) return;
+
+      const titleRow = scannerSection.querySelector('.section-title-row');
+      const oldCards = scannerSection.querySelectorAll('.card');
+      oldCards.forEach(card => card.remove());
+
+      const miniTag = titleRow ? titleRow.querySelector('.mini-tag') : null;
+      if (miniTag) {
+        miniTag.textContent = deals.length + ' deals live';
+      }
+
+      deals.forEach((deal, index) => {
+        const buyDex = (deal.buyDex || '').toLowerCase();
+        const sellDex = (deal.sellDex || '').toLowerCase();
+        const leftDexClass = buyDex.includes('dedust') ? 'dedust' : 'ston';
+        const rightDexClass = sellDex.includes('dedust') ? 'dedust' : 'ston';
+        const leftDexLabel = buyDex.includes('dedust') ? 'DD' : 'ST';
+        const rightDexLabel = sellDex.includes('dedust') ? 'DD' : 'ST';
+        const isExecuting = index === 1;
+        const card = document.createElement('div');
+        card.className = isExecuting ? 'card executing' : 'card';
+
+        const pair = deal.pair || 'TON / USDT';
+        const buyPrice = deal.buyPrice ?? '—';
+        const sellPrice = deal.sellPrice ?? '—';
+        const netSpread = Number(deal.netSpreadPercent ?? 0).toFixed(2);
+        const estProfit = Number(deal.estimatedProfitTon ?? 0).toFixed(3);
+        const risk = deal.risk || 'low';
+        const verified = deal.verified ? 'OK' : 'Check';
+
+        card.innerHTML = `
+          <div class="deal-header">
+            <div class="exchange-stack">
+              <div class="exchange-icon ${leftDexClass}">${leftDexLabel}</div>
+              <div class="exchange-icon ${rightDexClass}">${rightDexLabel}</div>
+            </div>
+            <div class="deal-flow">
+              <div class="pair">${pair}</div>
+              <div class="deal-route">Buy @ ${buyPrice} → Sell @ ${sellPrice}</div>
+            </div>
+            <div class="profit-badge">+${netSpread}%</div>
+          </div>
+          <div class="metrics">
+            <div class="metric"><div class="metric-label">Profit</div><div class="metric-value">${estProfit} TON</div></div>
+            <div class="metric"><div class="metric-label">Risk</div><div class="metric-value">${risk}</div></div>
+            <div class="metric"><div class="metric-label">Status</div><div class="metric-value">${verified}</div></div>
+          </div>
+          <button class="btn" onclick="executeTrade('${pair}')">Execute</button>
+        `;
+
+        scannerSection.appendChild(card);
+      });
+    }
+
     applyTelegramProfile();
     updateWalletUi(tonConnectUI.wallet);
 
@@ -1208,7 +1277,11 @@
       showToast('Ошибка', 'Проблема при смене статуса кошелька');
     });
 
-    setTimeout(hideSplash, 1900);
+    setTimeout(() => {
+      hideSplash();
+      loadDeals();
+      setInterval(loadDeals, 5000);
+    }, 1900);
   </script>
 </body>
 </html>
