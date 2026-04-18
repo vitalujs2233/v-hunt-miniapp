@@ -139,6 +139,10 @@
     }
     .wallet-balance-big{font-size:32px;font-weight:900;line-height:1;margin-top:8px}
     .balance-sub{font-size:12px;color:var(--muted);margin-top:6px}
+    .copy-address-btn{
+      width:auto; margin-top:10px; padding:10px 12px; font-size:12px; border-radius:14px;
+      background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); box-shadow:none;
+    }
     .ref-link{
       margin-top:10px;padding:13px;border-radius:16px;background:rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.08);color:#dce9ff;font-size:13px;word-break:break-all
@@ -331,6 +335,7 @@
             <div class="muted">Connected Wallet</div>
             <div id="walletStatus" class="wallet-state">Not connected</div>
             <div id="walletAddress" class="wallet-address">Нажми Connect Wallet, чтобы подключить TON-кошелёк</div>
+            <button id="copyAddressBtn" class="btn copy-address-btn" onclick="copyWalletAddress()" style="display:none;">Copy Address</button>
             <div id="walletBalanceBig" class="wallet-balance-big">0.0000 TON</div>
             <div class="balance-sub">Баланс подтягивается автоматически после подключения</div>
           </div>
@@ -349,7 +354,7 @@
         </div>
 
         <div class="notice">
-          Баланс, jettons и история теперь подтягиваются прямо из TONAPI без отдельного backend.
+          Теперь адрес кошелька показывается в user-friendly формате, как в самом TON-кошельке.
         </div>
       </div>
 
@@ -405,15 +410,11 @@
   </nav>
 
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+  <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
   <script>
     const tg = window.Telegram?.WebApp;
     let isBusy = false;
-
-    // МОЖЕШЬ ОСТАВИТЬ СВОЙ АДРЕС ДЛЯ TEST EXECUTE
     const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
-
-    // ЕСЛИ ЕСТЬ TONAPI KEY — ВСТАВЬ ЕГО СЮДА
-    // ЕСЛИ НЕТ — ОСТАВЬ ПУСТО
     const TONAPI_KEY = '';
 
     function fallbackAvatar(name){
@@ -423,6 +424,14 @@
     function shortAddress(addr){
       if(!addr) return '—';
       return addr.slice(0, 6) + '...' + addr.slice(-6);
+    }
+
+    function toFriendlyAddress(rawAddress, isTestnet = false){
+      try {
+        return TonConnectSDK.toUserFriendlyAddress(rawAddress, isTestnet);
+      } catch (e) {
+        return rawAddress;
+      }
     }
 
     function chainName(raw){
@@ -469,6 +478,13 @@
       const text = document.getElementById('refLink').textContent;
       navigator.clipboard.writeText(text);
       showToast('Скопировано', 'Реферальная ссылка скопирована');
+    }
+
+    function copyWalletAddress(){
+      const text = document.getElementById('walletAddress').textContent;
+      if (!text || text.includes('Нажми Connect Wallet')) return;
+      navigator.clipboard.writeText(text);
+      showToast('Скопировано', 'Адрес кошелька скопирован');
     }
 
     function withdrawReferral(){
@@ -610,17 +626,21 @@
       const shortChip = document.getElementById('walletShortChip');
       const connectBtn = document.getElementById('connectBtn');
       const disconnectBtn = document.getElementById('disconnectBtn');
+      const copyAddressBtn = document.getElementById('copyAddressBtn');
 
       if (wallet?.account?.address) {
-        const addr = wallet.account.address;
+        const rawAddr = wallet.account.address;
         const chain = wallet.account.chain || '—';
+        const friendlyAddr = toFriendlyAddress(rawAddr, chain === '-3');
+
         statusEl.textContent = 'Connected';
-        addressEl.textContent = addr;
+        addressEl.textContent = friendlyAddr;
         chainChip.textContent = 'Chain: ' + chainName(chain);
-        shortChip.textContent = 'Address: ' + shortAddress(addr);
+        shortChip.textContent = 'Address: ' + shortAddress(friendlyAddr);
         connectBtn.textContent = 'Wallet Connected';
         connectBtn.classList.add('secondary');
         disconnectBtn.style.display = 'block';
+        copyAddressBtn.style.display = 'inline-flex';
       } else {
         statusEl.textContent = 'Not connected';
         addressEl.textContent = 'Нажми Connect Wallet, чтобы подключить TON-кошелёк';
@@ -629,6 +649,7 @@
         connectBtn.textContent = 'Connect Wallet';
         connectBtn.classList.remove('secondary');
         disconnectBtn.style.display = 'none';
+        copyAddressBtn.style.display = 'none';
         clearWalletData();
       }
     }
@@ -709,8 +730,11 @@
     tonConnectUI.onStatusChange((wallet) => {
       updateWalletUi(wallet);
       if (wallet?.account?.address) {
-        showToast('Успешно', 'Кошелёк подключён: ' + shortAddress(wallet.account.address));
-        loadWalletData(wallet.account.address);
+        const rawAddr = wallet.account.address;
+        const chain = wallet.account.chain || '—';
+        const friendlyAddr = toFriendlyAddress(rawAddr, chain === '-3');
+        showToast('Успешно', 'Кошелёк подключён: ' + shortAddress(friendlyAddr));
+        loadWalletData(rawAddr);
       }
     }, () => {
       showToast('Ошибка', 'Проблема при смене статуса кошелька');
