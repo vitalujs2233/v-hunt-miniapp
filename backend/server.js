@@ -16,6 +16,128 @@ const TONAPI_BASE = process.env.TONAPI_BASE || "https://tonapi.io";
 const TONAPI_KEY = process.env.TONAPI_KEY || "";
 
 /**
+ * Реальные live quote через STON Omniston
+ * ВАЖНО:
+ * 1) backend/package.json должен уже содержать "@ston-fi/omniston-sdk"
+ * 2) если live quote не придёт — backend автоматически вернёт mock fallback,
+ *    чтобы Mini App не ломался
+ */
+async function getLiveOmnistonDeals() {
+  try {
+    const sdk = await import("@ston-fi/omniston-sdk");
+    const {
+      Omniston,
+      Blockchain,
+      SettlementMethod,
+      GaslessSettlement,
+    } = sdk;
+
+    const omniston = new Omniston({
+      apiUrl: "wss://omni-ws.ston.fi",
+    });
+
+    // Текущий live starter:
+    // STON / USDT
+    // Потом можно добавить NOT / DOGS / другие пары
+    const STON_ADDRESS = "EQA2kCVNwVsil2EM2mB0SkXytxCqQjS4mttjDpnXmwG9T6bO";
+    const USDT_ADDRESS = "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs";
+
+    const liveDeal = await new Promise((resolve, reject) => {
+      let finished = false;
+
+      const subscription = omniston
+        .requestForQuote({
+          settlementMethods: [SettlementMethod.SETTLEMENT_METHOD_SWAP],
+          askAssetAddress: {
+            blockchain: Blockchain.TON,
+            address: STON_ADDRESS,
+          },
+          bidAssetAddress: {
+            blockchain: Blockchain.TON,
+            address: USDT_ADDRESS,
+          },
+          amount: {
+            bidUnits: "1000000", // 1 USDT
+          },
+          settlementParams: {
+            maxPriceSlippageBps: 0,
+            gaslessSettlement: GaslessSettlement.GASLESS_SETTLEMENT_POSSIBLE,
+            maxOutgoingMessages: 4,
+            flexibleReferrerFee: true,
+          },
+        })
+        .subscribe({
+          next(event) {
+            if (finished) return;
+
+            if (event.type === "quoteUpdated") {
+              finished = true;
+
+              try {
+                const quote = event.quote || {};
+                const askUnits = Number(quote.askUnits || 0);
+                const bidUnits = Number(quote.bidUnits || 0);
+
+                // STON ~ 9 decimals, USDT ~ 6 decimals
+                const stonAmount = askUnits / 1e9;
+                const usdtAmount = bidUnits / 1e6;
+
+                const price = stonAmount > 0 ? usdtAmount / stonAmount : 0;
+
+                resolve({
+                  pair: "STON/USDT",
+                  buyDex: quote.resolverName || "Omniston",
+                  sellDex: "Live Quote",
+                  buyPrice: Number(price.toFixed(6)),
+                  sellPrice: Number(stonAmount.toFixed(6)),
+                  grossSpreadPercent: 0,
+                  netSpreadPercent: 0,
+                  estimatedProfitTon: 0,
+                  verified: true,
+                  risk: "live",
+                });
+              } catch (err) {
+                reject(err);
+              }
+
+              if (subscription?.unsubscribe) {
+                subscription.unsubscribe();
+              }
+            }
+
+            if (event.type === "noQuote") {
+              finished = true;
+              reject(new Error("No live quote received"));
+              if (subscription?.unsubscribe) {
+                subscription.unsubscribe();
+              }
+            }
+          },
+          error(err) {
+            if (finished) return;
+            finished = true;
+            reject(err);
+          },
+        });
+
+      setTimeout(() => {
+        if (finished) return;
+        finished = true;
+        if (subscription?.unsubscribe) {
+          subscription.unsubscribe();
+        }
+        reject(new Error("Quote timeout"));
+      }, 8000);
+    });
+
+    return [liveDeal];
+  } catch (error) {
+    console.error("getLiveOmnistonDeals error:", error);
+    return [];
+  }
+}
+
+/**
  * Простой helper для TONAPI
  */
 async function tonApiFetch(pathname) {
@@ -101,10 +223,7 @@ function normalizeEvents(payload) {
 }
 
 /**
- * ДОБАВЛЕНО:
- * Простой helper для тестовых scanner deals
- * ЭТО ПОКА ВРЕМЕННЫЕ ДАННЫЕ, ЧТОБЫ /api/scanner/live РАБОТАЛ
- * ПОТОМ МЫ ЗАМЕНИМ ИХ НА РЕАЛЬНЫЕ ЦЕНЫ С БИРЖ
+ * Простой helper для fallback scanner deals
  */
 function calculateNetSpread(buyPrice, sellPrice, capitalTon = 10) {
   const dexFeeBuy = buyPrice * 0.003;
@@ -134,7 +253,7 @@ app.get("/", (_req, res) => {
   res.json({
     ok: true,
     service: "V-HUNT backend",
-    version: "1.0.0",
+    version: "1.1.0",
   });
 });
 
@@ -149,17 +268,24 @@ app.get("/api/health", (_req, res) => {
 });
 
 /**
- * ДОБАВЛЕНО:
  * GET /api/scanner/live
  *
- * ЭТО НУЖНО ДЛЯ RAILWAY И MINI APP,
- * ЧТОБЫ ЭНДПОИНТ РАБОТАЛ И ВО ФРОНТЕ МОЖНО БЫЛО ПОЛУЧАТЬ СДЕЛКИ
- *
- * ПОКА ТУТ ТЕСТОВЫЕ ДАННЫЕ
- * ПОТОМ МЫ ЗАМЕНИМ ИХ НА STON + DEDUST
+ * Сначала пробуем реальный live quote через STON Omniston.
+ * Если он не пришёл — отдаём fallback deals,
+ * чтобы фронт всегда показывал что-то рабочее.
  */
 app.get("/api/scanner/live", async (_req, res) => {
   try {
+    const liveDeals = await getLiveOmnistonDeals();
+
+    if (Array.isArray(liveDeals) && liveDeals.length > 0) {
+      return res.json({
+        ok: true,
+        source: "omniston-live",
+        deals: liveDeals,
+      });
+    }
+
     const deals = [
       {
         pair: "TON/USDT",
@@ -195,7 +321,7 @@ app.get("/api/scanner/live", async (_req, res) => {
 
     res.json({
       ok: true,
-      source: "mock-scanner-data",
+      source: "mock-fallback",
       deals,
     });
   } catch (error) {
