@@ -1,3 +1,5 @@
+=== ФАЙЛ 1: index.html ===
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,11 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>V-HUNT</title>
   <meta name="theme-color" content="#070b14" />
-
-  <!-- TELEGRAM MINI APP SDK -->
-  <!-- ОСТАВИТЬ КАК ЕСТЬ -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
   <style>
     :root {
       --bg: #070b14;
@@ -28,10 +26,7 @@
       --radius: 22px;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     html, body {
       margin: 0;
@@ -59,469 +54,116 @@
       opacity: 0.3;
     }
 
-    .app {
-      position: relative;
-      min-height: 100vh;
-      padding: 18px 16px 110px;
-      z-index: 1;
-    }
-
-    .glow-orb {
-      position: fixed;
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      filter: blur(50px);
-      opacity: 0.22;
-      pointer-events: none;
-      z-index: 0;
-    }
-
+    .app { position: relative; min-height: 100vh; padding: 18px 16px 110px; z-index: 1; }
+    .glow-orb { position: fixed; width: 180px; height: 180px; border-radius: 50%; filter: blur(50px); opacity: 0.22; pointer-events: none; z-index: 0; }
     .orb-1 { top: 80px; left: -40px; background: var(--purple); }
     .orb-2 { top: 220px; right: -50px; background: var(--cyan); }
     .orb-3 { bottom: 120px; left: 40%; background: var(--blue); }
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .brand-wrap { display: flex; align-items: center; gap: 12px; }
     .logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 16px;
+      width: 44px; height: 44px; border-radius: 16px;
       background: linear-gradient(135deg, rgba(139,92,246,0.95), rgba(30,231,255,0.95));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      font-weight: 900;
-      box-shadow: 0 10px 30px rgba(82, 149, 255, 0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 900; box-shadow: 0 10px 30px rgba(82,149,255,0.35);
     }
-
     .brand-title {
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      line-height: 1;
+      font-size: 24px; font-weight: 900; letter-spacing: 1px; line-height: 1;
       background: linear-gradient(90deg, #ffffff, #8ad8ff, #c4a0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-
-    .brand-subtitle {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
+    .brand-subtitle { color: var(--muted); font-size: 12px; margin-top: 4px; }
     .user-badge {
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #dbe8ff;
-      font-size: 12px;
-      backdrop-filter: blur(16px);
-      box-shadow: var(--shadow);
-      max-width: 120px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      padding: 10px 12px; border-radius: 16px; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08); color: #dbe8ff; font-size: 12px;
+      backdrop-filter: blur(16px); box-shadow: var(--shadow);
+      max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
     .hero {
-      position: relative;
-      overflow: hidden;
-      border-radius: 28px;
-      padding: 18px;
-      margin-bottom: 16px;
+      position: relative; overflow: hidden; border-radius: 28px; padding: 18px; margin-bottom: 16px;
       background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
-      border: 1px solid rgba(255,255,255,0.14);
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.14); backdrop-filter: blur(18px); box-shadow: var(--shadow);
     }
-
     .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+      content: ""; position: absolute; inset: 0;
       background:
         radial-gradient(circle at 15% 20%, rgba(139,92,246,0.22), transparent 30%),
         radial-gradient(circle at 90% 20%, rgba(30,231,255,0.18), transparent 30%);
       pointer-events: none;
     }
-
-    .hero-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-title {
-      font-size: 28px;
-      font-weight: 900;
-      line-height: 1.05;
-      margin: 0;
-      max-width: 230px;
-    }
-
-    .hero-title span {
-      background: linear-gradient(90deg, #ffffff, #72d2ff, #b892ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-chip {
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      color: #e8f7ff;
-      background: rgba(45,247,161,0.12);
-      border: 1px solid rgba(45,247,161,0.25);
-      white-space: nowrap;
-    }
-
-    .hero-text {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.45;
-      margin: 14px 0 16px;
-      max-width: 92%;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .stat {
-      border-radius: 18px;
-      padding: 12px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .stat-label {
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 6px;
-    }
-
-    .stat-value {
-      font-size: 17px;
-      font-weight: 800;
-    }
+    .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; position: relative; z-index: 1; }
+    .hero-title { font-size: 28px; font-weight: 900; line-height: 1.05; margin: 0; max-width: 230px; }
+    .hero-title span { background: linear-gradient(90deg, #ffffff, #72d2ff, #b892ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-chip { padding: 8px 12px; border-radius: 999px; font-size: 12px; color: #e8f7ff; background: rgba(45,247,161,0.12); border: 1px solid rgba(45,247,161,0.25); white-space: nowrap; }
+    .hero-text { color: var(--muted); font-size: 14px; line-height: 1.45; margin: 14px 0 16px; max-width: 92%; position: relative; z-index: 1; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; position: relative; z-index: 1; }
+    .stat { border-radius: 18px; padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); }
+    .stat-label { color: var(--muted); font-size: 11px; margin-bottom: 6px; }
+    .stat-value { font-size: 17px; font-weight: 800; }
 
     .section { display: none; animation: fadeUp .22s ease; }
     .section.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .section-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 4px 0 12px;
-    }
-
-    .section-title {
-      margin: 0;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 0.2px;
-    }
-
-    .mini-tag {
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      color: #dce9ff;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
+    .section-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 12px; }
+    .section-title { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.2px; }
+    .mini-tag { padding: 7px 10px; border-radius: 999px; font-size: 11px; color: #dce9ff; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); }
 
     .card {
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--radius);
-      padding: 15px;
-      margin-bottom: 12px;
+      position: relative; overflow: hidden; border-radius: var(--radius); padding: 15px; margin-bottom: 12px;
       background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
+      border: 1px solid var(--card-border); backdrop-filter: blur(18px); box-shadow: var(--shadow);
     }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent 35%);
-      pointer-events: none;
-    }
-
-    .row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .pair {
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
+    .card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent 35%); pointer-events: none; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pair { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .muted { color: var(--muted); font-size: 13px; }
     .profit-box { text-align: right; }
+    .profit { color: var(--green); font-size: 20px; font-weight: 900; line-height: 1; }
+    .risk { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; padding: 6px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; color: #ffd8a8; background: rgba(255,209,102,0.10); border: 1px solid rgba(255,209,102,0.25); }
 
-    .profit {
-      color: var(--green);
-      font-size: 20px;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    .risk {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 6px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #ffd8a8;
-      background: rgba(255, 209, 102, 0.10);
-      border: 1px solid rgba(255, 209, 102, 0.25);
-    }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .metric {
-      padding: 10px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .metric-label {
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 5px;
-    }
-
-    .metric-value {
-      font-size: 14px;
-      font-weight: 800;
-    }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+    .metric { padding: 10px; border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); }
+    .metric-label { color: var(--muted); font-size: 11px; margin-bottom: 5px; }
+    .metric-value { font-size: 14px; font-weight: 800; }
 
     .btn {
-      width: 100%;
-      border: none;
-      border-radius: 18px;
-      padding: 14px 16px;
-      font-size: 15px;
-      font-weight: 800;
-      color: white;
-      cursor: pointer;
-      margin-top: 14px;
+      width: 100%; border: none; border-radius: 18px; padding: 14px 16px; font-size: 15px; font-weight: 800;
+      color: white; cursor: pointer; margin-top: 14px;
       background: linear-gradient(135deg, #7c3aed, #2563eb 55%, #06b6d4);
-      box-shadow: 0 14px 30px rgba(71, 126, 255, 0.35);
+      box-shadow: 0 14px 30px rgba(71,126,255,0.35);
     }
-
     .btn:active { transform: scale(0.99); }
+    .btn.secondary { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); box-shadow: none; color: #e9f2ff; }
+    .btn.green { background: linear-gradient(135deg, #14b86f, #2df7a1); color: #06110d; box-shadow: 0 14px 30px rgba(45,247,161,0.22); }
 
-    .btn.secondary {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: none;
-      color: #e9f2ff;
-    }
+    .wallet-balance { font-size: 34px; font-weight: 900; margin: 8px 0 4px; line-height: 1; }
+    .wallet-address { font-size: 12px; color: var(--muted); word-break: break-all; margin-top: 6px; }
+    .ref-link { margin-top: 10px; padding: 13px; border-radius: 16px; background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.08); color: #dce9ff; font-size: 13px; word-break: break-all; }
 
-    .btn.green {
-      background: linear-gradient(135deg, #14b86f, #2df7a1);
-      color: #06110d;
-      box-shadow: 0 14px 30px rgba(45,247,161,0.22);
-    }
+    .list-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .list-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .user-pill { padding: 8px 10px; border-radius: 999px; background: rgba(45,247,161,0.08); border: 1px solid rgba(45,247,161,0.18); color: #b7ffe1; font-size: 12px; font-weight: 700; }
+    .input { width: 100%; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.05); border-radius: 16px; color: white; padding: 14px; margin-top: 10px; font-size: 15px; outline: none; }
 
-    .wallet-balance {
-      font-size: 34px;
-      font-weight: 900;
-      margin: 8px 0 4px;
-      line-height: 1;
-    }
-
-    .wallet-address {
-      font-size: 12px;
-      color: var(--muted);
-      word-break: break-all;
-      margin-top: 6px;
-    }
-
-    .ref-link {
-      margin-top: 10px;
-      padding: 13px;
-      border-radius: 16px;
-      background: rgba(0,0,0,0.18);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #dce9ff;
-      font-size: 13px;
-      word-break: break-all;
-    }
-
-    .list-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .list-item:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .user-pill {
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(45,247,161,0.08);
-      border: 1px solid rgba(45,247,161,0.18);
-      color: #b7ffe1;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .input {
-      width: 100%;
-      border: 1px solid rgba(255,255,255,0.09);
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      color: white;
-      padding: 14px;
-      margin-top: 10px;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .setting-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 0;
-    }
-
-    .toggle {
-      width: 56px;
-      height: 32px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      position: relative;
-      cursor: pointer;
-      transition: 0.2s;
-      flex-shrink: 0;
-    }
-
-    .toggle.active {
-      background: linear-gradient(135deg, #7c3aed, #22d3ee);
-    }
-
-    .toggle::after {
-      content: "";
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: white;
-      transition: 0.2s;
-    }
-
+    .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; }
+    .toggle { width: 56px; height: 32px; border-radius: 999px; background: rgba(255,255,255,0.12); position: relative; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
+    .toggle.active { background: linear-gradient(135deg, #7c3aed, #22d3ee); }
+    .toggle::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: white; transition: 0.2s; }
     .toggle.active::after { left: 28px; }
 
     .tabbar {
-      position: fixed;
-      left: 14px;
-      right: 14px;
-      bottom: 14px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      padding: 10px;
-      border-radius: 24px;
-      background: rgba(9, 15, 26, 0.88);
-      border: 1px solid rgba(255,255,255,0.08);
-      backdrop-filter: blur(24px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-      z-index: 20;
+      position: fixed; left: 14px; right: 14px; bottom: 14px; display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px; padding: 10px; border-radius: 24px; background: rgba(9,15,26,0.88);
+      border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(24px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35); z-index: 20;
     }
-
-    .tab {
-      border: none;
-      border-radius: 18px;
-      background: transparent;
-      color: #8ea2bf;
-      padding: 10px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      cursor: pointer;
-      min-height: 58px;
-    }
-
-    .tab.active {
-      color: white;
-      background: linear-gradient(135deg, rgba(124,58,237,0.28), rgba(34,211,238,0.18));
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-    }
-
-    .tab-icon {
-      font-size: 18px;
-      line-height: 1;
-    }
-
-    .tab-text {
-      font-size: 11px;
-      font-weight: 700;
-    }
+    .tab { border: none; border-radius: 18px; background: transparent; color: #8ea2bf; padding: 10px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; min-height: 58px; }
+    .tab.active { color: white; background: linear-gradient(135deg, rgba(124,58,237,0.28), rgba(34,211,238,0.18)); border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
+    .tab-icon { font-size: 18px; line-height: 1; }
+    .tab-text { font-size: 11px; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -534,10 +176,7 @@
       <div class="brand-wrap">
         <div class="logo">V</div>
         <div>
-          <!-- ЕСЛИ ХОЧЕШЬ ИЗМЕНИТЬ НАЗВАНИЕ, МЕНЯЙ ТОЛЬКО ЭТУ СТРОКУ -->
           <div class="brand-title">V-HUNT</div>
-
-          <!-- ЕСЛИ ХОЧЕШЬ ИЗМЕНИТЬ ПОДЗАГОЛОВОК, МЕНЯЙ ЭТУ СТРОКУ -->
           <div class="brand-subtitle">Neon Arbitrage Terminal</div>
         </div>
       </div>
@@ -553,18 +192,9 @@
         Premium scanner for fast TON market opportunities, wallet execution and referral profit tracking in one terminal.
       </div>
       <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-label">Signals</div>
-          <div class="stat-value">24</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Win Rate</div>
-          <div class="stat-value">91%</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Today</div>
-          <div class="stat-value">+3.8 TON</div>
-        </div>
+        <div class="stat"><div class="stat-label">Signals</div><div class="stat-value">24</div></div>
+        <div class="stat"><div class="stat-label">Win Rate</div><div class="stat-value">91%</div></div>
+        <div class="stat"><div class="stat-label">Today</div><div class="stat-value">+3.8 TON</div></div>
       </div>
     </div>
 
@@ -585,24 +215,11 @@
             <div class="risk">Low Risk</div>
           </div>
         </div>
-
         <div class="metrics">
-          <div class="metric">
-            <div class="metric-label">Net Profit</div>
-            <div class="metric-value">0.37 TON</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Capital</div>
-            <div class="metric-value">25 TON</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Age</div>
-            <div class="metric-value">2 sec</div>
-          </div>
+          <div class="metric"><div class="metric-label">Net Profit</div><div class="metric-value">0.37 TON</div></div>
+          <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">25 TON</div></div>
+          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">2 sec</div></div>
         </div>
-
-        <!-- КНОПКА ИСПОЛНЕНИЯ СДЕЛКИ -->
-        <!-- ПОКА ЭТО ЗАГЛУШКА -->
         <button class="btn" onclick="executeTrade('TON / USDT')">Execute Hunt</button>
       </div>
 
@@ -617,22 +234,11 @@
             <div class="risk">Medium Risk</div>
           </div>
         </div>
-
         <div class="metrics">
-          <div class="metric">
-            <div class="metric-label">Net Profit</div>
-            <div class="metric-value">0.22 TON</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Capital</div>
-            <div class="metric-value">18 TON</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Age</div>
-            <div class="metric-value">3 sec</div>
-          </div>
+          <div class="metric"><div class="metric-label">Net Profit</div><div class="metric-value">0.22 TON</div></div>
+          <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">18 TON</div></div>
+          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">3 sec</div></div>
         </div>
-
         <button class="btn" onclick="executeTrade('TON / NOT')">Execute Hunt</button>
       </div>
     </section>
@@ -645,11 +251,7 @@
 
       <div class="card">
         <div class="muted">Your personal invite link</div>
-
-        <!-- СЮДА ПОТОМ МОЖНО ВСТАВИТЬ СВОЮ РЕАЛЬНУЮ ССЫЛКУ БОТА -->
-        <!-- ПРИМЕР: https://t.me/VHUNT_BOT?startapp=ref_987654 -->
-        <div class="ref-link" id="refLink">https://t.me/YOUR_BOT_USERNAME?startapp=ref_987654</div>
-
+        <div class="ref-link" id="refLink">https://t.me/vihuntbot?startapp=ref_987654</div>
         <button class="btn secondary" onclick="copyReferral()">Copy Link</button>
       </div>
 
@@ -657,34 +259,6 @@
         <div class="muted">Referral Balance</div>
         <div class="wallet-balance">12.50 TON</div>
         <button class="btn green" onclick="withdrawReferral()">Withdraw Rewards</button>
-      </div>
-
-      <div class="card">
-        <div class="section-title" style="font-size:17px; margin-bottom:8px;">Invited Traders</div>
-
-        <div class="list-item">
-          <div>
-            <div style="font-weight:700;">@alpha_hunter</div>
-            <div class="muted">Joined 2 days ago</div>
-          </div>
-          <div class="user-pill">+1.2 TON</div>
-        </div>
-
-        <div class="list-item">
-          <div>
-            <div style="font-weight:700;">@market_sniper</div>
-            <div class="muted">Joined 5 days ago</div>
-          </div>
-          <div class="user-pill">+0.8 TON</div>
-        </div>
-
-        <div class="list-item">
-          <div>
-            <div style="font-weight:700;">@ton_rider</div>
-            <div class="muted">Joined 8 days ago</div>
-          </div>
-          <div class="user-pill">+0.5 TON</div>
-        </div>
       </div>
     </section>
 
@@ -695,43 +269,17 @@
       </div>
 
       <div class="card">
-        <div class="muted">Connected Balance</div>
-        <div class="wallet-balance">3.21 TON</div>
-
-        <!-- СЮДА ПОТОМ ПОДСТАВИТСЯ РЕАЛЬНЫЙ АДРЕС КОШЕЛЬКА -->
-        <div class="wallet-address">UQDemoWalletAddressExample1234567890</div>
-
-        <!-- ПОКА ЭТО ЗАГЛУШКА -->
-        <!-- ПОТОМ ЗАМЕНИШЬ НА TON CONNECT -->
-        <button class="btn" onclick="connectWallet()">Connect Wallet</button>
+        <div class="muted">Connected Wallet</div>
+        <div class="wallet-balance" id="walletState">Not connected</div>
+        <div class="wallet-address" id="walletAddress">Tap the button below to connect your TON wallet</div>
+        <button class="btn" onclick="connectWallet()" id="connectButton">Connect Wallet</button>
       </div>
 
       <div class="card">
         <div class="section-title" style="font-size:17px; margin-bottom:8px;">Recent Activity</div>
-
-        <div class="list-item">
-          <div>
-            <div style="font-weight:700;">Swap TON → USDT</div>
-            <div class="muted">2 min ago</div>
-          </div>
-          <div style="color: var(--green); font-weight:800;">+0.31 TON</div>
-        </div>
-
-        <div class="list-item">
-          <div>
-            <div style="font-weight:700;">Swap TON → NOT</div>
-            <div class="muted">12 min ago</div>
-          </div>
-          <div style="color: var(--green); font-weight:800;">+0.18 TON</div>
-        </div>
-
-        <div class="list-item">
-          <div>
-            <div style="font-weight:700;">Referral Bonus</div>
-            <div class="muted">1 hour ago</div>
-          </div>
-          <div style="color: var(--gold); font-weight:800;">+0.50 TON</div>
-        </div>
+        <div class="list-item"><div><div style="font-weight:700;">Swap TON → USDT</div><div class="muted">2 min ago</div></div><div style="color: var(--green); font-weight:800;">+0.31 TON</div></div>
+        <div class="list-item"><div><div style="font-weight:700;">Swap TON → NOT</div><div class="muted">12 min ago</div></div><div style="color: var(--green); font-weight:800;">+0.18 TON</div></div>
+        <div class="list-item"><div><div style="font-weight:700;">Referral Bonus</div><div class="muted">1 hour ago</div></div><div style="color: var(--gold); font-weight:800;">+0.50 TON</div></div>
       </div>
     </section>
 
@@ -748,29 +296,9 @@
       </div>
 
       <div class="card">
-        <div class="setting-row">
-          <div>
-            <div style="font-weight:800;">Push Notifications</div>
-            <div class="muted">Alerts for profitable opportunities</div>
-          </div>
-          <div class="toggle active" onclick="toggleSwitch(this)"></div>
-        </div>
-
-        <div class="setting-row">
-          <div>
-            <div style="font-weight:800;">Haptic Feedback</div>
-            <div class="muted">Vibration on signal and tap actions</div>
-          </div>
-          <div class="toggle active" onclick="toggleSwitch(this)"></div>
-        </div>
-
-        <div class="setting-row">
-          <div>
-            <div style="font-weight:800;">Risk Warnings</div>
-            <div class="muted">Show warnings before execution</div>
-          </div>
-          <div class="toggle active" onclick="toggleSwitch(this)"></div>
-        </div>
+        <div class="setting-row"><div><div style="font-weight:800;">Push Notifications</div><div class="muted">Alerts for profitable opportunities</div></div><div class="toggle active" onclick="toggleSwitch(this)"></div></div>
+        <div class="setting-row"><div><div style="font-weight:800;">Haptic Feedback</div><div class="muted">Vibration on signal and tap actions</div></div><div class="toggle active" onclick="toggleSwitch(this)"></div></div>
+        <div class="setting-row"><div><div style="font-weight:800;">Risk Warnings</div><div class="muted">Show warnings before execution</div></div><div class="toggle active" onclick="toggleSwitch(this)"></div></div>
       </div>
 
       <button class="btn secondary" onclick="saveSettings()">Save Settings</button>
@@ -778,89 +306,96 @@
   </div>
 
   <nav class="tabbar">
-    <button class="tab active" onclick="openTab('scanner', this)">
-      <span class="tab-icon">⚡</span>
-      <span class="tab-text">Scanner</span>
-    </button>
-    <button class="tab" onclick="openTab('referrals', this)">
-      <span class="tab-icon">👥</span>
-      <span class="tab-text">Network</span>
-    </button>
-    <button class="tab" onclick="openTab('wallet', this)">
-      <span class="tab-icon">💼</span>
-      <span class="tab-text">Wallet</span>
-    </button>
-    <button class="tab" onclick="openTab('settings', this)">
-      <span class="tab-icon">⚙️</span>
-      <span class="tab-text">Settings</span>
-    </button>
+    <button class="tab active" onclick="openTab('scanner', this)"><span class="tab-icon">⚡</span><span class="tab-text">Scanner</span></button>
+    <button class="tab" onclick="openTab('referrals', this)"><span class="tab-icon">👥</span><span class="tab-text">Network</span></button>
+    <button class="tab" onclick="openTab('wallet', this)"><span class="tab-icon">💼</span><span class="tab-text">Wallet</span></button>
+    <button class="tab" onclick="openTab('settings', this)"><span class="tab-icon">⚙️</span><span class="tab-text">Settings</span></button>
   </nav>
 
+  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <script>
     const tg = window.Telegram?.WebApp;
-
     if (tg) {
       tg.ready();
       tg.expand();
-
-      const userName =
-        tg.initDataUnsafe?.user?.username ||
-        tg.initDataUnsafe?.user?.first_name ||
-        "Trader";
-
-      document.getElementById("tgUser").textContent = userName;
+      const userName = tg.initDataUnsafe?.user?.username || tg.initDataUnsafe?.user?.first_name || 'Trader';
+      document.getElementById('tgUser').textContent = userName;
     }
 
     function openTab(id, el) {
-      document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
-      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-
-      document.getElementById(id).classList.add("active");
-      el.classList.add("active");
-
+      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      el.classList.add('active');
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
     function executeTrade(pair) {
-      alert("Execute Hunt: " + pair);
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred("medium");
-    }
-
-    function connectWallet() {
-      alert("Сюда потом подключается TON Connect");
+      alert('Execute Hunt: ' + pair);
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
     }
 
     function copyReferral() {
-      const text = document.getElementById("refLink").textContent;
+      const text = document.getElementById('refLink').textContent;
       navigator.clipboard.writeText(text);
-      alert("Referral link copied");
+      alert('Referral link copied');
     }
 
-    function withdrawReferral() {
-      alert("Withdraw request created");
-    }
-
-    function saveSettings() {
-      alert("Settings saved");
-    }
+    function withdrawReferral() { alert('Withdraw request created'); }
+    function saveSettings() { alert('Settings saved'); }
 
     function toggleSwitch(el) {
-      el.classList.toggle("active");
+      el.classList.toggle('active');
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
+
+    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: 'https://vitalujs2233.github.io/v-hunt-miniapp/tonconnect-manifest.json'
+    });
+
+    function shortAddress(address) {
+      return address ? address.slice(0, 6) + '...' + address.slice(-6) : 'Unknown address';
+    }
+
+    function updateWalletUI(wallet) {
+      const stateEl = document.getElementById('walletState');
+      const addressEl = document.getElementById('walletAddress');
+      const btnEl = document.getElementById('connectButton');
+
+      if (wallet && wallet.account && wallet.account.address) {
+        stateEl.textContent = 'Connected';
+        addressEl.textContent = shortAddress(wallet.account.address);
+        btnEl.textContent = 'Disconnect Wallet';
+      } else {
+        stateEl.textContent = 'Not connected';
+        addressEl.textContent = 'Tap the button below to connect your TON wallet';
+        btnEl.textContent = 'Connect Wallet';
+      }
+    }
+
+    async function connectWallet() {
+      try {
+        if (tonConnectUI.connected) {
+          await tonConnectUI.disconnect();
+          updateWalletUI(null);
+          return;
+        }
+
+        await tonConnectUI.openModal();
+      } catch (error) {
+        console.error('TON Connect error:', error);
+        alert('Wallet connection error. Check tonconnect-manifest.json and try again.');
+      }
+    }
+
+    tonConnectUI.onStatusChange(wallet => {
+      updateWalletUI(wallet);
+    }, error => {
+      console.error('TON status error:', error);
+    });
+
+    updateWalletUI(tonConnectUI.wallet);
   </script>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-
-<script>
-  const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: 'https://vitalujs2233.github.io/v-hunt-miniapp/tonconnect-manifest.json',
-    buttonRootId: 'ton-connect'
-  });
-
-  async function connectWallet() {
-    await tonConnectUI.connectWallet();
-  }
-</script>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </body>
 </html>
+
