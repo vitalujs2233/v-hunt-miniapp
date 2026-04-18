@@ -1,5 +1,3 @@
-=== ФАЙЛ 1: index.html ===
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -11,13 +9,9 @@
   <style>
     :root {
       --bg: #070b14;
-      --bg2: #0b1220;
-      --card: rgba(255,255,255,0.08);
-      --card-border: rgba(255,255,255,0.12);
       --text: #ffffff;
       --muted: #9fb0c9;
       --green: #2df7a1;
-      --red: #ff5f7a;
       --blue: #4da3ff;
       --purple: #8b5cf6;
       --cyan: #1ee7ff;
@@ -60,13 +54,14 @@
     .orb-2 { top: 220px; right: -50px; background: var(--cyan); }
     .orb-3 { bottom: 120px; left: 40%; background: var(--blue); }
 
-    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; }
     .brand-wrap { display: flex; align-items: center; gap: 12px; }
     .logo {
       width: 44px; height: 44px; border-radius: 16px;
       background: linear-gradient(135deg, rgba(139,92,246,0.95), rgba(30,231,255,0.95));
       display: flex; align-items: center; justify-content: center;
       font-size: 22px; font-weight: 900; box-shadow: 0 10px 30px rgba(82,149,255,0.35);
+      flex-shrink: 0;
     }
     .brand-title {
       font-size: 24px; font-weight: 900; letter-spacing: 1px; line-height: 1;
@@ -74,12 +69,25 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .brand-subtitle { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
     .user-badge {
-      padding: 10px 12px; border-radius: 16px; background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08); color: #dbe8ff; font-size: 12px;
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #dbe8ff; font-size: 12px;
       backdrop-filter: blur(16px); box-shadow: var(--shadow);
-      max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      min-width: 120px; max-width: 180px;
     }
+    .user-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      object-fit: cover; flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+    }
+    .user-meta { min-width: 0; }
+    .user-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-status { font-size: 11px; color: var(--muted); }
 
     .hero {
       position: relative; overflow: hidden; border-radius: 28px; padding: 18px; margin-bottom: 16px;
@@ -96,7 +104,10 @@
     .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; position: relative; z-index: 1; }
     .hero-title { font-size: 28px; font-weight: 900; line-height: 1.05; margin: 0; max-width: 230px; }
     .hero-title span { background: linear-gradient(90deg, #ffffff, #72d2ff, #b892ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-chip { padding: 8px 12px; border-radius: 999px; font-size: 12px; color: #e8f7ff; background: rgba(45,247,161,0.12); border: 1px solid rgba(45,247,161,0.25); white-space: nowrap; }
+    .hero-chip {
+      padding: 8px 12px; border-radius: 999px; font-size: 12px; color: #e8f7ff;
+      background: rgba(45,247,161,0.12); border: 1px solid rgba(45,247,161,0.25); white-space: nowrap;
+    }
     .hero-text { color: var(--muted); font-size: 14px; line-height: 1.45; margin: 14px 0 16px; max-width: 92%; position: relative; z-index: 1; }
     .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; position: relative; z-index: 1; }
     .stat { border-radius: 18px; padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); }
@@ -114,15 +125,24 @@
     .card {
       position: relative; overflow: hidden; border-radius: var(--radius); padding: 15px; margin-bottom: 12px;
       background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
-      border: 1px solid var(--card-border); backdrop-filter: blur(18px); box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(18px); box-shadow: var(--shadow);
     }
-    .card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent 35%); pointer-events: none; }
+    .card::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent 35%);
+      pointer-events: none;
+    }
+
     .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .pair { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
     .muted { color: var(--muted); font-size: 13px; }
     .profit-box { text-align: right; }
     .profit { color: var(--green); font-size: 20px; font-weight: 900; line-height: 1; }
-    .risk { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; padding: 6px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; color: #ffd8a8; background: rgba(255,209,102,0.10); border: 1px solid rgba(255,209,102,0.25); }
+    .risk {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; padding: 6px 10px;
+      border-radius: 999px; font-size: 11px; font-weight: 700; color: #ffd8a8;
+      background: rgba(255,209,102,0.10); border: 1px solid rgba(255,209,102,0.25);
+    }
 
     .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
     .metric { padding: 10px; border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); }
@@ -141,29 +161,74 @@
 
     .wallet-balance { font-size: 34px; font-weight: 900; margin: 8px 0 4px; line-height: 1; }
     .wallet-address { font-size: 12px; color: var(--muted); word-break: break-all; margin-top: 6px; }
-    .ref-link { margin-top: 10px; padding: 13px; border-radius: 16px; background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.08); color: #dce9ff; font-size: 13px; word-break: break-all; }
+    .ref-link {
+      margin-top: 10px; padding: 13px; border-radius: 16px; background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.08); color: #dce9ff; font-size: 13px; word-break: break-all;
+    }
 
-    .list-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .list-item {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
     .list-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .user-pill { padding: 8px 10px; border-radius: 999px; background: rgba(45,247,161,0.08); border: 1px solid rgba(45,247,161,0.18); color: #b7ffe1; font-size: 12px; font-weight: 700; }
-    .input { width: 100%; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.05); border-radius: 16px; color: white; padding: 14px; margin-top: 10px; font-size: 15px; outline: none; }
+    .user-pill {
+      padding: 8px 10px; border-radius: 999px; background: rgba(45,247,161,0.08);
+      border: 1px solid rgba(45,247,161,0.18); color: #b7ffe1; font-size: 12px; font-weight: 700;
+    }
+
+    .input {
+      width: 100%; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.05);
+      border-radius: 16px; color: white; padding: 14px; margin-top: 10px; font-size: 15px; outline: none;
+    }
 
     .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; }
     .toggle { width: 56px; height: 32px; border-radius: 999px; background: rgba(255,255,255,0.12); position: relative; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
     .toggle.active { background: linear-gradient(135deg, #7c3aed, #22d3ee); }
-    .toggle::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: white; transition: 0.2s; }
+    .toggle::after {
+      content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px;
+      border-radius: 50%; background: white; transition: 0.2s;
+    }
     .toggle.active::after { left: 28px; }
 
-    .tabbar {
-      position: fixed; left: 14px; right: 14px; bottom: 14px; display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 10px; padding: 10px; border-radius: 24px; background: rgba(9,15,26,0.88);
-      border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(24px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35); z-index: 20;
+    .auth-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px; border-radius: 18px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      margin-top: 12px;
     }
-    .tab { border: none; border-radius: 18px; background: transparent; color: #8ea2bf; padding: 10px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; min-height: 58px; }
-    .tab.active { color: white; background: linear-gradient(135deg, rgba(124,58,237,0.28), rgba(34,211,238,0.18)); border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
+    .auth-avatar {
+      width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .auth-title { font-size: 12px; color: var(--muted); }
+    .auth-name { font-size: 18px; font-weight: 800; margin-top: 2px; }
+    .auth-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .tabbar {
+      position: fixed; left: 14px; right: 14px; bottom: 14px; display: grid;
+      grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px; border-radius: 24px;
+      background: rgba(9,15,26,0.88); border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(24px); box-shadow: 0 20px 60px rgba(0,0,0,0.35); z-index: 20;
+    }
+    .tab {
+      border: none; border-radius: 18px; background: transparent; color: #8ea2bf;
+      padding: 10px 6px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 4px; cursor: pointer; min-height: 58px;
+    }
+    .tab.active {
+      color: white; background: linear-gradient(135deg, rgba(124,58,237,0.28), rgba(34,211,238,0.18));
+      border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
     .tab-icon { font-size: 18px; line-height: 1; }
     .tab-text { font-size: 11px; font-weight: 700; }
+
+    @media (max-width: 420px) {
+      .hero-stats, .metrics { grid-template-columns: 1fr; }
+      .hero-title { font-size: 24px; }
+      .topbar { align-items: flex-start; }
+      .user-badge { max-width: 135px; }
+    }
   </style>
 </head>
 <body>
@@ -180,7 +245,14 @@
           <div class="brand-subtitle">Neon Arbitrage Terminal</div>
         </div>
       </div>
-      <div class="user-badge" id="tgUser">Trader</div>
+
+      <div class="user-badge">
+        <img id="headerAvatar" class="user-avatar" alt="User" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
+        <div class="user-meta">
+          <div id="tgUser" class="user-name">Trader</div>
+          <div class="user-status">Telegram user</div>
+        </div>
+      </div>
     </div>
 
     <div class="hero">
@@ -192,9 +264,18 @@
         Premium scanner for fast TON market opportunities, wallet execution and referral profit tracking in one terminal.
       </div>
       <div class="hero-stats">
-        <div class="stat"><div class="stat-label">Signals</div><div class="stat-value">24</div></div>
-        <div class="stat"><div class="stat-label">Win Rate</div><div class="stat-value">91%</div></div>
-        <div class="stat"><div class="stat-label">Today</div><div class="stat-value">+3.8 TON</div></div>
+        <div class="stat">
+          <div class="stat-label">Signals</div>
+          <div class="stat-value">24</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Win Rate</div>
+          <div class="stat-value">91%</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Today</div>
+          <div class="stat-value">+3.8 TON</div>
+        </div>
       </div>
     </div>
 
@@ -215,11 +296,22 @@
             <div class="risk">Low Risk</div>
           </div>
         </div>
+
         <div class="metrics">
-          <div class="metric"><div class="metric-label">Net Profit</div><div class="metric-value">0.37 TON</div></div>
-          <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">25 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">2 sec</div></div>
+          <div class="metric">
+            <div class="metric-label">Net Profit</div>
+            <div class="metric-value">0.37 TON</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Capital</div>
+            <div class="metric-value">25 TON</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Age</div>
+            <div class="metric-value">2 sec</div>
+          </div>
         </div>
+
         <button class="btn" onclick="executeTrade('TON / USDT')">Execute Hunt</button>
       </div>
 
@@ -234,11 +326,22 @@
             <div class="risk">Medium Risk</div>
           </div>
         </div>
+
         <div class="metrics">
-          <div class="metric"><div class="metric-label">Net Profit</div><div class="metric-value">0.22 TON</div></div>
-          <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">18 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">3 sec</div></div>
+          <div class="metric">
+            <div class="metric-label">Net Profit</div>
+            <div class="metric-value">0.22 TON</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Capital</div>
+            <div class="metric-value">18 TON</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Age</div>
+            <div class="metric-value">3 sec</div>
+          </div>
         </div>
+
         <button class="btn" onclick="executeTrade('TON / NOT')">Execute Hunt</button>
       </div>
     </section>
@@ -251,7 +354,7 @@
 
       <div class="card">
         <div class="muted">Your personal invite link</div>
-        <div class="ref-link" id="refLink">https://t.me/vihuntbot?startapp=ref_987654</div>
+        <div class="ref-link" id="refLink">https://t.me/YOUR_BOT_USERNAME?startapp=ref_987654</div>
         <button class="btn secondary" onclick="copyReferral()">Copy Link</button>
       </div>
 
@@ -269,17 +372,20 @@
       </div>
 
       <div class="card">
-        <div class="muted">Connected Wallet</div>
-        <div class="wallet-balance" id="walletState">Not connected</div>
-        <div class="wallet-address" id="walletAddress">Tap the button below to connect your TON wallet</div>
-        <button class="btn" onclick="connectWallet()" id="connectButton">Connect Wallet</button>
-      </div>
+        <div class="auth-row">
+          <img id="walletAvatar" class="auth-avatar" alt="User" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
+          <div>
+            <div class="auth-title">Telegram profile</div>
+            <div id="walletUserName" class="auth-name">Trader</div>
+            <div id="walletUserSub" class="auth-sub">Авторизован в Mini App</div>
+          </div>
+        </div>
 
-      <div class="card">
-        <div class="section-title" style="font-size:17px; margin-bottom:8px;">Recent Activity</div>
-        <div class="list-item"><div><div style="font-weight:700;">Swap TON → USDT</div><div class="muted">2 min ago</div></div><div style="color: var(--green); font-weight:800;">+0.31 TON</div></div>
-        <div class="list-item"><div><div style="font-weight:700;">Swap TON → NOT</div><div class="muted">12 min ago</div></div><div style="color: var(--green); font-weight:800;">+0.18 TON</div></div>
-        <div class="list-item"><div><div style="font-weight:700;">Referral Bonus</div><div class="muted">1 hour ago</div></div><div style="color: var(--gold); font-weight:800;">+0.50 TON</div></div>
+        <div class="muted" style="margin-top:14px;">Connected Wallet</div>
+        <div id="walletStatus" class="wallet-balance">Not connected</div>
+        <div id="walletAddress" class="wallet-address">Нажми Connect Wallet, чтобы подключить TON-кошелёк</div>
+
+        <button class="btn" onclick="connectWallet()">Connect Wallet</button>
       </div>
     </section>
 
@@ -296,9 +402,21 @@
       </div>
 
       <div class="card">
-        <div class="setting-row"><div><div style="font-weight:800;">Push Notifications</div><div class="muted">Alerts for profitable opportunities</div></div><div class="toggle active" onclick="toggleSwitch(this)"></div></div>
-        <div class="setting-row"><div><div style="font-weight:800;">Haptic Feedback</div><div class="muted">Vibration on signal and tap actions</div></div><div class="toggle active" onclick="toggleSwitch(this)"></div></div>
-        <div class="setting-row"><div><div style="font-weight:800;">Risk Warnings</div><div class="muted">Show warnings before execution</div></div><div class="toggle active" onclick="toggleSwitch(this)"></div></div>
+        <div class="setting-row">
+          <div>
+            <div style="font-weight:800;">Push Notifications</div>
+            <div class="muted">Alerts for profitable opportunities</div>
+          </div>
+          <div class="toggle active" onclick="toggleSwitch(this)"></div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div style="font-weight:800;">Haptic Feedback</div>
+            <div class="muted">Vibration on signal and tap actions</div>
+          </div>
+          <div class="toggle active" onclick="toggleSwitch(this)"></div>
+        </div>
       </div>
 
       <button class="btn secondary" onclick="saveSettings()">Save Settings</button>
@@ -306,20 +424,57 @@
   </div>
 
   <nav class="tabbar">
-    <button class="tab active" onclick="openTab('scanner', this)"><span class="tab-icon">⚡</span><span class="tab-text">Scanner</span></button>
-    <button class="tab" onclick="openTab('referrals', this)"><span class="tab-icon">👥</span><span class="tab-text">Network</span></button>
-    <button class="tab" onclick="openTab('wallet', this)"><span class="tab-icon">💼</span><span class="tab-text">Wallet</span></button>
-    <button class="tab" onclick="openTab('settings', this)"><span class="tab-icon">⚙️</span><span class="tab-text">Settings</span></button>
+    <button class="tab active" onclick="openTab('scanner', this)">
+      <span class="tab-icon">⚡</span>
+      <span class="tab-text">Scanner</span>
+    </button>
+    <button class="tab" onclick="openTab('referrals', this)">
+      <span class="tab-icon">👥</span>
+      <span class="tab-text">Network</span>
+    </button>
+    <button class="tab" onclick="openTab('wallet', this)">
+      <span class="tab-icon">💼</span>
+      <span class="tab-text">Wallet</span>
+    </button>
+    <button class="tab" onclick="openTab('settings', this)">
+      <span class="tab-icon">⚙️</span>
+      <span class="tab-text">Settings</span>
+    </button>
   </nav>
 
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <script>
     const tg = window.Telegram?.WebApp;
-    if (tg) {
+
+    function fallbackAvatar(name) {
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Trader')}&background=1e293b&color=fff`;
+    }
+
+    function shortAddress(addr) {
+      if (!addr) return '';
+      return addr.slice(0, 6) + '...' + addr.slice(-6);
+    }
+
+    function applyTelegramProfile() {
+      if (!tg) return;
+
       tg.ready();
       tg.expand();
-      const userName = tg.initDataUnsafe?.user?.username || tg.initDataUnsafe?.user?.first_name || 'Trader';
-      document.getElementById('tgUser').textContent = userName;
+
+      const user = tg.initDataUnsafe?.user || {};
+      const displayName = user.username || [user.first_name, user.last_name].filter(Boolean).join(' ') || 'Trader';
+      const avatar = user.photo_url || fallbackAvatar(displayName);
+
+      document.getElementById('tgUser').textContent = displayName;
+      document.getElementById('walletUserName').textContent = displayName;
+      document.getElementById('headerAvatar').src = avatar;
+      document.getElementById('walletAvatar').src = avatar;
+
+      if (user.username) {
+        document.getElementById('walletUserSub').textContent = '@' + user.username;
+      } else {
+        document.getElementById('walletUserSub').textContent = 'Авторизован в Mini App';
+      }
     }
 
     function openTab(id, el) {
@@ -341,8 +496,13 @@
       alert('Referral link copied');
     }
 
-    function withdrawReferral() { alert('Withdraw request created'); }
-    function saveSettings() { alert('Settings saved'); }
+    function withdrawReferral() {
+      alert('Withdraw request created');
+    }
+
+    function saveSettings() {
+      alert('Settings saved');
+    }
 
     function toggleSwitch(el) {
       el.classList.toggle('active');
@@ -353,49 +513,33 @@
       manifestUrl: 'https://vitalujs2233.github.io/v-hunt-miniapp/tonconnect-manifest.json'
     });
 
-    function shortAddress(address) {
-      return address ? address.slice(0, 6) + '...' + address.slice(-6) : 'Unknown address';
-    }
-
-    function updateWalletUI(wallet) {
-      const stateEl = document.getElementById('walletState');
-      const addressEl = document.getElementById('walletAddress');
-      const btnEl = document.getElementById('connectButton');
-
-      if (wallet && wallet.account && wallet.account.address) {
-        stateEl.textContent = 'Connected';
-        addressEl.textContent = shortAddress(wallet.account.address);
-        btnEl.textContent = 'Disconnect Wallet';
-      } else {
-        stateEl.textContent = 'Not connected';
-        addressEl.textContent = 'Tap the button below to connect your TON wallet';
-        btnEl.textContent = 'Connect Wallet';
-      }
-    }
-
     async function connectWallet() {
       try {
-        if (tonConnectUI.connected) {
-          await tonConnectUI.disconnect();
-          updateWalletUI(null);
-          return;
-        }
-
-        await tonConnectUI.openModal();
-      } catch (error) {
-        console.error('TON Connect error:', error);
-        alert('Wallet connection error. Check tonconnect-manifest.json and try again.');
+        await tonConnectUI.connectWallet();
+      } catch (e) {
+        alert('Не удалось подключить кошелёк');
       }
     }
 
-    tonConnectUI.onStatusChange(wallet => {
-      updateWalletUI(wallet);
-    }, error => {
-      console.error('TON status error:', error);
-    });
+    function updateWalletUi(wallet) {
+      const statusEl = document.getElementById('walletStatus');
+      const addressEl = document.getElementById('walletAddress');
 
-    updateWalletUI(tonConnectUI.wallet);
+      if (wallet?.account?.address) {
+        statusEl.textContent = 'Connected';
+        addressEl.textContent = shortAddress(wallet.account.address);
+      } else {
+        statusEl.textContent = 'Not connected';
+        addressEl.textContent = 'Нажми Connect Wallet, чтобы подключить TON-кошелёк';
+      }
+    }
+
+    applyTelegramProfile();
+    updateWalletUi(tonConnectUI.wallet);
+
+    tonConnectUI.onStatusChange((wallet) => {
+      updateWalletUi(wallet);
+    });
   </script>
 </body>
 </html>
-
