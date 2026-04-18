@@ -2,28 +2,16 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>V-HUNT</title>
   <meta name="theme-color" content="#070b14" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root{
-      --bg:#070b14;
-      --bg2:#0b1220;
-      --card:rgba(255,255,255,.08);
-      --card-border:rgba(255,255,255,.12);
-      --text:#fff;
-      --muted:#9fb0c9;
-      --green:#2df7a1;
-      --red:#ff5f7a;
-      --blue:#4da3ff;
-      --purple:#8b5cf6;
-      --cyan:#1ee7ff;
-      --gold:#ffd166;
-      --shadow:0 20px 60px rgba(0,0,0,.35);
-      --radius:24px;
+      --bg:#070b14; --bg2:#0b1220; --card:rgba(255,255,255,.08); --card-border:rgba(255,255,255,.12);
+      --text:#fff; --muted:#9fb0c9; --green:#2df7a1; --red:#ff5f7a; --blue:#4da3ff; --purple:#8b5cf6;
+      --cyan:#1ee7ff; --gold:#ffd166; --shadow:0 20px 60px rgba(0,0,0,.35); --radius:24px;
     }
-
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{
       margin:0;padding:0;min-height:100%;
@@ -41,13 +29,11 @@
         linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
       background-size:26px 26px;pointer-events:none;opacity:.25
     }
-
     .app{position:relative;min-height:100vh;padding:18px 16px 110px;z-index:1}
     .glow-orb{position:fixed;width:180px;height:180px;border-radius:50%;filter:blur(55px);opacity:.22;pointer-events:none;z-index:0}
     .orb-1{top:80px;left:-40px;background:var(--purple)}
     .orb-2{top:220px;right:-50px;background:var(--cyan)}
     .orb-3{bottom:120px;left:40%;background:var(--blue)}
-
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
     .brand-wrap{display:flex;align-items:center;gap:12px}
     .logo{
@@ -62,7 +48,6 @@
       -webkit-background-clip:text;-webkit-text-fill-color:transparent
     }
     .brand-subtitle{color:var(--muted);font-size:12px;margin-top:4px}
-
     .user-badge{
       display:flex;align-items:center;gap:10px;min-width:124px;max-width:180px;
       padding:8px 10px;border-radius:18px;background:rgba(255,255,255,.06);
@@ -76,7 +61,6 @@
     .user-meta{min-width:0}
     .user-name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .user-status{font-size:11px;color:var(--muted)}
-
     .hero{
       position:relative;overflow:hidden;border-radius:30px;padding:18px;margin-bottom:16px;
       background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
@@ -104,15 +88,12 @@
     .stat{border-radius:18px;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
     .stat-label{color:var(--muted);font-size:11px;margin-bottom:6px}
     .stat-value{font-size:17px;font-weight:800}
-
     .section{display:none;animation:fadeUp .22s ease}
     .section.active{display:block}
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
     .section-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}
     .section-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}
     .mini-tag{padding:7px 10px;border-radius:999px;font-size:11px;color:#dce9ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
-
     .card{
       position:relative;overflow:hidden;border-radius:var(--radius);padding:15px;margin-bottom:12px;
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
@@ -123,7 +104,6 @@
       background:linear-gradient(135deg, rgba(255,255,255,.05), transparent 35%);
       pointer-events:none
     }
-
     .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
     .pair{font-size:18px;font-weight:800;margin-bottom:4px}
     .muted{color:var(--muted);font-size:13px}
@@ -137,7 +117,6 @@
     .metric{padding:10px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
     .metric-label{color:var(--muted);font-size:11px;margin-bottom:5px}
     .metric-value{font-size:14px;font-weight:800}
-
     .btn{
       width:100%;border:none;border-radius:18px;padding:14px 16px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;margin-top:14px;
       background:linear-gradient(135deg, #7c3aed, #2563eb 55%, #06b6d4);box-shadow:0 14px 30px rgba(71,126,255,.35)
@@ -148,14 +127,12 @@
     .btn.red{background:linear-gradient(135deg, #ef4444, #ff7a7a);box-shadow:0 14px 30px rgba(255,95,122,.18)}
     .btn.small{padding:12px 14px;font-size:14px;margin-top:10px}
     .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-
     .wallet-balance{font-size:34px;font-weight:900;margin:8px 0 4px;line-height:1}
     .wallet-address{font-size:12px;color:var(--muted);word-break:break-all;margin-top:6px}
     .ref-link{
       margin-top:10px;padding:13px;border-radius:16px;background:rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.08);color:#dce9ff;font-size:13px;word-break:break-all
     }
-
     .profile-card{
       display:flex;align-items:center;gap:14px;padding:14px;border-radius:20px;
       background:linear-gradient(135deg, rgba(124,58,237,.18), rgba(6,182,212,.10));
@@ -169,10 +146,7 @@
       display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
       font-size:11px;font-weight:700;margin-top:8px;background:rgba(45,247,161,.10);border:1px solid rgba(45,247,161,.22);color:#b7ffe1
     }
-
-    .wallet-main{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:12px
-    }
+    .wallet-main{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
     .wallet-state{font-size:36px;font-weight:900;line-height:1}
     .wallet-network{
       padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.20)
@@ -181,12 +155,10 @@
     .wallet-chip{
       padding:8px 10px;border-radius:14px;font-size:12px;color:#dce9ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)
     }
-
     .notice{
       margin-top:12px;padding:12px 14px;border-radius:16px;font-size:13px;line-height:1.45;
       background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#dce9ff
     }
-
     .toast{
       position:fixed;left:16px;right:16px;bottom:98px;z-index:60;
       padding:12px 14px;border-radius:16px;background:rgba(9,15,26,.92);border:1px solid rgba(255,255,255,.12);
@@ -195,7 +167,6 @@
     .toast.show{display:block;animation:fadeUp .18s ease}
     .toast-title{font-weight:800;margin-bottom:4px}
     .toast-text{font-size:13px;color:var(--muted)}
-
     .tabbar{
       position:fixed;left:14px;right:14px;bottom:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
       padding:10px;border-radius:24px;background:rgba(9,15,26,.88);border:1px solid rgba(255,255,255,.08);
@@ -210,7 +181,6 @@
     }
     .tab-icon{font-size:18px;line-height:1}
     .tab-text{font-size:11px;font-weight:700}
-
     @media (max-width:420px){
       .hero-stats,.metrics,.button-grid{grid-template-columns:1fr}
       .hero-title{font-size:24px}
@@ -233,7 +203,6 @@
           <div class="brand-subtitle">Neon Arbitrage Terminal</div>
         </div>
       </div>
-
       <div class="user-badge">
         <img id="headerAvatar" class="user-avatar" alt="User" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
         <div class="user-meta">
@@ -280,7 +249,7 @@
           <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">25 TON</div></div>
           <div class="metric"><div class="metric-label">Age</div><div class="metric-value">2 sec</div></div>
         </div>
-        <button class="btn" onclick="executeTrade('TON / USDT')">Execute Hunt</button>
+        <button class="btn" onclick="executeTrade('TON / USDT')">Test Execute</button>
       </div>
 
       <div class="card">
@@ -299,7 +268,7 @@
           <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">18 TON</div></div>
           <div class="metric"><div class="metric-label">Age</div><div class="metric-value">3 sec</div></div>
         </div>
-        <button class="btn" onclick="executeTrade('TON / NOT')">Execute Hunt</button>
+        <button class="btn" onclick="executeTrade('TON / NOT')">Test Execute</button>
       </div>
     </section>
 
@@ -357,7 +326,7 @@
         </div>
 
         <div class="notice">
-          Подключение и отключение теперь управляются отдельно. После успешного коннекта адрес и состояние обновляются автоматически.
+          Кнопка Test Execute отправляет тестовую TON-транзакцию через подключённый кошелёк.
         </div>
       </div>
     </section>
@@ -403,6 +372,9 @@
     const tg = window.Telegram?.WebApp;
     let isBusy = false;
 
+    // ВСТАВЬ СЮДА СВОЙ TON-АДРЕС ДЛЯ ТЕСТОВОЙ ТРАНЗАКЦИИ
+    const TEST_RECEIVER_ADDRESS = 'UQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJKZ';
+
     function fallbackAvatar(name){
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Trader')}&background=1e293b&color=fff`;
     }
@@ -424,7 +396,7 @@
       document.getElementById('toastText').textContent = text;
       toast.classList.add('show');
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.classList.remove('show'), 2600);
+      showToast._t = setTimeout(() => toast.classList.remove('show'), 2800);
     }
 
     function applyTelegramProfile(){
@@ -450,11 +422,6 @@
       document.getElementById(id).classList.add('active');
       el.classList.add('active');
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
-    }
-
-    function executeTrade(pair){
-      showToast('Сделка', 'Пока это заглушка: ' + pair);
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
     }
 
     function copyReferral(){
@@ -538,6 +505,41 @@
         showToast('Отключено', 'TON-кошелёк отключён');
       } catch (e) {
         showToast('Ошибка', 'Не удалось отключить кошелёк');
+      } finally {
+        isBusy = false;
+      }
+    }
+
+    async function executeTrade(pair){
+      if (isBusy) return;
+      if (!tonConnectUI.wallet?.account?.address) {
+        showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и выполни подключение');
+        openTab('wallet', document.querySelectorAll('.tab')[2]);
+        return;
+      }
+      if (TEST_RECEIVER_ADDRESS.startsWith('UQAAAAAA')) {
+        showToast('Нужен твой адрес', 'Вставь свой TON-адрес в TEST_RECEIVER_ADDRESS внутри index.html');
+        return;
+      }
+
+      try {
+        isBusy = true;
+        showToast('Подготовка', 'Открываю кошелёк для тестовой TON-транзакции...');
+        const tx = {
+          validUntil: Math.floor(Date.now() / 1000) + 300,
+          messages: [
+            {
+              address: TEST_RECEIVER_ADDRESS,
+              amount: '50000000'
+            }
+          ]
+        };
+        const result = await tonConnectUI.sendTransaction(tx);
+        console.log('TX result:', result);
+        showToast('Транзакция отправлена', 'Пара: ' + pair);
+      } catch (e) {
+        console.error(e);
+        showToast('Отмена или ошибка', 'Пользователь отменил операцию или кошелёк вернул ошибку');
       } finally {
         isBusy = false;
       }
