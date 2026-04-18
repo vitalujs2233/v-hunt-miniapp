@@ -275,6 +275,12 @@ app.get("/api/health", (_req, res) => {
  * чтобы фронт всегда показывал что-то рабочее.
  */
 app.get("/api/scanner/live", async (_req, res) => {
+  return res.json({
+    ok: true,
+    source: "CHECK-NEW-SERVER",
+    time: Date.now()
+  });
+});
   try {
     const liveDeals = await getLiveOmnistonDeals();
 
