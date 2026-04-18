@@ -11,7 +11,7 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 const TONAPI_BASE = process.env.TONAPI_BASE || "https://tonapi.io";
 const TONAPI_KEY = process.env.TONAPI_KEY || "";
 
