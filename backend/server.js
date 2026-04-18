@@ -101,6 +101,33 @@ function normalizeEvents(payload) {
 }
 
 /**
+ * ДОБАВЛЕНО:
+ * Простой helper для тестовых scanner deals
+ * ЭТО ПОКА ВРЕМЕННЫЕ ДАННЫЕ, ЧТОБЫ /api/scanner/live РАБОТАЛ
+ * ПОТОМ МЫ ЗАМЕНИМ ИХ НА РЕАЛЬНЫЕ ЦЕНЫ С БИРЖ
+ */
+function calculateNetSpread(buyPrice, sellPrice, capitalTon = 10) {
+  const dexFeeBuy = buyPrice * 0.003;
+  const dexFeeSell = sellPrice * 0.003;
+  const gasCost = 0.05;
+  const gross = ((sellPrice - buyPrice) / buyPrice) * 100;
+  const serviceFee = Math.max((gross / 100) * capitalTon * 0.15, 0);
+
+  const netProfitTon = Math.max(
+    ((sellPrice - buyPrice) * capitalTon) - dexFeeBuy - dexFeeSell - gasCost - serviceFee,
+    0
+  );
+
+  const netSpreadPercent = capitalTon > 0 ? (netProfitTon / capitalTon) * 100 : 0;
+
+  return {
+    grossSpreadPercent: Number(gross.toFixed(2)),
+    netSpreadPercent: Number(netSpreadPercent.toFixed(2)),
+    estimatedProfitTon: Number(netProfitTon.toFixed(4)),
+  };
+}
+
+/**
  * GET /
  */
 app.get("/", (_req, res) => {
@@ -119,6 +146,66 @@ app.get("/api/health", (_req, res) => {
     ok: true,
     time: new Date().toISOString(),
   });
+});
+
+/**
+ * ДОБАВЛЕНО:
+ * GET /api/scanner/live
+ *
+ * ЭТО НУЖНО ДЛЯ RAILWAY И MINI APP,
+ * ЧТОБЫ ЭНДПОИНТ РАБОТАЛ И ВО ФРОНТЕ МОЖНО БЫЛО ПОЛУЧАТЬ СДЕЛКИ
+ *
+ * ПОКА ТУТ ТЕСТОВЫЕ ДАННЫЕ
+ * ПОТОМ МЫ ЗАМЕНИМ ИХ НА STON + DEDUST
+ */
+app.get("/api/scanner/live", async (_req, res) => {
+  try {
+    const deals = [
+      {
+        pair: "TON/USDT",
+        buyDex: "STON",
+        sellDex: "DeDust",
+        buyPrice: 2.14,
+        sellPrice: 2.19,
+        ...calculateNetSpread(2.14, 2.19, 10),
+        verified: true,
+        risk: "low",
+      },
+      {
+        pair: "TON/NOT",
+        buyDex: "DeDust",
+        sellDex: "STON",
+        buyPrice: 0.183,
+        sellPrice: 0.187,
+        ...calculateNetSpread(0.183, 0.187, 10),
+        verified: true,
+        risk: "medium",
+      },
+      {
+        pair: "TON/DOGS",
+        buyDex: "STON",
+        sellDex: "DeDust",
+        buyPrice: 0.0031,
+        sellPrice: 0.0032,
+        ...calculateNetSpread(0.0031, 0.0032, 10),
+        verified: true,
+        risk: "medium",
+      },
+    ];
+
+    res.json({
+      ok: true,
+      source: "mock-scanner-data",
+      deals,
+    });
+  } catch (error) {
+    console.error("scanner live error:", error);
+
+    res.status(500).json({
+      ok: false,
+      error: error.message || "internal server error",
+    });
+  }
 });
 
 /**
