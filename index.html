@@ -4,162 +4,331 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>V-HUNT</title>
-  <meta name="theme-color" content="#070b14" />
+  <meta name="theme-color" content="#060913" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#070b14; --bg2:#0b1220; --card:rgba(255,255,255,.08); --card-border:rgba(255,255,255,.12);
-      --text:#fff; --muted:#9fb0c9; --green:#2df7a1; --red:#ff5f7a; --blue:#4da3ff; --purple:#8b5cf6;
-      --cyan:#1ee7ff; --gold:#ffd166; --shadow:0 20px 60px rgba(0,0,0,.35); --radius:24px;
+      --bg:#060913;
+      --bg-2:#091223;
+      --panel:rgba(255,255,255,.08);
+      --panel-2:rgba(255,255,255,.05);
+      --line:rgba(255,255,255,.11);
+      --line-2:rgba(255,255,255,.06);
+      --text:#ffffff;
+      --muted:#8ea2bf;
+      --soft:#c8d7ee;
+      --green:#33f5a0;
+      --green-2:#11cf83;
+      --red:#ff6b81;
+      --gold:#ffd36a;
+      --purple:#8b5cf6;
+      --cyan:#20d9ff;
+      --blue:#448dff;
+      --shadow:0 20px 60px rgba(0,0,0,.38);
+      --radius-xl:30px;
+      --radius-lg:22px;
+      --radius-md:18px;
     }
+
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{
-      margin:0;padding:0;min-height:100%;
+      margin:0;padding:0;min-height:100%;overflow-x:hidden;
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
       background:
-        radial-gradient(circle at 15% 10%, rgba(139,92,246,.28), transparent 22%),
-        radial-gradient(circle at 85% 12%, rgba(30,231,255,.22), transparent 24%),
-        radial-gradient(circle at 50% 100%, rgba(77,163,255,.18), transparent 35%),
-        linear-gradient(180deg, #050811 0%, #09101c 45%, #070b14 100%);
-      color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden
+        radial-gradient(circle at 10% 0%, rgba(139,92,246,.28), transparent 26%),
+        radial-gradient(circle at 100% 10%, rgba(32,217,255,.20), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(68,141,255,.15), transparent 38%),
+        linear-gradient(180deg, #040710 0%, #08101d 48%, #050913 100%);
     }
     body::before{
-      content:"";position:fixed;inset:0;
+      content:"";
+      position:fixed;inset:0;pointer-events:none;
       background:
-        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
-      background-size:26px 26px;pointer-events:none;opacity:.25
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:24px 24px;
+      opacity:.22;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.4));
     }
-    .app{position:relative;min-height:100vh;padding:18px 16px 110px;z-index:1}
-    .glow-orb{position:fixed;width:180px;height:180px;border-radius:50%;filter:blur(55px);opacity:.22;pointer-events:none;z-index:0}
-    .orb-1{top:80px;left:-40px;background:var(--purple)}
-    .orb-2{top:220px;right:-50px;background:var(--cyan)}
-    .orb-3{bottom:120px;left:40%;background:var(--blue)}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-    .brand-wrap{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:48px;height:48px;border-radius:18px;
-      background:linear-gradient(135deg, rgba(139,92,246,.95), rgba(30,231,255,.95));
+    body::after{
+      content:"";
+      position:fixed;inset:0;pointer-events:none;
+      background:radial-gradient(circle at 50% 30%, rgba(255,255,255,.05), transparent 45%);
+      mix-blend-mode:screen;
+      opacity:.35;
+    }
+
+    .app{
+      position:relative;
+      min-height:100vh;
+      padding:18px 16px 120px;
+      z-index:2;
+    }
+
+    .bg-orb{
+      position:fixed;
+      width:240px;height:240px;border-radius:50%;
+      filter:blur(80px);opacity:.22;pointer-events:none;z-index:0;
+      animation: drift 16s ease-in-out infinite;
+    }
+    .orb-a{top:60px;left:-80px;background:var(--purple)}
+    .orb-b{top:220px;right:-90px;background:var(--cyan);animation-delay:-5s}
+    .orb-c{bottom:100px;left:35%;background:var(--blue);animation-delay:-9s}
+    @keyframes drift{
+      0%,100%{transform:translate3d(0,0,0) scale(1)}
+      50%{transform:translate3d(0,-16px,0) scale(1.06)}
+    }
+
+    /* Splash */
+    .splash{
+      position:fixed;inset:0;z-index:1000;
+      display:flex;align-items:center;justify-content:center;flex-direction:column;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(139,92,246,.28), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(32,217,255,.18), transparent 30%),
+        linear-gradient(180deg, #050913 0%, #081121 100%);
+      transition:opacity .6s ease, visibility .6s ease;
+    }
+    .splash.hidden{opacity:0;visibility:hidden}
+    .splash-logo-wrap{
+      position:relative;
+      width:150px;height:150px;border-radius:42px;
       display:flex;align-items:center;justify-content:center;
-      font-size:22px;font-weight:900;box-shadow:0 10px 30px rgba(82,149,255,.35);flex-shrink:0
+      background:linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+      overflow:hidden;
+      animation: splashFloat 2s ease-in-out infinite;
+    }
+    .splash-logo-wrap::before{
+      content:"";
+      position:absolute;inset:-30%;
+      background:conic-gradient(from 0deg, rgba(139,92,246,.0), rgba(139,92,246,.45), rgba(32,217,255,.28), rgba(139,92,246,.0));
+      animation: spin 3s linear infinite;
+    }
+    .splash-logo{
+      position:relative;z-index:2;
+      width:86px;height:86px;border-radius:26px;
+      background:linear-gradient(135deg, #8358ff, #23d7ff);
+      display:flex;align-items:center;justify-content:center;
+      font-family:Manrope, Inter, sans-serif;
+      font-size:48px;font-weight:900;color:#fff;
+      box-shadow:0 10px 30px rgba(43,151,255,.35);
+    }
+    .splash-title{
+      margin-top:26px;font-family:Manrope,Inter,sans-serif;font-size:34px;font-weight:900;letter-spacing:1px;
+      background:linear-gradient(90deg, #fff, #93d9ff, #c2a1ff);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .splash-sub{
+      margin-top:8px;color:var(--muted);font-size:13px;letter-spacing:.3px;
+      text-transform:uppercase;
+    }
+    .splash-bar{
+      margin-top:24px;width:min(260px,78vw);height:8px;border-radius:999px;overflow:hidden;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+    }
+    .splash-fill{
+      height:100%;width:100%;
+      background:linear-gradient(90deg, #8b5cf6, #26d9ff, #33f5a0);
+      transform-origin:left center;
+      animation: loadBar 2.2s ease forwards;
+    }
+    @keyframes loadBar{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
+    @keyframes splashFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Top */
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      margin-bottom:16px;
+    }
+    .brand-wrap{display:flex;align-items:center;gap:12px}
+    .brand-mark{
+      width:50px;height:50px;border-radius:18px;
+      background:linear-gradient(135deg,#8657ff,#1ddaff);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 12px 34px rgba(51,122,255,.35);
+      font-family:Manrope,Inter,sans-serif;font-size:24px;font-weight:900;
+      position:relative;overflow:hidden;
+    }
+    .brand-mark::after{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.18), transparent 40%);
+      pointer-events:none;
     }
     .brand-title{
-      font-size:26px;font-weight:900;letter-spacing:1px;line-height:1;
-      background:linear-gradient(90deg, #fff, #8ad8ff, #c4a0ff);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent
+      font-family:Manrope,Inter,sans-serif;
+      font-size:26px;font-weight:900;line-height:1;
+      background:linear-gradient(90deg,#fff,#97dcff,#c4a2ff);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
     }
-    .brand-subtitle{color:var(--muted);font-size:12px;margin-top:4px}
-    .user-badge{
-      display:flex;align-items:center;gap:10px;min-width:124px;max-width:180px;
-      padding:8px 10px;border-radius:18px;background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(16px);box-shadow:var(--shadow)
+    .brand-sub{margin-top:4px;font-size:12px;color:var(--muted);letter-spacing:.3px}
+    .profile-pill{
+      display:flex;align-items:center;gap:10px;
+      padding:8px 10px;border-radius:18px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);
+      backdrop-filter:blur(16px);
+      box-shadow:var(--shadow);
+      min-width:124px;max-width:185px;
     }
-    .user-avatar,.profile-avatar,.token-icon{
-      border-radius:50%;object-fit:cover;background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.15);flex-shrink:0
+    .profile-pill img{
+      width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
     }
-    .user-avatar{width:34px;height:34px}
-    .user-meta{min-width:0}
-    .user-name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .user-status{font-size:11px;color:var(--muted)}
+    .pill-name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pill-sub{font-size:11px;color:var(--muted)}
+
+    /* Marquee */
+    .marquee-wrap{
+      margin-bottom:14px;padding:10px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);
+      overflow:hidden;position:relative;
+    }
+    .marquee-track{
+      display:flex;gap:28px;width:max-content;animation: slide 24s linear infinite;
+      color:#d6e2f3;font-size:12px;font-weight:700;letter-spacing:.2px;
+    }
+    .marquee-item{display:flex;align-items:center;gap:8px}
+    .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(51,245,160,.8)}
+    @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
     .hero{
-      position:relative;overflow:hidden;border-radius:30px;padding:18px;margin-bottom:16px;
-      background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(18px);box-shadow:var(--shadow)
+      position:relative;overflow:hidden;
+      border-radius:32px;padding:18px;margin-bottom:16px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05)),
+        linear-gradient(120deg, rgba(139,92,246,.08), rgba(32,217,255,.06));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
     }
     .hero::before{
-      content:"";position:absolute;inset:0;
+      content:"";
+      position:absolute;inset:0;
       background:
-        radial-gradient(circle at 15% 20%, rgba(139,92,246,.22), transparent 30%),
-        radial-gradient(circle at 90% 20%, rgba(30,231,255,.18), transparent 30%);
-      pointer-events:none
+        radial-gradient(circle at 12% 18%, rgba(139,92,246,.22), transparent 28%),
+        radial-gradient(circle at 90% 18%, rgba(32,217,255,.16), transparent 30%);
+      pointer-events:none;
     }
-    .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:relative;z-index:1}
-    .hero-title{font-size:30px;font-weight:900;line-height:1.03;margin:0;max-width:230px}
+    .hero-head{position:relative;z-index:2;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .hero-title{
+      font-family:Manrope,Inter,sans-serif;
+      font-size:32px;font-weight:900;line-height:1.02;max-width:250px;margin:0;
+    }
     .hero-title span{
-      background:linear-gradient(90deg, #fff, #72d2ff, #b892ff);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent
+      background:linear-gradient(90deg,#fff,#79d8ff,#c69fff);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
     }
-    .hero-chip{
-      padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;
-      background:rgba(45,247,161,.12);border:1px solid rgba(45,247,161,.25);white-space:nowrap
+    .hero-badge{
+      padding:9px 12px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;
+      color:#eafff8;background:rgba(51,245,160,.12);border:1px solid rgba(51,245,160,.24);
+      box-shadow:0 0 24px rgba(51,245,160,.12) inset;
     }
-    .hero-text{color:var(--muted);font-size:14px;line-height:1.45;margin:14px 0 16px;max-width:92%;position:relative;z-index:1}
-    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;position:relative;z-index:1}
-    .stat{border-radius:18px;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
-    .stat-label{color:var(--muted);font-size:11px;margin-bottom:6px}
-    .stat-value{font-size:17px;font-weight:800}
+    .hero-text{position:relative;z-index:2;margin:14px 0 16px;color:var(--muted);font-size:14px;line-height:1.5;max-width:94%}
+    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .hero-card{
+      padding:12px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+    }
+    .hero-card-label{font-size:11px;color:var(--muted);margin-bottom:6px}
+    .hero-card-value{font-size:18px;font-weight:800}
+
     .section{display:none;animation:fadeUp .22s ease}
     .section.active{display:block}
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .section-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}
-    .section-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}
-    .mini-tag{padding:7px 10px;border-radius:999px;font-size:11px;color:#dce9ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+
+    .section-head{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px;
+    }
+    .section-title{
+      margin:0;font-size:20px;font-weight:800;letter-spacing:.2px;
+      display:flex;align-items:center;gap:10px;
+    }
+    .section-title i{color:#9ad9ff}
+    .tag{
+      padding:7px 10px;border-radius:999px;font-size:11px;font-weight:700;color:#dce9ff;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)
+    }
+
     .card{
       position:relative;overflow:hidden;border-radius:var(--radius);padding:15px;margin-bottom:12px;
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
       border:1px solid var(--card-border);backdrop-filter:blur(18px);box-shadow:var(--shadow)
     }
     .card::after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(135deg, rgba(255,255,255,.05), transparent 35%);
+      content:"";position:absolute;inset:0;background:linear-gradient(135deg, rgba(255,255,255,.05), transparent 35%);
       pointer-events:none
     }
-    .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .pair{font-size:18px;font-weight:800;margin-bottom:4px}
-    .muted{color:var(--muted);font-size:13px}
+
+    .signal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .pair{font-size:19px;font-weight:900;margin-bottom:4px}
+    .pair-sub{font-size:13px;color:var(--muted)}
     .profit-box{text-align:right}
-    .profit{color:var(--green);font-size:20px;font-weight:900;line-height:1}
+    .profit{color:var(--green);font-size:24px;font-weight:900;line-height:1}
     .risk{
-      display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:6px 10px;border-radius:999px;
-      font-size:11px;font-weight:700;color:#ffd8a8;background:rgba(255,209,102,.10);border:1px solid rgba(255,209,102,.25)
+      display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:6px 10px;border-radius:999px;
+      font-size:11px;font-weight:800;color:#ffe0a6;background:rgba(255,211,106,.10);border:1px solid rgba(255,211,106,.22)
     }
     .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-    .metric{padding:10px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
-    .metric-label{color:var(--muted);font-size:11px;margin-bottom:5px}
+    .metric{
+      padding:11px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)
+    }
+    .metric-label{font-size:11px;color:var(--muted);margin-bottom:5px}
     .metric-value{font-size:14px;font-weight:800}
     .btn{
       width:100%;border:none;border-radius:18px;padding:14px 16px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;margin-top:14px;
-      background:linear-gradient(135deg, #7c3aed, #2563eb 55%, #06b6d4);box-shadow:0 14px 30px rgba(71,126,255,.35)
+      background:linear-gradient(135deg,#7c3aed,#2563eb 55%,#06b6d4);
+      box-shadow:0 14px 30px rgba(71,126,255,.35);
+      transition:transform .16s ease, opacity .16s ease;
     }
     .btn:active{transform:scale(.99)}
-    .btn.secondary{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);box-shadow:none;color:#e9f2ff}
-    .btn.green{background:linear-gradient(135deg, #14b86f, #2df7a1);color:#06110d;box-shadow:0 14px 30px rgba(45,247,161,.22)}
-    .btn.red{background:linear-gradient(135deg, #ef4444, #ff7a7a);box-shadow:0 14px 30px rgba(255,95,122,.18)}
+    .btn.secondary{
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);box-shadow:none;color:#e9f2ff
+    }
+    .btn.red{background:linear-gradient(135deg,#ef4444,#ff7a7a);box-shadow:0 14px 30px rgba(255,95,122,.18)}
+    .btn.green{background:linear-gradient(135deg,#13c67d,#33f5a0);color:#07120d}
     .btn.small{padding:12px 14px;font-size:14px;margin-top:10px}
-    .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .wallet-address{font-size:12px;color:var(--muted);word-break:break-all;margin-top:6px}
+    .copy-address-btn{
+      width:auto;margin-top:10px;padding:10px 12px;font-size:12px;border-radius:14px;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);box-shadow:none
+    }
+
+    .profile-card{
+      display:flex;align-items:center;gap:14px;padding:14px;border-radius:22px;
+      background:linear-gradient(135deg, rgba(124,58,237,.18), rgba(6,182,212,.10));
+      border:1px solid rgba(255,255,255,.10);margin-bottom:14px
+    }
+    .profile-avatar{width:64px;height:64px}
+    .profile-title{font-size:12px;color:var(--muted)}
+    .profile-name{font-family:Manrope,Inter,sans-serif;font-size:22px;font-weight:900;margin-top:2px}
+    .profile-sub{font-size:12px;color:var(--muted);margin-top:4px}
+    .status-pill{
+      display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;
+      font-size:11px;font-weight:800;margin-top:8px;background:rgba(51,245,160,.10);border:1px solid rgba(51,245,160,.22);color:#b7ffe1
+    }
+
     .wallet-main{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
     .wallet-state{font-size:36px;font-weight:900;line-height:1}
+    .wallet-address{font-size:12px;color:var(--muted);word-break:break-all;margin-top:6px}
+    .wallet-balance-big{font-size:34px;font-weight:900;line-height:1;margin-top:10px}
     .wallet-network{
-      padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.20)
+      padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;
+      background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.20)
     }
     .wallet-chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
     .wallet-chip{
       padding:8px 10px;border-radius:14px;font-size:12px;color:#dce9ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)
     }
-    .wallet-balance-big{font-size:32px;font-weight:900;line-height:1;margin-top:8px}
     .balance-sub{font-size:12px;color:var(--muted);margin-top:6px}
-    .copy-address-btn{
-      width:auto; margin-top:10px; padding:10px 12px; font-size:12px; border-radius:14px;
-      background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); box-shadow:none;
-    }
-    .ref-link{
-      margin-top:10px;padding:13px;border-radius:16px;background:rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.08);color:#dce9ff;font-size:13px;word-break:break-all
-    }
-    .profile-card{
-      display:flex;align-items:center;gap:14px;padding:14px;border-radius:20px;
-      background:linear-gradient(135deg, rgba(124,58,237,.18), rgba(6,182,212,.10));
-      border:1px solid rgba(255,255,255,.10);margin-bottom:14px
-    }
-    .profile-avatar{width:62px;height:62px}
-    .profile-title{font-size:12px;color:var(--muted)}
-    .profile-name{font-size:20px;font-weight:900;margin-top:2px}
-    .profile-sub{font-size:12px;color:var(--muted);margin-top:4px}
-    .status-pill{
-      display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
-      font-size:11px;font-weight:700;margin-top:8px;background:rgba(45,247,161,.10);border:1px solid rgba(45,247,161,.22);color:#b7ffe1
-    }
+    .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
     .notice{
       margin-top:12px;padding:12px 14px;border-radius:16px;font-size:13px;line-height:1.45;
       background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#dce9ff
@@ -182,6 +351,26 @@
       background-size:200% 100%;animation:shimmer 1.2s linear infinite
     }
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+    .ref-link{
+      margin-top:10px;padding:13px;border-radius:16px;background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.08);color:#dce9ff;font-size:13px;word-break:break-all
+    }
+
+    .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .insight-card{
+      padding:16px;border-radius:22px;background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.08)
+    }
+    .insight-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+    .insight-icon{
+      width:42px;height:42px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:19px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)
+    }
+    .insight-value{font-family:Manrope,Inter,sans-serif;font-size:30px;font-weight:900}
+    .insight-label{font-size:12px;color:var(--muted)}
+    .insight-change{font-size:12px;font-weight:800;color:#b7ffe1}
+
     .toast{
       position:fixed;left:16px;right:16px;bottom:98px;z-index:60;
       padding:12px 14px;border-radius:16px;background:rgba(9,15,26,.92);border:1px solid rgba(255,255,255,.12);
@@ -190,13 +379,15 @@
     .toast.show{display:block;animation:fadeUp .18s ease}
     .toast-title{font-weight:800;margin-bottom:4px}
     .toast-text{font-size:13px;color:var(--muted)}
+
     .tabbar{
-      position:fixed;left:14px;right:14px;bottom:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
-      padding:10px;border-radius:24px;background:rgba(9,15,26,.88);border:1px solid rgba(255,255,255,.08);
+      position:fixed;left:14px;right:14px;bottom:14px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+      padding:10px;border-radius:26px;background:rgba(9,15,26,.88);border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(24px);box-shadow:0 20px 60px rgba(0,0,0,.35);z-index:20
     }
     .tab{
-      border:none;border-radius:18px;background:transparent;color:#8ea2bf;padding:10px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;min-height:58px
+      border:none;border-radius:18px;background:transparent;color:#8ea2bf;padding:10px 6px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;min-height:60px
     }
     .tab.active{
       color:#fff;background:linear-gradient(135deg, rgba(124,58,237,.28), rgba(34,211,238,.18));
@@ -204,68 +395,106 @@
     }
     .tab-icon{font-size:18px;line-height:1}
     .tab-text{font-size:11px;font-weight:700}
+
     @media (max-width:420px){
-      .hero-stats,.metrics,.button-grid{grid-template-columns:1fr}
+      .hero-grid,.metrics,.button-grid,.insight-grid{grid-template-columns:1fr}
       .hero-title{font-size:24px}
-      .user-badge{max-width:150px}
       .wallet-main{flex-direction:column}
       .asset-sub,.tx-sub{max-width:120px}
+      .tabbar{grid-template-columns:repeat(5,1fr);gap:6px;padding:8px}
+      .tab-text{font-size:10px}
+      .tab-icon{font-size:16px}
+      .profile-pill{max-width:150px}
     }
   </style>
 </head>
 <body>
-  <div class="glow-orb orb-1"></div>
-  <div class="glow-orb orb-2"></div>
-  <div class="glow-orb orb-3"></div>
+  <div class="splash" id="splash">
+    <div class="splash-logo-wrap">
+      <div class="splash-logo">V</div>
+    </div>
+    <div class="splash-title">V-HUNT</div>
+    <div class="splash-sub">Luxury Arbitrage Interface</div>
+    <div class="splash-bar"><div class="splash-fill"></div></div>
+  </div>
+
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
 
   <div class="app">
     <div class="topbar">
       <div class="brand-wrap">
-        <div class="logo">V</div>
+        <div class="brand-mark">V</div>
         <div>
           <div class="brand-title">V-HUNT</div>
-          <div class="brand-subtitle">Neon Arbitrage Terminal</div>
+          <div class="brand-sub">Luxury Crypto Scanner</div>
         </div>
       </div>
-      <div class="user-badge">
-        <img id="headerAvatar" class="user-avatar" alt="User" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
+
+      <div class="profile-pill">
+        <img id="headerAvatar" alt="User" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
         <div class="user-meta">
-          <div id="tgUser" class="user-name">Trader</div>
-          <div id="tgStatus" class="user-status">Telegram user</div>
+          <div id="tgUser" class="pill-name">Trader</div>
+          <div id="tgStatus" class="pill-sub">Telegram user</div>
         </div>
+      </div>
+    </div>
+
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <div class="marquee-item"><span class="pulse-dot"></span><span>LIVE SCANNER</span></div>
+        <div class="marquee-item"><i class="ri-flashlight-fill"></i><span>TON ARBITRAGE</span></div>
+        <div class="marquee-item"><i class="ri-vip-crown-2-fill"></i><span>PREMIUM EXECUTION</span></div>
+        <div class="marquee-item"><i class="ri-line-chart-fill"></i><span>PROFIT MODE</span></div>
+        <div class="marquee-item"><i class="ri-wallet-3-fill"></i><span>TON CONNECT READY</span></div>
+        <div class="marquee-item"><span class="pulse-dot"></span><span>LIVE SCANNER</span></div>
+        <div class="marquee-item"><i class="ri-flashlight-fill"></i><span>TON ARBITRAGE</span></div>
+        <div class="marquee-item"><i class="ri-vip-crown-2-fill"></i><span>PREMIUM EXECUTION</span></div>
+        <div class="marquee-item"><i class="ri-line-chart-fill"></i><span>PROFIT MODE</span></div>
+        <div class="marquee-item"><i class="ri-wallet-3-fill"></i><span>TON CONNECT READY</span></div>
       </div>
     </div>
 
     <div class="hero">
-      <div class="hero-top">
-        <h1 class="hero-title">Catch the <span>best spreads</span> before the market moves</h1>
-        <div class="hero-chip">LIVE</div>
+      <div class="hero-head">
+        <h1 class="hero-title">Build <span>profit</span> inside a luxury crypto terminal</h1>
+        <div class="hero-badge">LIVE</div>
       </div>
       <div class="hero-text">
-        Premium scanner for fast TON market opportunities, wallet execution and referral profit tracking in one terminal.
+        Premium Telegram Mini App concept for arbitrage, execution, referrals and performance tracking with luxury business styling.
       </div>
-      <div class="hero-stats">
-        <div class="stat"><div class="stat-label">Signals</div><div class="stat-value">24</div></div>
-        <div class="stat"><div class="stat-label">Win Rate</div><div class="stat-value">91%</div></div>
-        <div class="stat"><div class="stat-label">Today</div><div class="stat-value">+3.8 TON</div></div>
+      <div class="hero-grid">
+        <div class="hero-card">
+          <div class="hero-card-label">Signals</div>
+          <div class="hero-card-value">24</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-label">Win Rate</div>
+          <div class="hero-card-value">91%</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-label">Today</div>
+          <div class="hero-card-value">+3.8 TON</div>
+        </div>
       </div>
     </div>
 
     <section id="scanner" class="section active">
-      <div class="section-title-row">
-        <h2 class="section-title">Live Opportunities</h2>
-        <div class="mini-tag">Updated 2s ago</div>
+      <div class="section-head">
+        <h2 class="section-title"><i class="ri-radar-line"></i>Live Scanner</h2>
+        <div class="tag">Updated 2s ago</div>
       </div>
 
       <div class="card">
-        <div class="row">
+        <div class="signal-top">
           <div>
             <div class="pair">TON / USDT</div>
-            <div class="muted">Buy: STON.fi → Sell: DeDust</div>
+            <div class="pair-sub">Buy: STON.fi → Sell: DeDust</div>
           </div>
           <div class="profit-box">
             <div class="profit">+2.41%</div>
-            <div class="risk">Low Risk</div>
+            <div class="risk"><i class="ri-shield-check-line"></i>Low Risk</div>
           </div>
         </div>
         <div class="metrics">
@@ -273,18 +502,18 @@
           <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">25 TON</div></div>
           <div class="metric"><div class="metric-label">Age</div><div class="metric-value">2 sec</div></div>
         </div>
-        <button class="btn" onclick="executeTrade('TON / USDT')">Test Execute</button>
+        <button class="btn" onclick="executeTrade('TON / USDT')"><i class="ri-flashlight-fill"></i> Test Execute</button>
       </div>
 
       <div class="card">
-        <div class="row">
+        <div class="signal-top">
           <div>
             <div class="pair">TON / NOT</div>
-            <div class="muted">Buy: DeDust → Sell: STON.fi</div>
+            <div class="pair-sub">Buy: DeDust → Sell: STON.fi</div>
           </div>
           <div class="profit-box">
             <div class="profit">+1.86%</div>
-            <div class="risk">Medium Risk</div>
+            <div class="risk"><i class="ri-alert-line"></i>Medium Risk</div>
           </div>
         </div>
         <div class="metrics">
@@ -292,31 +521,78 @@
           <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">18 TON</div></div>
           <div class="metric"><div class="metric-label">Age</div><div class="metric-value">3 sec</div></div>
         </div>
-        <button class="btn" onclick="executeTrade('TON / NOT')">Test Execute</button>
+        <button class="btn" onclick="executeTrade('TON / NOT')"><i class="ri-flashlight-fill"></i> Test Execute</button>
       </div>
     </section>
 
-    <section id="referrals" class="section">
-      <div class="section-title-row">
-        <h2 class="section-title">Referral Network</h2>
-        <div class="mini-tag">5% reward</div>
+    <section id="insights" class="section">
+      <div class="section-head">
+        <h2 class="section-title"><i class="ri-bar-chart-box-line"></i>Business Insights</h2>
+        <div class="tag">Executive view</div>
       </div>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <div class="insight-top">
+            <div class="insight-icon"><i class="ri-money-dollar-circle-line"></i></div>
+            <div class="insight-change">+18.2%</div>
+          </div>
+          <div class="insight-value">12.4 TON</div>
+          <div class="insight-label">Projected weekly income</div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-top">
+            <div class="insight-icon"><i class="ri-user-star-line"></i></div>
+            <div class="insight-change">+7 users</div>
+          </div>
+          <div class="insight-value">48</div>
+          <div class="insight-label">Active premium traders</div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-top">
+            <div class="insight-icon"><i class="ri-exchange-funds-line"></i></div>
+            <div class="insight-change">+2.9 TON</div>
+          </div>
+          <div class="insight-value">91%</div>
+          <div class="insight-label">Execution success rate</div>
+        </div>
+
+        <div class="insight-card">
+          <div class="insight-top">
+            <div class="insight-icon"><i class="ri-vip-crown-line"></i></div>
+            <div class="insight-change">VIP mode</div>
+          </div>
+          <div class="insight-value">A+</div>
+          <div class="insight-label">Platform visual quality</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="network" class="section">
+      <div class="section-head">
+        <h2 class="section-title"><i class="ri-team-line"></i>Referral Network</h2>
+        <div class="tag">5% reward</div>
+      </div>
+
       <div class="card">
         <div class="muted">Your personal invite link</div>
         <div class="ref-link" id="refLink">https://t.me/YOUR_BOT_USERNAME?startapp=ref_987654</div>
-        <button class="btn secondary" onclick="copyReferral()">Copy Link</button>
+        <button class="btn secondary" onclick="copyReferral()"><i class="ri-file-copy-line"></i> Copy Link</button>
       </div>
+
       <div class="card">
         <div class="muted">Referral Balance</div>
         <div class="wallet-balance-big">12.50 TON</div>
-        <button class="btn green" onclick="withdrawReferral()">Withdraw Rewards</button>
+        <button class="btn green" onclick="withdrawReferral()"><i class="ri-bank-card-line"></i> Withdraw Rewards</button>
       </div>
     </section>
 
     <section id="wallet" class="section">
-      <div class="section-title-row">
-        <h2 class="section-title">Wallet Terminal</h2>
-        <div class="mini-tag">TON Connect + TONAPI</div>
+      <div class="section-head">
+        <h2 class="section-title"><i class="ri-wallet-3-line"></i>Wallet Terminal</h2>
+        <div class="tag">TON Connect + TONAPI</div>
       </div>
 
       <div class="profile-card">
@@ -325,7 +601,7 @@
           <div class="profile-title">Telegram profile</div>
           <div id="walletUserName" class="profile-name">Trader</div>
           <div id="walletUserSub" class="profile-sub">Авторизован в Mini App</div>
-          <div class="status-pill">● Авторизация через Telegram активна</div>
+          <div class="status-pill"><i class="ri-checkbox-circle-fill"></i> Telegram authorization active</div>
         </div>
       </div>
 
@@ -349,12 +625,12 @@
         </div>
 
         <div class="button-grid">
-          <button id="connectBtn" class="btn small" onclick="handleWalletButton()">Connect Wallet</button>
-          <button id="disconnectBtn" class="btn red small" onclick="disconnectWallet()" style="display:none;">Disconnect</button>
+          <button id="connectBtn" class="btn small" onclick="handleWalletButton()"><i class="ri-plug-2-line"></i> Connect Wallet</button>
+          <button id="disconnectBtn" class="btn red small" onclick="disconnectWallet()" style="display:none;"><i class="ri-plug-line"></i> Disconnect</button>
         </div>
 
         <div class="notice">
-          Теперь адрес кошелька показывается в user-friendly формате, как в самом TON-кошельке.
+          Адрес кошелька показывается в user-friendly формате, как в самом TON-кошельке.
         </div>
       </div>
 
@@ -374,26 +650,36 @@
     </section>
 
     <section id="settings" class="section">
-      <div class="section-title-row">
-        <h2 class="section-title">Control Center</h2>
-        <div class="mini-tag">User prefs</div>
+      <div class="section-head">
+        <h2 class="section-title"><i class="ri-settings-4-line"></i>Control Center</h2>
+        <div class="tag">Premium prefs</div>
       </div>
+
       <div class="card">
         <div style="font-weight:800;">Slippage Tolerance</div>
         <div class="muted" style="margin-top:4px;">Adjust execution tolerance for swaps</div>
         <input class="input" type="number" value="0.5" placeholder="0.5" />
       </div>
+
       <div class="card">
-        <div class="setting-row">
-          <div><div style="font-weight:800;">Push Notifications</div><div class="muted">Alerts for profitable opportunities</div></div>
-          <div class="toggle active" onclick="toggleSwitch(this)"></div>
+        <div class="row" style="margin-bottom:10px;">
+          <div>
+            <div style="font-weight:800;">Push Notifications</div>
+            <div class="muted">Alerts for profitable opportunities</div>
+          </div>
+          <button class="btn secondary" style="width:auto;margin-top:0;padding:10px 14px;" onclick="toggleSwitch(this)">Enabled</button>
         </div>
-        <div class="setting-row">
-          <div><div style="font-weight:800;">Haptic Feedback</div><div class="muted">Vibration on signal and tap actions</div></div>
-          <div class="toggle active" onclick="toggleSwitch(this)"></div>
+
+        <div class="row">
+          <div>
+            <div style="font-weight:800;">Haptic Feedback</div>
+            <div class="muted">Vibration on signal and tap actions</div>
+          </div>
+          <button class="btn secondary" style="width:auto;margin-top:0;padding:10px 14px;" onclick="toggleSwitch(this)">Enabled</button>
         </div>
       </div>
-      <button class="btn secondary" onclick="saveSettings()">Save Settings</button>
+
+      <button class="btn secondary" onclick="saveSettings()"><i class="ri-save-3-line"></i> Save Settings</button>
     </section>
   </div>
 
@@ -403,10 +689,11 @@
   </div>
 
   <nav class="tabbar">
-    <button class="tab active" onclick="openTab('scanner', this)"><span class="tab-icon">⚡</span><span class="tab-text">Scanner</span></button>
-    <button class="tab" onclick="openTab('referrals', this)"><span class="tab-icon">👥</span><span class="tab-text">Network</span></button>
-    <button class="tab" onclick="openTab('wallet', this)"><span class="tab-icon">💼</span><span class="tab-text">Wallet</span></button>
-    <button class="tab" onclick="openTab('settings', this)"><span class="tab-icon">⚙️</span><span class="tab-text">Settings</span></button>
+    <button class="tab active" onclick="openTab('scanner', this)"><span class="tab-icon"><i class="ri-radar-line"></i></span><span class="tab-text">Scanner</span></button>
+    <button class="tab" onclick="openTab('insights', this)"><span class="tab-icon"><i class="ri-line-chart-line"></i></span><span class="tab-text">Insights</span></button>
+    <button class="tab" onclick="openTab('network', this)"><span class="tab-icon"><i class="ri-team-line"></i></span><span class="tab-text">Network</span></button>
+    <button class="tab" onclick="openTab('wallet', this)"><span class="tab-icon"><i class="ri-wallet-3-line"></i></span><span class="tab-text">Wallet</span></button>
+    <button class="tab" onclick="openTab('settings', this)"><span class="tab-icon"><i class="ri-settings-4-line"></i></span><span class="tab-text">Settings</span></button>
   </nav>
 
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
@@ -496,7 +783,7 @@
     }
 
     function toggleSwitch(el){
-      el.classList.toggle('active');
+      el.textContent = el.textContent === 'Enabled' ? 'Disabled' : 'Enabled';
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
@@ -693,7 +980,7 @@
       if (isBusy) return;
       if (!tonConnectUI.wallet?.account?.address) {
         showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и выполни подключение');
-        openTab('wallet', document.querySelectorAll('.tab')[2]);
+        openTab('wallet', document.querySelectorAll('.tab')[3]);
         return;
       }
 
@@ -720,6 +1007,10 @@
       }
     }
 
+    function hideSplash(){
+      document.getElementById('splash').classList.add('hidden');
+    }
+
     applyTelegramProfile();
     updateWalletUi(tonConnectUI.wallet);
 
@@ -739,6 +1030,13 @@
     }, () => {
       showToast('Ошибка', 'Проблема при смене статуса кошелька');
     });
+
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    setTimeout(hideSplash, 2200);
   </script>
 </body>
 </html>
