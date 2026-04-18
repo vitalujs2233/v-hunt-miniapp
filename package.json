@@ -1,0 +1,8 @@
+{
+  "name": "v-hunt-app-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cd backend && npm start"
+  }
+}
