@@ -23,17 +23,10 @@
       --text:#FFFFFF;
       --text-2:#8E8E93;
       --primary:#0098EA;
-      --primary-soft:rgba(0,152,234,.16);
       --success:#00FFA3;
-      --success-soft:rgba(0,255,163,.14);
       --warning:#FF3B30;
-      --gold:#D9B45F;
-      --gold-soft:rgba(217,180,95,.12);
-      --shadow:0 24px 60px rgba(0,0,0,.42);
-      --shadow-soft:0 12px 30px rgba(0,0,0,.24);
-      --radius:22px;
-      --radius-md:18px;
-      --radius-sm:16px;
+      --shadow:0 22px 50px rgba(0,0,0,.40);
+      --shadow-soft:0 10px 24px rgba(0,0,0,.22);
       --mono:"JetBrains Mono", ui-monospace, monospace;
       --sans:"Inter", system-ui, sans-serif;
     }
@@ -47,13 +40,12 @@
       background:
         radial-gradient(circle at 10% 0%, rgba(0,152,234,.09), transparent 26%),
         radial-gradient(circle at 100% 10%, rgba(0,255,163,.06), transparent 24%),
-        radial-gradient(circle at 50% 100%, rgba(217,180,95,.05), transparent 30%),
         linear-gradient(180deg,#040506 0%,#0A0C10 46%,#060708 100%);
     }
 
     body::before{
       content:"";
-      position:fixed; inset:0; pointer-events:none; opacity:.14;
+      position:fixed; inset:0; pointer-events:none; opacity:.12;
       background:
         linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
@@ -61,14 +53,14 @@
     }
 
     .glow-orb{
-      position:fixed;width:220px;height:220px;border-radius:50%;
-      filter:blur(90px);opacity:.18;pointer-events:none;z-index:0;
+      position:fixed;width:200px;height:200px;border-radius:50%;
+      filter:blur(90px);opacity:.16;pointer-events:none;z-index:0;
       animation:float 12s ease-in-out infinite;
     }
-    .orb-1{top:50px;left:-80px;background:rgba(0,152,234,.8)}
+    .orb-1{top:40px;left:-80px;background:rgba(0,152,234,.8)}
     .orb-2{top:220px;right:-90px;background:rgba(0,255,163,.5);animation-delay:-4s}
-    .orb-3{bottom:80px;left:38%;background:rgba(217,180,95,.45);animation-delay:-8s}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+    .orb-3{bottom:80px;left:38%;background:rgba(0,152,234,.35);animation-delay:-8s}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
 
     .splash{
       position:fixed; inset:0; z-index:999;
@@ -81,122 +73,108 @@
     }
     .splash.hidden{opacity:0;visibility:hidden}
     .splash-ring{
-      width:148px;height:148px;border-radius:36px;position:relative;overflow:hidden;
+      width:132px;height:132px;border-radius:32px;position:relative;overflow:hidden;
       display:flex;align-items:center;justify-content:center;
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 28px 70px rgba(0,0,0,.40), 0 0 40px rgba(0,152,234,.10);
+      box-shadow:0 24px 60px rgba(0,0,0,.38), 0 0 36px rgba(0,152,234,.10);
     }
     .splash-ring::before{
       content:""; position:absolute; inset:-30%;
-      background:conic-gradient(from 0deg, transparent, rgba(0,152,234,.95), rgba(0,255,163,.6), transparent 65%);
+      background:conic-gradient(from 0deg, transparent, rgba(0,152,234,.95), rgba(0,255,163,.55), transparent 65%);
       animation:spin 2.8s linear infinite;
     }
     .splash-core{
       position:relative; z-index:2;
-      width:84px; height:84px; border-radius:26px;
+      width:76px; height:76px; border-radius:22px;
       display:flex; align-items:center; justify-content:center;
       background:linear-gradient(135deg, #0e3354, #0098EA 60%, #0b7f7a);
-      color:#fff; font-size:42px; font-weight:900;
+      color:#fff; font-size:38px; font-weight:900;
       box-shadow:0 12px 28px rgba(0,152,234,.22);
     }
-    .splash-title{
-      margin-top:22px; font-size:32px; font-weight:900; letter-spacing:.06em;
-    }
-    .splash-sub{
-      margin-top:8px; font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--text-2);
-    }
+    .splash-title{margin-top:18px; font-size:28px; font-weight:900; letter-spacing:.06em;}
+    .splash-sub{margin-top:7px; font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--text-2);}
     .splash-line{
-      width:min(220px,72vw); height:8px; margin-top:20px; border-radius:999px; overflow:hidden;
+      width:min(200px,70vw); height:7px; margin-top:18px; border-radius:999px; overflow:hidden;
       background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.06);
     }
     .splash-line span{
       display:block; width:100%; height:100%;
       background:linear-gradient(90deg,#0e3354,#0098EA 55%,#00FFA3);
-      transform-origin:left center; animation:load 1.9s ease forwards;
+      transform-origin:left center; animation:load 1.7s ease forwards;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
     @keyframes load{from{transform:scaleX(.04)}to{transform:scaleX(1)}}
 
     .app{
       position:relative;z-index:2;min-height:100vh;
-      padding:14px 14px 112px;
+      padding:12px 12px 104px;
     }
 
     .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      margin-bottom:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:8px;
+      margin-bottom:10px;
     }
-    .brand-wrap{display:flex;align-items:center;gap:10px}
+    .brand-wrap{display:flex;align-items:center;gap:9px}
     .logo{
-      width:42px;height:42px;border-radius:16px;
+      width:38px;height:38px;border-radius:14px;
       display:flex;align-items:center;justify-content:center;
-      font-size:20px;font-weight:900;
-      color:#fff;
+      font-size:18px;font-weight:900;color:#fff;
       background:
         linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.03)),
         linear-gradient(135deg, #0f2235, #0b4c75 58%, #107c77);
       border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 14px 30px rgba(0,0,0,.22), 0 0 24px rgba(0,152,234,.10);
+      box-shadow:0 12px 24px rgba(0,0,0,.22), 0 0 20px rgba(0,152,234,.08);
     }
-    .brand-title{
-      font-size:22px;font-weight:900;letter-spacing:.02em;line-height:1;
-    }
-    .brand-subtitle{
-      color:var(--text-2);font-size:11px;margin-top:4px;
-      letter-spacing:.02em;
-    }
+    .brand-title{font-size:20px;font-weight:900;letter-spacing:.02em;line-height:1;}
+    .brand-subtitle{color:var(--text-2);font-size:10px;margin-top:3px;letter-spacing:.02em;}
 
     .user-badge{
-      display:flex;align-items:center;gap:8px;
-      padding:6px 8px;border-radius:16px;
+      display:flex;align-items:center;gap:7px;
+      padding:5px 7px;border-radius:14px;
       background:var(--surface);
       border:1px solid var(--line);
       backdrop-filter:blur(20px);
       box-shadow:var(--shadow-soft);
-      max-width:132px;
+      max-width:124px;
     }
     .user-avatar,.profile-avatar,.token-icon{
       border-radius:50%;object-fit:cover;background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.12);flex-shrink:0
     }
-    .user-avatar{width:28px;height:28px}
+    .user-avatar{width:25px;height:25px}
     .user-meta{min-width:0}
-    .user-name{
-      font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
-    }
-    .user-status{font-size:10px;color:var(--text-2)}
+    .user-name{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .user-status{font-size:9px;color:var(--text-2)}
 
     .live-strip{
-      display:flex;gap:18px;align-items:center;overflow:hidden;
-      margin-bottom:12px;padding:9px 0;
+      display:flex;gap:16px;align-items:center;overflow:hidden;
+      margin-bottom:10px;padding:7px 0;
       border-top:1px solid rgba(255,255,255,.04);
       border-bottom:1px solid rgba(255,255,255,.04);
-      color:#dfe9f8;font-size:11px;font-weight:700;white-space:nowrap;
+      color:#dfe9f8;font-size:10px;font-weight:700;white-space:nowrap;
     }
     .live-track{
-      display:flex;gap:18px;align-items:center;min-width:max-content;
-      animation:ticker 20s linear infinite;
+      display:flex;gap:16px;align-items:center;min-width:max-content;
+      animation:ticker 18s linear infinite;
     }
-    .live-pill{
-      display:flex;align-items:center;gap:8px;
-    }
+    .live-pill{display:flex;align-items:center;gap:7px;}
     .live-pulse{
-      width:7px;height:7px;border-radius:50%;
+      width:6px;height:6px;border-radius:50%;
       background:var(--warning);
       box-shadow:0 0 0 0 rgba(255,59,48,.55);
       animation:livePulse 1.5s infinite;
     }
     @keyframes livePulse{
       0%{box-shadow:0 0 0 0 rgba(255,59,48,.45)}
-      70%{box-shadow:0 0 0 9px rgba(255,59,48,0)}
+      70%{box-shadow:0 0 0 8px rgba(255,59,48,0)}
       100%{box-shadow:0 0 0 0 rgba(255,59,48,0)}
     }
     @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
     .hero{
       position:relative;overflow:hidden;
-      border-radius:24px;padding:14px;margin-bottom:14px;
+      border-radius:20px;padding:11px;margin-bottom:12px;
       background:
         linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025)),
         rgba(18,20,24,.72);
@@ -209,64 +187,61 @@
       position:absolute; inset:0; pointer-events:none;
       background:
         radial-gradient(circle at 14% 20%, rgba(0,152,234,.13), transparent 28%),
-        radial-gradient(circle at 88% 12%, rgba(0,255,163,.08), transparent 24%),
-        linear-gradient(180deg, rgba(255,255,255,.03), transparent 18%);
+        radial-gradient(circle at 88% 12%, rgba(0,255,163,.08), transparent 24%);
     }
 
     .hero-top{
       position:relative;z-index:1;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      margin-bottom:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:8px;
+      margin-bottom:10px;
     }
 
     .connect-status{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 12px;border-radius:999px;
+      display:inline-flex;align-items:center;gap:7px;
+      padding:7px 10px;border-radius:999px;
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.08);
-      font-size:12px;font-weight:700;color:#dfe9f7;
-      box-shadow:0 0 0 1px rgba(255,255,255,.02), 0 0 24px rgba(0,152,234,.08);
+      font-size:11px;font-weight:700;color:#dfe9f7;
+      box-shadow:0 0 0 1px rgba(255,255,255,.02), 0 0 20px rgba(0,152,234,.08);
     }
     .status-dot{
-      width:8px;height:8px;border-radius:50%;
+      width:7px;height:7px;border-radius:50%;
       background:var(--success);
       box-shadow:0 0 0 0 rgba(0,255,163,.55);
       animation:pulseDot 1.8s infinite;
     }
     @keyframes pulseDot{
       0%{box-shadow:0 0 0 0 rgba(0,255,163,.45)}
-      70%{box-shadow:0 0 0 10px rgba(0,255,163,0)}
+      70%{box-shadow:0 0 0 9px rgba(0,255,163,0)}
       100%{box-shadow:0 0 0 0 rgba(0,255,163,0)}
     }
 
     .daily-strip{
       position:relative;z-index:1;
-      display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:8px;
+      display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:7px;
     }
     .stat{
-      padding:11px 12px;border-radius:18px;
+      padding:9px 10px;border-radius:15px;
       background:
         linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.07);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
     }
     .stat-label{
-      font-size:11px;color:var(--text-2);margin-bottom:6px;
+      font-size:10px;color:var(--text-2);margin-bottom:5px;
       text-transform:uppercase;letter-spacing:.04em
     }
-    .stat-value{
-      font-size:16px;font-weight:800;line-height:1.05
-    }
+    .stat-value{font-size:14px;font-weight:800;line-height:1.05}
     .stat:nth-child(2) .stat-value{color:var(--success)}
     .stat.profit-main{
       background:
         linear-gradient(180deg, rgba(0,152,234,.13), rgba(0,152,234,.06)),
         rgba(255,255,255,.03);
       border-color:rgba(0,152,234,.18);
-      box-shadow:0 0 26px rgba(0,152,234,.10), inset 0 1px 0 rgba(255,255,255,.04);
+      box-shadow:0 0 22px rgba(0,152,234,.09), inset 0 1px 0 rgba(255,255,255,.04);
     }
     .stat.profit-main .stat-value{
-      font-family:var(--mono);font-size:32px;color:var(--text)
+      font-family:var(--mono);font-size:24px;color:var(--text)
     }
 
     .section{display:none;animation:fadeUp .22s ease}
@@ -274,29 +249,29 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
     .section-title-row{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      margin:4px 0 10px;
+      display:flex;align-items:center;justify-content:space-between;gap:8px;
+      margin:4px 0 8px;
     }
     .section-title{
-      margin:0;font-size:18px;font-weight:800;letter-spacing:-.01em;
+      margin:0;font-size:16px;font-weight:800;letter-spacing:-.01em;
       display:flex;align-items:center;gap:8px;
     }
     .section-title::before{
       content:"";
-      width:8px;height:8px;border-radius:50%;
+      width:7px;height:7px;border-radius:50%;
       background:var(--primary);
-      box-shadow:0 0 14px rgba(0,152,234,.35);
+      box-shadow:0 0 12px rgba(0,152,234,.35);
     }
     .mini-tag{
-      padding:7px 10px;border-radius:999px;
-      font-size:11px;font-weight:700;color:#dbe8f8;
+      padding:6px 9px;border-radius:999px;
+      font-size:10px;font-weight:700;color:#dbe8f8;
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.06);
     }
 
     .card{
       position:relative;overflow:hidden;
-      border-radius:22px;padding:14px;margin-bottom:12px;
+      border-radius:18px;padding:11px;margin-bottom:10px;
       background:
         linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)),
         rgba(18,20,24,.78);
@@ -311,94 +286,79 @@
       opacity:.7;
     }
 
-    .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .pair{font-size:16px;font-weight:800;margin-bottom:4px}
-    .muted{color:var(--text-2);font-size:12px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .pair{font-size:14px;font-weight:800;margin-bottom:3px}
+    .muted{color:var(--text-2);font-size:11px}
     .profit-box{text-align:right}
     .profit{
       color:var(--success);font-family:var(--mono);
-      font-size:24px;font-weight:800;line-height:1;
-      text-shadow:0 0 22px rgba(0,255,163,.14)
+      font-size:20px;font-weight:800;line-height:1;
+      text-shadow:0 0 20px rgba(0,255,163,.14)
     }
     .risk{
-      display:inline-flex;align-items:center;gap:6px;margin-top:6px;
-      padding:6px 10px;border-radius:999px;
-      font-size:11px;font-weight:700;
+      display:inline-flex;align-items:center;gap:5px;margin-top:5px;
+      padding:5px 8px;border-radius:999px;
+      font-size:10px;font-weight:700;
       color:#ffcfc9;background:rgba(255,59,48,.10);
       border:1px solid rgba(255,59,48,.18)
     }
 
     .deal-header{
-      display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+      display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
     }
-    .exchange-stack{
-      position:relative;width:50px;height:32px;flex-shrink:0;
-    }
+    .exchange-stack{position:relative;width:44px;height:28px;flex-shrink:0;}
     .exchange-icon{
-      position:absolute;top:0;width:30px;height:30px;border-radius:50%;
+      position:absolute;top:0;width:26px;height:26px;border-radius:50%;
       display:flex;align-items:center;justify-content:center;
-      font-size:11px;font-weight:800;color:#fff;
+      font-size:10px;font-weight:800;color:#fff;
       border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 10px 20px rgba(0,0,0,.18);
+      box-shadow:0 8px 18px rgba(0,0,0,.18);
       backdrop-filter:blur(12px);
     }
-    .exchange-icon.dedust{
-      left:0;
-      background:linear-gradient(135deg,#262d36,#3b4c5d);
-    }
-    .exchange-icon.ston{
-      left:18px;
-      background:linear-gradient(135deg,#0e3254,#0098EA);
-    }
-    .deal-flow{
-      min-width:0;
-    }
+    .exchange-icon.dedust{left:0;background:linear-gradient(135deg,#262d36,#3b4c5d);}
+    .exchange-icon.ston{left:16px;background:linear-gradient(135deg,#0e3254,#0098EA);}
+    .deal-flow{min-width:0;}
     .deal-route{
-      font-family:var(--mono);font-size:12px;color:#dbe8f7;
+      font-family:var(--mono);font-size:10px;color:#dbe8f7;
       white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
     }
     .profit-badge{
-      min-width:82px;text-align:center;
-      padding:10px 12px;border-radius:16px;
+      min-width:72px;text-align:center;
+      padding:8px 10px;border-radius:14px;
       background:rgba(0,255,163,.10);
       border:1px solid rgba(0,255,163,.18);
-      box-shadow:0 0 24px rgba(0,255,163,.08);
+      box-shadow:0 0 20px rgba(0,255,163,.08);
       color:var(--success);
-      font-family:var(--mono);font-size:18px;font-weight:800;
+      font-family:var(--mono);font-size:15px;font-weight:800;
     }
     .card.executing{
       border-color:rgba(0,152,234,.22);
-      box-shadow:0 0 0 1px rgba(0,152,234,.08), 0 14px 34px rgba(0,152,234,.08);
+      box-shadow:0 0 0 1px rgba(0,152,234,.08), 0 12px 28px rgba(0,152,234,.08);
     }
     .card.executing .profit-badge{
       background:rgba(0,152,234,.12);
       border-color:rgba(0,152,234,.22);
       color:#b9e8ff;
-      box-shadow:0 0 28px rgba(0,152,234,.10);
+      box-shadow:0 0 24px rgba(0,152,234,.10);
     }
 
     .metrics{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px
+      display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px
     }
     .metric{
-      padding:10px 11px;border-radius:16px;
+      padding:8px 9px;border-radius:13px;
       background:rgba(255,255,255,.035);
       border:1px solid rgba(255,255,255,.05)
     }
-    .metric-label{
-      color:var(--text-2);font-size:11px;margin-bottom:5px
-    }
-    .metric-value{
-      font-size:13px;font-weight:800;font-family:var(--mono)
-    }
+    .metric-label{color:var(--text-2);font-size:10px;margin-bottom:4px}
+    .metric-value{font-size:11px;font-weight:800;font-family:var(--mono)}
 
     .btn{
-      width:100%;border:none;border-radius:18px;
-      padding:13px 14px;font-size:14px;font-weight:800;color:#fff;cursor:pointer;margin-top:12px;
-      background:
-        linear-gradient(135deg,#0f2841,#10598e 58%,#0f7a7a);
+      width:100%;border:none;border-radius:14px;
+      padding:10px 12px;font-size:12px;font-weight:800;color:#fff;cursor:pointer;margin-top:9px;
+      background:linear-gradient(135deg,#0f2841,#10598e 58%,#0f7a7a);
       border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 14px 28px rgba(0,0,0,.22), 0 0 24px rgba(0,152,234,.08);
+      box-shadow:0 12px 24px rgba(0,0,0,.22), 0 0 20px rgba(0,152,234,.08);
       transition:transform .16s ease, filter .16s ease;
     }
     .btn:hover{filter:brightness(1.04)}
@@ -410,114 +370,114 @@
     }
     .btn.green{
       background:linear-gradient(135deg,#0e4b3a,#0c8e63 58%,#00c67f);
-      color:#07110d;box-shadow:0 14px 28px rgba(0,255,163,.10)
+      color:#07110d;box-shadow:0 12px 24px rgba(0,255,163,.10)
     }
     .btn.red{
       background:linear-gradient(135deg,#451417,#7f241f 58%,#bb3d34);
-      box-shadow:0 14px 28px rgba(255,59,48,.10)
+      box-shadow:0 12px 24px rgba(255,59,48,.10)
     }
-    .btn.small{padding:12px 14px;font-size:13px;margin-top:10px}
+    .btn.small{padding:10px 12px;font-size:12px;margin-top:8px}
 
     .copy-address-btn{
-      width:auto;margin-top:10px;padding:10px 12px;font-size:12px;border-radius:14px;
+      width:auto;margin-top:8px;padding:8px 10px;font-size:11px;border-radius:12px;
       background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);box-shadow:none
     }
 
-    .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 
     .wallet-address{
-      font-size:12px;color:var(--text-2);word-break:break-all;margin-top:6px;
+      font-size:11px;color:var(--text-2);word-break:break-all;margin-top:5px;
       font-family:var(--mono)
     }
-    .wallet-main{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-    .wallet-state{font-size:32px;font-weight:900;line-height:1}
+    .wallet-main{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .wallet-state{font-size:26px;font-weight:900;line-height:1}
     .wallet-network{
-      padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;
+      padding:7px 10px;border-radius:999px;font-size:11px;color:#e8f7ff;
       background:rgba(0,152,234,.10);
       border:1px solid rgba(0,152,234,.20);
-      box-shadow:0 0 20px rgba(0,152,234,.08)
+      box-shadow:0 0 18px rgba(0,152,234,.08)
     }
-    .wallet-chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .wallet-chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
     .wallet-chip{
-      padding:8px 10px;border-radius:14px;font-size:12px;color:#dce9ff;
+      padding:7px 9px;border-radius:12px;font-size:11px;color:#dce9ff;
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.06)
     }
     .wallet-balance-big{
-      font-family:var(--mono);font-size:32px;font-weight:800;line-height:1;margin-top:8px
+      font-family:var(--mono);font-size:26px;font-weight:800;line-height:1;margin-top:7px
     }
-    .balance-sub{font-size:12px;color:var(--text-2);margin-top:6px}
+    .balance-sub{font-size:11px;color:var(--text-2);margin-top:5px}
     .ref-link{
-      margin-top:10px;padding:13px;border-radius:16px;background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);color:#dce9ff;font-size:13px;word-break:break-all;
+      margin-top:8px;padding:11px;border-radius:14px;background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);color:#dce9ff;font-size:12px;word-break:break-all;
       font-family:var(--mono)
     }
     .profile-card{
-      display:flex;align-items:center;gap:12px;padding:13px;border-radius:20px;
+      display:flex;align-items:center;gap:10px;padding:11px;border-radius:18px;
       background:
         linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.03)),
         rgba(18,20,24,.76);
-      border:1px solid rgba(255,255,255,.08);margin-bottom:12px;
+      border:1px solid rgba(255,255,255,.08);margin-bottom:10px;
       backdrop-filter:blur(20px)
     }
-    .profile-avatar{width:52px;height:52px}
-    .profile-title{font-size:11px;color:var(--text-2)}
-    .profile-name{font-size:18px;font-weight:800;margin-top:2px}
-    .profile-sub{font-size:12px;color:var(--text-2);margin-top:4px}
+    .profile-avatar{width:46px;height:46px}
+    .profile-title{font-size:10px;color:var(--text-2)}
+    .profile-name{font-size:16px;font-weight:800;margin-top:2px}
+    .profile-sub{font-size:11px;color:var(--text-2);margin-top:3px}
     .status-pill{
-      display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
-      font-size:11px;font-weight:700;margin-top:8px;color:#c7fff0;
+      display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border-radius:999px;
+      font-size:10px;font-weight:700;margin-top:7px;color:#c7fff0;
       background:rgba(0,255,163,.08);border:1px solid rgba(0,255,163,.16)
     }
 
     .notice{
-      margin-top:12px;padding:12px 14px;border-radius:16px;font-size:13px;line-height:1.45;
+      margin-top:10px;padding:10px 11px;border-radius:14px;font-size:12px;line-height:1.4;
       background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:#dce9ff
     }
-    .subcard-title{font-size:15px;font-weight:800;margin-bottom:10px}
-    .asset-list,.tx-list{display:flex;flex-direction:column;gap:10px}
+    .subcard-title{font-size:13px;font-weight:800;margin-bottom:8px}
+    .asset-list,.tx-list{display:flex;flex-direction:column;gap:8px}
     .asset-item,.tx-item{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding:12px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05)
+      display:flex;align-items:center;justify-content:space-between;gap:8px;
+      padding:10px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05)
     }
-    .asset-left,.tx-left{display:flex;align-items:center;gap:10px;min-width:0}
-    .token-icon{width:34px;height:34px}
-    .asset-name,.tx-name{font-weight:700}
+    .asset-left,.tx-left{display:flex;align-items:center;gap:9px;min-width:0}
+    .token-icon{width:30px;height:30px}
+    .asset-name,.tx-name{font-weight:700;font-size:12px}
     .asset-sub,.tx-sub{
-      font-size:12px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px
+      font-size:10px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px
     }
-    .asset-amount,.tx-status{font-weight:800;font-family:var(--mono)}
-    .empty-state{color:var(--text-2);font-size:13px;padding:6px 0}
+    .asset-amount,.tx-status{font-weight:800;font-family:var(--mono);font-size:11px}
+    .empty-state{color:var(--text-2);font-size:12px;padding:4px 0}
     .loading-shimmer{
-      height:52px;border-radius:16px;
+      height:44px;border-radius:14px;
       background:linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.10), rgba(255,255,255,.04));
       background-size:200% 100%;animation:shimmer 1.2s linear infinite
     }
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
     .toast{
-      position:fixed;left:14px;right:14px;bottom:96px;z-index:60;
-      padding:12px 14px;border-radius:16px;background:rgba(12,15,20,.92);
+      position:fixed;left:12px;right:12px;bottom:88px;z-index:60;
+      padding:11px 12px;border-radius:14px;background:rgba(12,15,20,.92);
       border:1px solid rgba(255,255,255,.10);
       backdrop-filter:blur(18px);box-shadow:var(--shadow);display:none
     }
     .toast.show{display:block;animation:fadeUp .18s ease}
-    .toast-title{font-weight:800;margin-bottom:4px}
-    .toast-text{font-size:13px;color:var(--text-2)}
+    .toast-title{font-weight:800;margin-bottom:3px;font-size:12px}
+    .toast-text{font-size:11px;color:var(--text-2)}
 
     .tabbar{
-      position:fixed;left:14px;right:14px;bottom:14px;
-      display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
-      padding:10px;border-radius:24px;
+      position:fixed;left:12px;right:12px;bottom:12px;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+      padding:8px;border-radius:20px;
       background:rgba(10,12,16,.62);
       border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(26px);
-      box-shadow:0 18px 46px rgba(0,0,0,.34);z-index:20
+      box-shadow:0 16px 40px rgba(0,0,0,.34);z-index:20
     }
     .tab{
-      border:none;border-radius:16px;background:transparent;color:#8ea2bf;
-      padding:10px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-      cursor:pointer;min-height:58px;position:relative
+      border:none;border-radius:14px;background:transparent;color:#8ea2bf;
+      padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+      cursor:pointer;min-height:50px;position:relative
     }
     .tab.active{
       color:var(--primary);
@@ -528,46 +488,40 @@
     .tab.active::after{
       content:"";
       position:absolute;left:50%;transform:translateX(-50%);
-      bottom:6px;width:32px;height:8px;border-radius:999px;
-      background:rgba(0,152,234,.32);filter:blur(10px)
+      bottom:5px;width:26px;height:7px;border-radius:999px;
+      background:rgba(0,152,234,.32);filter:blur(9px)
     }
-    .tab-icon{
-      font-size:18px;line-height:1;font-weight:300
-    }
-    .tab-text{font-size:11px;font-weight:700}
+    .tab-icon{font-size:16px;line-height:1;font-weight:300}
+    .tab-text{font-size:10px;font-weight:700}
 
     .input{
-      width:100%;margin-top:10px;padding:13px 14px;border-radius:16px;
+      width:100%;margin-top:8px;padding:11px 12px;border-radius:14px;
       background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#fff;
       outline:none
     }
     .input:focus{border-color:rgba(0,152,234,.22);box-shadow:0 0 0 4px rgba(0,152,234,.08)}
 
     .setting-row{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0
+      display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0
     }
     .toggle{
-      width:56px;height:32px;border-radius:999px;background:rgba(255,255,255,.10);
+      width:52px;height:30px;border-radius:999px;background:rgba(255,255,255,.10);
       position:relative;cursor:pointer;transition:.2s;border:1px solid rgba(255,255,255,.08)
     }
     .toggle::after{
-      content:"";position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;
+      content:"";position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;
       background:#fff;transition:.2s
     }
     .toggle.active{
       background:linear-gradient(135deg,#0e4064,#0098EA 60%,#00a4a0);
       box-shadow:0 0 0 4px rgba(0,152,234,.08)
     }
-    .toggle.active::after{left:28px}
+    .toggle.active::after{left:26px}
 
     @media (max-width:420px){
-      .app{padding:12px 12px 108px}
       .daily-strip,.metrics,.button-grid{grid-template-columns:1fr}
-      .hero{padding:13px}
-      .user-badge{max-width:128px}
-      .wallet-main{flex-direction:column}
+      .profit-badge{min-width:66px;font-size:14px}
       .asset-sub,.tx-sub{max-width:120px}
-      .profit-badge{min-width:72px;font-size:16px}
     }
   </style>
 </head>
@@ -641,7 +595,7 @@
     <section id="scanner" class="section active">
       <div class="section-title-row">
         <h2 class="section-title">Live Scanner</h2>
-        <div class="mini-tag">Updated 2s ago</div>
+        <div class="mini-tag">8 deals visible</div>
       </div>
 
       <div class="card">
@@ -650,18 +604,15 @@
             <div class="exchange-icon dedust">DD</div>
             <div class="exchange-icon ston">ST</div>
           </div>
-
           <div class="deal-flow">
             <div class="pair">TON / USDT</div>
             <div class="deal-route">Buy @ 2.14 → Sell @ 2.18</div>
           </div>
-
           <div class="profit-badge">+2.41%</div>
         </div>
-
         <div class="metrics">
-          <div class="metric"><div class="metric-label">Net Profit</div><div class="metric-value">0.37 TON</div></div>
-          <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">25 TON</div></div>
+          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.37 TON</div></div>
+          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">25 TON</div></div>
           <div class="metric"><div class="metric-label">Age</div><div class="metric-value">2 sec</div></div>
         </div>
         <button class="btn" onclick="executeTrade('TON / USDT')">Test Execute</button>
@@ -673,21 +624,138 @@
             <div class="exchange-icon dedust">DD</div>
             <div class="exchange-icon ston">ST</div>
           </div>
-
           <div class="deal-flow">
             <div class="pair">TON / NOT</div>
             <div class="deal-route">Buy @ 0.184 → Sell @ 0.187</div>
           </div>
-
           <div class="profit-badge">+1.86%</div>
         </div>
-
         <div class="metrics">
-          <div class="metric"><div class="metric-label">Net Profit</div><div class="metric-value">0.22 TON</div></div>
-          <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">18 TON</div></div>
-          <div class="metric"><div class="metric-label">State</div><div class="metric-value">Executing</div></div>
+          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.22 TON</div></div>
+          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">18 TON</div></div>
+          <div class="metric"><div class="metric-label">State</div><div class="metric-value">Exec</div></div>
         </div>
         <button class="btn" onclick="executeTrade('TON / NOT')">Test Execute</button>
+      </div>
+
+      <div class="card">
+        <div class="deal-header">
+          <div class="exchange-stack">
+            <div class="exchange-icon dedust">DD</div>
+            <div class="exchange-icon ston">ST</div>
+          </div>
+          <div class="deal-flow">
+            <div class="pair">TON / DOGS</div>
+            <div class="deal-route">Buy @ 0.0031 → Sell @ 0.0032</div>
+          </div>
+          <div class="profit-badge">+1.49%</div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.16 TON</div></div>
+          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">14 TON</div></div>
+          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">4 sec</div></div>
+        </div>
+        <button class="btn" onclick="executeTrade('TON / DOGS')">Test Execute</button>
+      </div>
+
+      <div class="card">
+        <div class="deal-header">
+          <div class="exchange-stack">
+            <div class="exchange-icon dedust">DD</div>
+            <div class="exchange-icon ston">ST</div>
+          </div>
+          <div class="deal-flow">
+            <div class="pair">TON / tsTON</div>
+            <div class="deal-route">Buy @ 1.01 → Sell @ 1.03</div>
+          </div>
+          <div class="profit-badge">+1.22%</div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.11 TON</div></div>
+          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">12 TON</div></div>
+          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">5 sec</div></div>
+        </div>
+        <button class="btn" onclick="executeTrade('TON / tsTON')">Test Execute</button>
+      </div>
+
+      <div class="card">
+        <div class="deal-header">
+          <div class="exchange-stack">
+            <div class="exchange-icon dedust">DD</div>
+            <div class="exchange-icon ston">ST</div>
+          </div>
+          <div class="deal-flow">
+            <div class="pair">TON / USDC</div>
+            <div class="deal-route">Buy @ 2.13 → Sell @ 2.16</div>
+          </div>
+          <div class="profit-badge">+1.18%</div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.13 TON</div></div>
+          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">15 TON</div></div>
+          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">6 sec</div></div>
+        </div>
+        <button class="btn" onclick="executeTrade('TON / USDC')">Test Execute</button>
+      </div>
+
+      <div class="card">
+        <div class="deal-header">
+          <div class="exchange-stack">
+            <div class="exchange-icon dedust">DD</div>
+            <div class="exchange-icon ston">ST</div>
+          </div>
+          <div class="deal-flow">
+            <div class="pair">TON / HMSTR</div>
+            <div class="deal-route">Buy @ 0.0082 → Sell @ 0.0083</div>
+          </div>
+          <div class="profit-badge">+0.94%</div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.08 TON</div></div>
+          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">11 TON</div></div>
+          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">8 sec</div></div>
+        </div>
+        <button class="btn" onclick="executeTrade('TON / HMSTR')">Test Execute</button>
+      </div>
+
+      <div class="card">
+        <div class="deal-header">
+          <div class="exchange-stack">
+            <div class="exchange-icon dedust">DD</div>
+            <div class="exchange-icon ston">ST</div>
+          </div>
+          <div class="deal-flow">
+            <div class="pair">TON / CATI</div>
+            <div class="deal-route">Buy @ 0.021 → Sell @ 0.0214</div>
+          </div>
+          <div class="profit-badge">+0.88%</div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.06 TON</div></div>
+          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">9 TON</div></div>
+          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">9 sec</div></div>
+        </div>
+        <button class="btn" onclick="executeTrade('TON / CATI')">Test Execute</button>
+      </div>
+
+      <div class="card">
+        <div class="deal-header">
+          <div class="exchange-stack">
+            <div class="exchange-icon dedust">DD</div>
+            <div class="exchange-icon ston">ST</div>
+          </div>
+          <div class="deal-flow">
+            <div class="pair">TON / REDO</div>
+            <div class="deal-route">Buy @ 0.0048 → Sell @ 0.0049</div>
+          </div>
+          <div class="profit-badge">+0.74%</div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.05 TON</div></div>
+          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">8 TON</div></div>
+          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">10 sec</div></div>
+        </div>
+        <button class="btn" onclick="executeTrade('TON / REDO')">Test Execute</button>
       </div>
     </section>
 
@@ -780,11 +848,11 @@
       </div>
       <div class="card">
         <div class="setting-row">
-          <div><div style="font-weight:800;">Push Notifications</div><div class="muted">Alerts for profitable opportunities</div></div>
+          <div><div style="font-weight:800;font-size:12px;">Push Notifications</div><div class="muted">Alerts for profitable opportunities</div></div>
           <div class="toggle active" onclick="toggleSwitch(this)"></div>
         </div>
         <div class="setting-row">
-          <div><div style="font-weight:800;">Haptic Feedback</div><div class="muted">Vibration on signal and tap actions</div></div>
+          <div><div style="font-weight:800;font-size:12px;">Haptic Feedback</div><div class="muted">Vibration on signal and tap actions</div></div>
           <div class="toggle active" onclick="toggleSwitch(this)"></div>
         </div>
       </div>
