@@ -4,315 +4,275 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>V-HUNT</title>
-  <meta name="theme-color" content="#060913" />
+  <meta name="theme-color" content="#070816" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#060913;
-      --bg-2:#091223;
+      --bg:#070816;
+      --bg2:#0b1124;
       --panel:rgba(255,255,255,.08);
-      --panel-2:rgba(255,255,255,.05);
       --line:rgba(255,255,255,.11);
-      --line-2:rgba(255,255,255,.06);
-      --text:#ffffff;
-      --muted:#8ea2bf;
-      --soft:#c8d7ee;
-      --green:#33f5a0;
-      --green-2:#11cf83;
-      --red:#ff6b81;
-      --gold:#ffd36a;
-      --purple:#8b5cf6;
-      --cyan:#20d9ff;
-      --blue:#448dff;
-      --shadow:0 20px 60px rgba(0,0,0,.38);
-      --radius-xl:30px;
-      --radius-lg:22px;
-      --radius-md:18px;
+      --line2:rgba(255,255,255,.07);
+      --text:#fff;
+      --muted:#9ab0cf;
+      --soft:#d8e7ff;
+      --green:#31f29e;
+      --green2:#17c980;
+      --red:#ff5f7f;
+      --yellow:#ffd76d;
+      --blue:#2e8cff;
+      --cyan:#16e0ff;
+      --purple:#8b5dff;
+      --shadow:0 22px 60px rgba(0,0,0,.42);
+      --rad-xl:30px;
+      --rad-lg:22px;
+      --rad-md:18px;
     }
 
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{
       margin:0;padding:0;min-height:100%;overflow-x:hidden;
       color:var(--text);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      font-family:Inter,system-ui,sans-serif;
       background:
-        radial-gradient(circle at 10% 0%, rgba(139,92,246,.28), transparent 26%),
-        radial-gradient(circle at 100% 10%, rgba(32,217,255,.20), transparent 28%),
-        radial-gradient(circle at 50% 100%, rgba(68,141,255,.15), transparent 38%),
-        linear-gradient(180deg, #040710 0%, #08101d 48%, #050913 100%);
+        radial-gradient(circle at 12% 8%, rgba(139,93,255,.34), transparent 24%),
+        radial-gradient(circle at 86% 10%, rgba(22,224,255,.28), transparent 26%),
+        radial-gradient(circle at 50% 100%, rgba(46,140,255,.18), transparent 34%),
+        linear-gradient(180deg,#050610 0%,#09101d 42%,#060916 100%);
     }
     body::before{
-      content:"";
-      position:fixed;inset:0;pointer-events:none;
+      content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;
       background:
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
       background-size:24px 24px;
-      opacity:.22;
-      mask-image:linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.4));
-    }
-    body::after{
-      content:"";
-      position:fixed;inset:0;pointer-events:none;
-      background:radial-gradient(circle at 50% 30%, rgba(255,255,255,.05), transparent 45%);
-      mix-blend-mode:screen;
-      opacity:.35;
     }
 
-    .app{
-      position:relative;
-      min-height:100vh;
-      padding:18px 16px 120px;
-      z-index:2;
+    .orb{
+      position:fixed;border-radius:50%;pointer-events:none;filter:blur(84px);opacity:.3;z-index:0;
+      animation:float 12s ease-in-out infinite;
+    }
+    .orb.a{width:220px;height:220px;background:var(--purple);top:30px;left:-70px}
+    .orb.b{width:240px;height:240px;background:var(--cyan);top:180px;right:-90px;animation-delay:-3s}
+    .orb.c{width:240px;height:240px;background:var(--blue);bottom:80px;left:34%;animation-delay:-6s}
+    @keyframes float{
+      0%,100%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-18px) scale(1.06)}
     }
 
-    .bg-orb{
-      position:fixed;
-      width:240px;height:240px;border-radius:50%;
-      filter:blur(80px);opacity:.22;pointer-events:none;z-index:0;
-      animation: drift 16s ease-in-out infinite;
-    }
-    .orb-a{top:60px;left:-80px;background:var(--purple)}
-    .orb-b{top:220px;right:-90px;background:var(--cyan);animation-delay:-5s}
-    .orb-c{bottom:100px;left:35%;background:var(--blue);animation-delay:-9s}
-    @keyframes drift{
-      0%,100%{transform:translate3d(0,0,0) scale(1)}
-      50%{transform:translate3d(0,-16px,0) scale(1.06)}
-    }
-
-    /* Splash */
     .splash{
-      position:fixed;inset:0;z-index:1000;
-      display:flex;align-items:center;justify-content:center;flex-direction:column;
+      position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;
       background:
-        radial-gradient(circle at 50% 20%, rgba(139,92,246,.28), transparent 28%),
-        radial-gradient(circle at 50% 80%, rgba(32,217,255,.18), transparent 30%),
-        linear-gradient(180deg, #050913 0%, #081121 100%);
-      transition:opacity .6s ease, visibility .6s ease;
+        radial-gradient(circle at 50% 20%, rgba(139,93,255,.34), transparent 26%),
+        radial-gradient(circle at 50% 80%, rgba(22,224,255,.22), transparent 28%),
+        linear-gradient(180deg,#050711 0%,#091223 100%);
+      transition:opacity .55s ease, visibility .55s ease;
     }
     .splash.hidden{opacity:0;visibility:hidden}
-    .splash-logo-wrap{
-      position:relative;
-      width:150px;height:150px;border-radius:42px;
+    .splash-ring{
+      position:relative;width:164px;height:164px;border-radius:42px;
       display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
       border:1px solid rgba(255,255,255,.14);
-      box-shadow:0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+      box-shadow:0 25px 70px rgba(0,0,0,.48);
       overflow:hidden;
-      animation: splashFloat 2s ease-in-out infinite;
     }
-    .splash-logo-wrap::before{
-      content:"";
-      position:absolute;inset:-30%;
-      background:conic-gradient(from 0deg, rgba(139,92,246,.0), rgba(139,92,246,.45), rgba(32,217,255,.28), rgba(139,92,246,.0));
-      animation: spin 3s linear infinite;
+    .splash-ring::before{
+      content:"";position:absolute;inset:-35%;
+      background:conic-gradient(from 0deg, transparent, rgba(139,93,255,.95), rgba(22,224,255,.9), transparent 62%);
+      animation:spin 2.7s linear infinite;
     }
-    .splash-logo{
-      position:relative;z-index:2;
-      width:86px;height:86px;border-radius:26px;
-      background:linear-gradient(135deg, #8358ff, #23d7ff);
+    .splash-core{
+      position:relative;z-index:2;width:90px;height:90px;border-radius:28px;
+      background:linear-gradient(135deg,#865dff,#17ddff);
       display:flex;align-items:center;justify-content:center;
-      font-family:Manrope, Inter, sans-serif;
-      font-size:48px;font-weight:900;color:#fff;
-      box-shadow:0 10px 30px rgba(43,151,255,.35);
+      font-family:"Space Grotesk",Inter,sans-serif;font-size:46px;font-weight:700;color:#fff;
+      box-shadow:0 10px 28px rgba(50,130,255,.35);
+      animation:pulse 1.8s ease-in-out infinite;
     }
     .splash-title{
-      margin-top:26px;font-family:Manrope,Inter,sans-serif;font-size:34px;font-weight:900;letter-spacing:1px;
-      background:linear-gradient(90deg, #fff, #93d9ff, #c2a1ff);
+      margin-top:24px;font-family:"Space Grotesk",Inter,sans-serif;font-size:38px;font-weight:700;letter-spacing:.8px;
+      background:linear-gradient(90deg,#fff,#8fddff,#c8a6ff);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;
     }
-    .splash-sub{
-      margin-top:8px;color:var(--muted);font-size:13px;letter-spacing:.3px;
-      text-transform:uppercase;
+    .splash-sub{margin-top:8px;font-size:13px;color:var(--muted);letter-spacing:.38em;text-transform:uppercase}
+    .splash-load{
+      margin-top:22px;width:min(280px,78vw);height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;
+      border:1px solid rgba(255,255,255,.08)
     }
-    .splash-bar{
-      margin-top:24px;width:min(260px,78vw);height:8px;border-radius:999px;overflow:hidden;
-      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+    .splash-load div{
+      height:100%;background:linear-gradient(90deg,#8b5dff,#16e0ff,#31f29e);transform-origin:left center;
+      animation:load 2.2s ease forwards;
     }
-    .splash-fill{
-      height:100%;width:100%;
-      background:linear-gradient(90deg, #8b5cf6, #26d9ff, #33f5a0);
-      transform-origin:left center;
-      animation: loadBar 2.2s ease forwards;
-    }
-    @keyframes loadBar{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
-    @keyframes splashFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes load{from{transform:scaleX(.04)}to{transform:scaleX(1)}}
     @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 
-    /* Top */
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      margin-bottom:16px;
-    }
-    .brand-wrap{display:flex;align-items:center;gap:12px}
+    .app{position:relative;min-height:100vh;padding:18px 16px 122px;z-index:2}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .brand{display:flex;align-items:center;gap:12px}
     .brand-mark{
-      width:50px;height:50px;border-radius:18px;
-      background:linear-gradient(135deg,#8657ff,#1ddaff);
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:0 12px 34px rgba(51,122,255,.35);
-      font-family:Manrope,Inter,sans-serif;font-size:24px;font-weight:900;
+      width:52px;height:52px;border-radius:20px;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#8b5dff,#16e0ff);
+      font-family:"Space Grotesk",Inter,sans-serif;font-size:25px;font-weight:700;
+      box-shadow:0 14px 34px rgba(59,138,255,.38);
       position:relative;overflow:hidden;
     }
     .brand-mark::after{
-      content:"";
-      position:absolute;inset:0;
-      background:linear-gradient(135deg, rgba(255,255,255,.18), transparent 40%);
-      pointer-events:none;
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.22), transparent 36%);
     }
     .brand-title{
-      font-family:Manrope,Inter,sans-serif;
-      font-size:26px;font-weight:900;line-height:1;
-      background:linear-gradient(90deg,#fff,#97dcff,#c4a2ff);
+      font-family:"Space Grotesk",Inter,sans-serif;font-size:27px;font-weight:700;line-height:1;
+      background:linear-gradient(90deg,#fff,#8fdcff,#ccaaff);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;
     }
-    .brand-sub{margin-top:4px;font-size:12px;color:var(--muted);letter-spacing:.3px}
-    .profile-pill{
-      display:flex;align-items:center;gap:10px;
-      padding:8px 10px;border-radius:18px;
-      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);
-      backdrop-filter:blur(16px);
-      box-shadow:var(--shadow);
-      min-width:124px;max-width:185px;
-    }
-    .profile-pill img{
-      width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-    }
-    .pill-name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .pill-sub{font-size:11px;color:var(--muted)}
+    .brand-sub{margin-top:4px;color:var(--muted);font-size:12px;letter-spacing:.03em}
 
-    /* Marquee */
-    .marquee-wrap{
-      margin-bottom:14px;padding:10px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);
-      overflow:hidden;position:relative;
+    .profile-badge{
+      display:flex;align-items:center;gap:10px;min-width:132px;max-width:188px;
+      padding:8px 10px;border-radius:18px;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);
+      backdrop-filter:blur(16px);box-shadow:var(--shadow)
     }
-    .marquee-track{
-      display:flex;gap:28px;width:max-content;animation: slide 24s linear infinite;
-      color:#d6e2f3;font-size:12px;font-weight:700;letter-spacing:.2px;
+    .profile-badge img,.profile-card img,.token-icon{
+      border-radius:50%;object-fit:cover;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.15);flex-shrink:0
     }
-    .marquee-item{display:flex;align-items:center;gap:8px}
-    .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(51,245,160,.8)}
-    @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .profile-badge img{width:36px;height:36px}
+    .badge-name{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .badge-sub{font-size:11px;color:var(--muted)}
+
+    .ticker{
+      margin-bottom:14px;padding:11px 0;overflow:hidden;position:relative;
+      border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .ticker-track{
+      display:flex;gap:28px;width:max-content;animation:ticker 24s linear infinite;
+      color:#dce9ff;font-size:12px;font-weight:800;
+    }
+    .ticker-item{display:flex;align-items:center;gap:8px}
+    .live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 14px rgba(49,242,158,.85)}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
     .hero{
-      position:relative;overflow:hidden;
-      border-radius:32px;padding:18px;margin-bottom:16px;
+      position:relative;overflow:hidden;border-radius:32px;padding:18px;margin-bottom:16px;
       background:
         linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05)),
-        linear-gradient(120deg, rgba(139,92,246,.08), rgba(32,217,255,.06));
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);
+        linear-gradient(135deg, rgba(139,93,255,.08), rgba(22,224,255,.06));
+      border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);backdrop-filter:blur(18px)
     }
     .hero::before{
-      content:"";
-      position:absolute;inset:0;
+      content:"";position:absolute;inset:0;pointer-events:none;
       background:
-        radial-gradient(circle at 12% 18%, rgba(139,92,246,.22), transparent 28%),
-        radial-gradient(circle at 90% 18%, rgba(32,217,255,.16), transparent 30%);
-      pointer-events:none;
+        radial-gradient(circle at 14% 18%, rgba(139,93,255,.26), transparent 28%),
+        radial-gradient(circle at 88% 20%, rgba(22,224,255,.18), transparent 30%);
     }
     .hero-head{position:relative;z-index:2;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
     .hero-title{
-      font-family:Manrope,Inter,sans-serif;
-      font-size:32px;font-weight:900;line-height:1.02;max-width:250px;margin:0;
+      margin:0;max-width:255px;font-family:"Space Grotesk",Inter,sans-serif;font-size:33px;font-weight:700;line-height:1.02
     }
     .hero-title span{
-      background:linear-gradient(90deg,#fff,#79d8ff,#c69fff);
+      background:linear-gradient(90deg,#fff,#8edcff,#c8a6ff);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;
     }
-    .hero-badge{
-      padding:9px 12px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;
-      color:#eafff8;background:rgba(51,245,160,.12);border:1px solid rgba(51,245,160,.24);
-      box-shadow:0 0 24px rgba(51,245,160,.12) inset;
+    .hero-live{
+      padding:9px 13px;border-radius:999px;font-size:12px;font-weight:900;color:#ebfff7;
+      background:linear-gradient(135deg, rgba(49,242,158,.22), rgba(23,201,128,.14));
+      border:1px solid rgba(49,242,158,.24)
     }
     .hero-text{position:relative;z-index:2;margin:14px 0 16px;color:var(--muted);font-size:14px;line-height:1.5;max-width:94%}
     .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .hero-card{
-      padding:12px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+    .hero-stat{
+      padding:12px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)
     }
-    .hero-card-label{font-size:11px;color:var(--muted);margin-bottom:6px}
-    .hero-card-value{font-size:18px;font-weight:800}
+    .hero-stat-label{font-size:11px;color:var(--muted);margin-bottom:6px}
+    .hero-stat-value{font-size:18px;font-weight:900}
 
     .section{display:none;animation:fadeUp .22s ease}
     .section.active{display:block}
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-    .section-head{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px;
-    }
-    .section-title{
-      margin:0;font-size:20px;font-weight:800;letter-spacing:.2px;
-      display:flex;align-items:center;gap:10px;
-    }
-    .section-title i{color:#9ad9ff}
+    .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}
+    .section-title{margin:0;font-size:20px;font-weight:900;display:flex;align-items:center;gap:10px}
+    .section-title i{color:#9bddff}
     .tag{
-      padding:7px 10px;border-radius:999px;font-size:11px;font-weight:700;color:#dce9ff;
+      padding:8px 10px;border-radius:999px;font-size:11px;font-weight:800;color:#dce9ff;
       background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)
     }
 
     .card{
-      position:relative;overflow:hidden;border-radius:var(--radius);padding:15px;margin-bottom:12px;
+      position:relative;overflow:hidden;border-radius:var(--rad-lg);padding:15px;margin-bottom:12px;
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      border:1px solid var(--card-border);backdrop-filter:blur(18px);box-shadow:var(--shadow)
+      border:1px solid var(--line);backdrop-filter:blur(18px);box-shadow:var(--shadow)
     }
     .card::after{
-      content:"";position:absolute;inset:0;background:linear-gradient(135deg, rgba(255,255,255,.05), transparent 35%);
-      pointer-events:none
+      content:"";position:absolute;inset:0;background:linear-gradient(135deg, rgba(255,255,255,.05), transparent 35%);pointer-events:none
     }
 
-    .signal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .pair{font-size:19px;font-weight:900;margin-bottom:4px}
+    .signal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .pair{font-size:20px;font-weight:900;margin-bottom:4px}
     .pair-sub{font-size:13px;color:var(--muted)}
     .profit-box{text-align:right}
-    .profit{color:var(--green);font-size:24px;font-weight:900;line-height:1}
+    .profit{color:var(--green);font-size:26px;font-weight:900;line-height:1;text-shadow:0 0 24px rgba(49,242,158,.12)}
     .risk{
       display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:6px 10px;border-radius:999px;
-      font-size:11px;font-weight:800;color:#ffe0a6;background:rgba(255,211,106,.10);border:1px solid rgba(255,211,106,.22)
+      font-size:11px;font-weight:800;color:#ffe6b2;background:rgba(255,215,109,.10);border:1px solid rgba(255,215,109,.2)
     }
     .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-    .metric{
-      padding:11px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)
-    }
+    .metric{padding:11px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
     .metric-label{font-size:11px;color:var(--muted);margin-bottom:5px}
     .metric-value{font-size:14px;font-weight:800}
+
     .btn{
-      width:100%;border:none;border-radius:18px;padding:14px 16px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;margin-top:14px;
-      background:linear-gradient(135deg,#7c3aed,#2563eb 55%,#06b6d4);
-      box-shadow:0 14px 30px rgba(71,126,255,.35);
-      transition:transform .16s ease, opacity .16s ease;
+      width:100%;border:none;border-radius:18px;padding:14px 16px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;margin-top:14px;
+      background:linear-gradient(135deg,#955dff,#2d7dff 55%,#13d7ff);
+      box-shadow:0 16px 34px rgba(52,114,255,.38);transition:transform .16s ease, filter .16s ease, opacity .16s ease
     }
+    .btn:hover{filter:brightness(1.05)}
     .btn:active{transform:scale(.99)}
     .btn.secondary{
-      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);box-shadow:none;color:#e9f2ff
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);box-shadow:none;color:#edf4ff
     }
-    .btn.red{background:linear-gradient(135deg,#ef4444,#ff7a7a);box-shadow:0 14px 30px rgba(255,95,122,.18)}
-    .btn.green{background:linear-gradient(135deg,#13c67d,#33f5a0);color:#07120d}
+    .btn.red{background:linear-gradient(135deg,#ff5a76,#ff7c7c);box-shadow:0 16px 34px rgba(255,95,127,.22)}
+    .btn.green{background:linear-gradient(135deg,#14c67d,#31f29e);color:#07130d}
     .btn.small{padding:12px 14px;font-size:14px;margin-top:10px}
     .copy-address-btn{
       width:auto;margin-top:10px;padding:10px 12px;font-size:12px;border-radius:14px;
       background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);box-shadow:none
     }
 
+    .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .insight-card{
+      padding:16px;border-radius:22px;background:linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.08)
+    }
+    .insight-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+    .insight-icon{
+      width:44px;height:44px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:20px;
+      background:linear-gradient(135deg, rgba(149,93,255,.18), rgba(19,215,255,.1));border:1px solid rgba(255,255,255,.08)
+    }
+    .insight-value{font-family:"Space Grotesk",Inter,sans-serif;font-size:32px;font-weight:700}
+    .insight-label{font-size:12px;color:var(--muted)}
+    .insight-change{font-size:12px;font-weight:900;color:#b8ffe2}
+
     .profile-card{
       display:flex;align-items:center;gap:14px;padding:14px;border-radius:22px;
-      background:linear-gradient(135deg, rgba(124,58,237,.18), rgba(6,182,212,.10));
+      background:linear-gradient(135deg, rgba(149,93,255,.18), rgba(19,215,255,.10));
       border:1px solid rgba(255,255,255,.10);margin-bottom:14px
     }
-    .profile-avatar{width:64px;height:64px}
+    .profile-card img{width:64px;height:64px}
     .profile-title{font-size:12px;color:var(--muted)}
-    .profile-name{font-family:Manrope,Inter,sans-serif;font-size:22px;font-weight:900;margin-top:2px}
+    .profile-name{font-family:"Space Grotesk",Inter,sans-serif;font-size:22px;font-weight:700;margin-top:2px}
     .profile-sub{font-size:12px;color:var(--muted);margin-top:4px}
     .status-pill{
       display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;
-      font-size:11px;font-weight:800;margin-top:8px;background:rgba(51,245,160,.10);border:1px solid rgba(51,245,160,.22);color:#b7ffe1
+      font-size:11px;font-weight:900;margin-top:8px;background:rgba(49,242,158,.10);border:1px solid rgba(49,242,158,.22);color:#b8ffe2
     }
 
     .wallet-main{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -321,7 +281,7 @@
     .wallet-balance-big{font-size:34px;font-weight:900;line-height:1;margin-top:10px}
     .wallet-network{
       padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;
-      background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.20)
+      background:rgba(46,140,255,.12);border:1px solid rgba(46,140,255,.20)
     }
     .wallet-chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
     .wallet-chip{
@@ -333,7 +293,7 @@
       margin-top:12px;padding:12px 14px;border-radius:16px;font-size:13px;line-height:1.45;
       background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#dce9ff
     }
-    .subcard-title{font-size:15px;font-weight:800;margin-bottom:10px}
+    .subcard-title{font-size:15px;font-weight:900;margin-bottom:10px}
     .asset-list,.tx-list{display:flex;flex-direction:column;gap:10px}
     .asset-item,.tx-item{
       display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -341,9 +301,9 @@
     }
     .asset-left,.tx-left{display:flex;align-items:center;gap:10px;min-width:0}
     .token-icon{width:34px;height:34px}
-    .asset-name,.tx-name{font-weight:700}
+    .asset-name,.tx-name{font-weight:800}
     .asset-sub,.tx-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
-    .asset-amount,.tx-status{font-weight:800}
+    .asset-amount,.tx-status{font-weight:900}
     .empty-state{color:var(--muted);font-size:13px;padding:6px 0}
     .loading-shimmer{
       height:52px;border-radius:16px;
@@ -357,19 +317,29 @@
       border:1px solid rgba(255,255,255,.08);color:#dce9ff;font-size:13px;word-break:break-all
     }
 
-    .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .insight-card{
-      padding:16px;border-radius:22px;background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border:1px solid rgba(255,255,255,.08)
+    .setting-row{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0
     }
-    .insight-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
-    .insight-icon{
-      width:42px;height:42px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:19px;
-      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)
+    .setting-left{min-width:0}
+    .setting-title{font-weight:800}
+    .setting-desc{font-size:13px;color:var(--muted);margin-top:4px}
+    .switch{
+      width:58px;height:34px;border-radius:999px;position:relative;cursor:pointer;flex-shrink:0;
+      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.08);transition:.2s ease;
     }
-    .insight-value{font-family:Manrope,Inter,sans-serif;font-size:30px;font-weight:900}
-    .insight-label{font-size:12px;color:var(--muted)}
-    .insight-change{font-size:12px;font-weight:800;color:#b7ffe1}
+    .switch::after{
+      content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;
+      background:#fff;transition:.2s ease;box-shadow:0 6px 18px rgba(0,0,0,.28);
+    }
+    .switch.active{
+      background:linear-gradient(135deg,#955dff,#16dfff);
+      box-shadow:0 0 0 4px rgba(22,223,255,.08);
+    }
+    .switch.active::after{left:28px}
+    .notify-badge{
+      margin-top:8px;display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
+      font-size:11px;font-weight:900;background:rgba(49,242,158,.10);border:1px solid rgba(49,242,158,.22);color:#b8ffe2
+    }
 
     .toast{
       position:fixed;left:16px;right:16px;bottom:98px;z-index:60;
@@ -377,105 +347,105 @@
       backdrop-filter:blur(18px);box-shadow:var(--shadow);display:none
     }
     .toast.show{display:block;animation:fadeUp .18s ease}
-    .toast-title{font-weight:800;margin-bottom:4px}
+    .toast-title{font-weight:900;margin-bottom:4px}
     .toast-text{font-size:13px;color:var(--muted)}
 
     .tabbar{
-      position:fixed;left:14px;right:14px;bottom:14px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
-      padding:10px;border-radius:26px;background:rgba(9,15,26,.88);border:1px solid rgba(255,255,255,.08);
-      backdrop-filter:blur(24px);box-shadow:0 20px 60px rgba(0,0,0,.35);z-index:20
+      position:fixed;left:14px;right:14px;bottom:14px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+      padding:10px;border-radius:26px;background:rgba(9,15,26,.9);border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(24px);box-shadow:0 20px 60px rgba(0,0,0,.38);z-index:20
     }
     .tab{
       border:none;border-radius:18px;background:transparent;color:#8ea2bf;padding:10px 6px;
       display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;min-height:60px
     }
     .tab.active{
-      color:#fff;background:linear-gradient(135deg, rgba(124,58,237,.28), rgba(34,211,238,.18));
+      color:#fff;background:linear-gradient(135deg, rgba(149,93,255,.32), rgba(22,223,255,.18));
       border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)
     }
     .tab-icon{font-size:18px;line-height:1}
-    .tab-text{font-size:11px;font-weight:700}
+    .tab-text{font-size:11px;font-weight:800}
 
     @media (max-width:420px){
       .hero-grid,.metrics,.button-grid,.insight-grid{grid-template-columns:1fr}
-      .hero-title{font-size:24px}
+      .hero-title{font-size:25px}
       .wallet-main{flex-direction:column}
       .asset-sub,.tx-sub{max-width:120px}
-      .tabbar{grid-template-columns:repeat(5,1fr);gap:6px;padding:8px}
+      .profile-badge{max-width:150px}
+      .tabbar{gap:6px;padding:8px}
       .tab-text{font-size:10px}
       .tab-icon{font-size:16px}
-      .profile-pill{max-width:150px}
     }
   </style>
 </head>
 <body>
   <div class="splash" id="splash">
-    <div class="splash-logo-wrap">
-      <div class="splash-logo">V</div>
+    <div class="splash-ring">
+      <div class="splash-core">V</div>
     </div>
     <div class="splash-title">V-HUNT</div>
-    <div class="splash-sub">Luxury Arbitrage Interface</div>
-    <div class="splash-bar"><div class="splash-fill"></div></div>
+    <div class="splash-sub">premium crypto terminal</div>
+    <div class="splash-load"><div></div></div>
   </div>
 
-  <div class="bg-orb orb-a"></div>
-  <div class="bg-orb orb-b"></div>
-  <div class="bg-orb orb-c"></div>
+  <div class="orb a"></div>
+  <div class="orb b"></div>
+  <div class="orb c"></div>
 
   <div class="app">
     <div class="topbar">
-      <div class="brand-wrap">
+      <div class="brand">
         <div class="brand-mark">V</div>
         <div>
           <div class="brand-title">V-HUNT</div>
-          <div class="brand-sub">Luxury Crypto Scanner</div>
+          <div class="brand-sub">Professional Crypto Scanner</div>
         </div>
       </div>
 
-      <div class="profile-pill">
+      <div class="profile-badge">
         <img id="headerAvatar" alt="User" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
-        <div class="user-meta">
-          <div id="tgUser" class="pill-name">Trader</div>
-          <div id="tgStatus" class="pill-sub">Telegram user</div>
+        <div>
+          <div id="tgUser" class="badge-name">Trader</div>
+          <div id="tgStatus" class="badge-sub">Telegram user</div>
         </div>
       </div>
     </div>
 
-    <div class="marquee-wrap">
-      <div class="marquee-track">
-        <div class="marquee-item"><span class="pulse-dot"></span><span>LIVE SCANNER</span></div>
-        <div class="marquee-item"><i class="ri-flashlight-fill"></i><span>TON ARBITRAGE</span></div>
-        <div class="marquee-item"><i class="ri-vip-crown-2-fill"></i><span>PREMIUM EXECUTION</span></div>
-        <div class="marquee-item"><i class="ri-line-chart-fill"></i><span>PROFIT MODE</span></div>
-        <div class="marquee-item"><i class="ri-wallet-3-fill"></i><span>TON CONNECT READY</span></div>
-        <div class="marquee-item"><span class="pulse-dot"></span><span>LIVE SCANNER</span></div>
-        <div class="marquee-item"><i class="ri-flashlight-fill"></i><span>TON ARBITRAGE</span></div>
-        <div class="marquee-item"><i class="ri-vip-crown-2-fill"></i><span>PREMIUM EXECUTION</span></div>
-        <div class="marquee-item"><i class="ri-line-chart-fill"></i><span>PROFIT MODE</span></div>
-        <div class="marquee-item"><i class="ri-wallet-3-fill"></i><span>TON CONNECT READY</span></div>
+    <div class="ticker">
+      <div class="ticker-track">
+        <div class="ticker-item"><span class="live-dot"></span><span>LIVE SCANNER</span></div>
+        <div class="ticker-item"><i class="ri-flashlight-fill"></i><span>PREMIUM EXECUTION</span></div>
+        <div class="ticker-item"><i class="ri-line-chart-fill"></i><span>PROFIT MODE</span></div>
+        <div class="ticker-item"><i class="ri-wallet-3-fill"></i><span>TON CONNECT READY</span></div>
+        <div class="ticker-item"><i class="ri-vip-crown-2-fill"></i><span>BUSINESS CLASS UI</span></div>
+        <div class="ticker-item"><span class="live-dot"></span><span>LIVE SCANNER</span></div>
+        <div class="ticker-item"><i class="ri-flashlight-fill"></i><span>PREMIUM EXECUTION</span></div>
+        <div class="ticker-item"><i class="ri-line-chart-fill"></i><span>PROFIT MODE</span></div>
+        <div class="ticker-item"><i class="ri-wallet-3-fill"></i><span>TON CONNECT READY</span></div>
+        <div class="ticker-item"><i class="ri-vip-crown-2-fill"></i><span>BUSINESS CLASS UI</span></div>
       </div>
     </div>
 
     <div class="hero">
       <div class="hero-head">
-        <h1 class="hero-title">Build <span>profit</span> inside a luxury crypto terminal</h1>
-        <div class="hero-badge">LIVE</div>
+        <h1 class="hero-title">Trade <span>profit</span> in a bright professional crypto terminal</h1>
+        <div class="hero-live">LIVE</div>
       </div>
       <div class="hero-text">
-        Premium Telegram Mini App concept for arbitrage, execution, referrals and performance tracking with luxury business styling.
+        Premium Telegram Mini App concept for crypto scanning, wallet control, business growth and success-focused execution.
       </div>
       <div class="hero-grid">
-        <div class="hero-card">
-          <div class="hero-card-label">Signals</div>
-          <div class="hero-card-value">24</div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Signals</div>
+          <div class="hero-stat-value">24</div>
         </div>
-        <div class="hero-card">
-          <div class="hero-card-label">Win Rate</div>
-          <div class="hero-card-value">91%</div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Win Rate</div>
+          <div class="hero-stat-value">91%</div>
         </div>
-        <div class="hero-card">
-          <div class="hero-card-label">Today</div>
-          <div class="hero-card-value">+3.8 TON</div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Today</div>
+          <div class="hero-stat-value">+3.8 TON</div>
         </div>
       </div>
     </div>
@@ -487,7 +457,7 @@
       </div>
 
       <div class="card">
-        <div class="signal-top">
+        <div class="signal-head">
           <div>
             <div class="pair">TON / USDT</div>
             <div class="pair-sub">Buy: STON.fi → Sell: DeDust</div>
@@ -506,7 +476,7 @@
       </div>
 
       <div class="card">
-        <div class="signal-top">
+        <div class="signal-head">
           <div>
             <div class="pair">TON / NOT</div>
             <div class="pair-sub">Buy: DeDust → Sell: STON.fi</div>
@@ -527,7 +497,7 @@
 
     <section id="insights" class="section">
       <div class="section-head">
-        <h2 class="section-title"><i class="ri-bar-chart-box-line"></i>Business Insights</h2>
+        <h2 class="section-title"><i class="ri-line-chart-line"></i>Insights</h2>
         <div class="tag">Executive view</div>
       </div>
 
@@ -562,17 +532,17 @@
         <div class="insight-card">
           <div class="insight-top">
             <div class="insight-icon"><i class="ri-vip-crown-line"></i></div>
-            <div class="insight-change">VIP mode</div>
+            <div class="insight-change">VIP</div>
           </div>
           <div class="insight-value">A+</div>
-          <div class="insight-label">Platform visual quality</div>
+          <div class="insight-label">Interface quality level</div>
         </div>
       </div>
     </section>
 
     <section id="network" class="section">
       <div class="section-head">
-        <h2 class="section-title"><i class="ri-team-line"></i>Referral Network</h2>
+        <h2 class="section-title"><i class="ri-team-line"></i>Network</h2>
         <div class="tag">5% reward</div>
       </div>
 
@@ -591,12 +561,12 @@
 
     <section id="wallet" class="section">
       <div class="section-head">
-        <h2 class="section-title"><i class="ri-wallet-3-line"></i>Wallet Terminal</h2>
+        <h2 class="section-title"><i class="ri-wallet-3-line"></i>Wallet</h2>
         <div class="tag">TON Connect + TONAPI</div>
       </div>
 
       <div class="profile-card">
-        <img id="walletAvatar" class="profile-avatar" alt="Profile" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
+        <img id="walletAvatar" alt="Profile" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
         <div>
           <div class="profile-title">Telegram profile</div>
           <div id="walletUserName" class="profile-name">Trader</div>
@@ -630,7 +600,7 @@
         </div>
 
         <div class="notice">
-          Адрес кошелька показывается в user-friendly формате, как в самом TON-кошельке.
+          Address shows in user-friendly TON wallet format.
         </div>
       </div>
 
@@ -651,31 +621,33 @@
 
     <section id="settings" class="section">
       <div class="section-head">
-        <h2 class="section-title"><i class="ri-settings-4-line"></i>Control Center</h2>
-        <div class="tag">Premium prefs</div>
+        <h2 class="section-title"><i class="ri-settings-4-line"></i>Settings</h2>
+        <div class="tag">Live controls</div>
       </div>
 
       <div class="card">
-        <div style="font-weight:800;">Slippage Tolerance</div>
-        <div class="muted" style="margin-top:4px;">Adjust execution tolerance for swaps</div>
-        <input class="input" type="number" value="0.5" placeholder="0.5" />
+        <div style="font-weight:900;">Slippage Tolerance</div>
+        <div class="setting-desc">Adjust execution tolerance for swaps</div>
+        <input class="input" id="slippageInput" type="number" value="0.5" placeholder="0.5" />
       </div>
 
       <div class="card">
-        <div class="row" style="margin-bottom:10px;">
-          <div>
-            <div style="font-weight:800;">Push Notifications</div>
-            <div class="muted">Alerts for profitable opportunities</div>
+        <div class="setting-row">
+          <div class="setting-left">
+            <div class="setting-title">Push Notifications</div>
+            <div class="setting-desc">Get alerts for profitable opportunities</div>
+            <div class="notify-badge" id="pushStateBadge"><i class="ri-notification-3-fill"></i> Enabled</div>
           </div>
-          <button class="btn secondary" style="width:auto;margin-top:0;padding:10px 14px;" onclick="toggleSwitch(this)">Enabled</button>
+          <div class="switch active" id="pushSwitch" onclick="toggleSetting('push')"></div>
         </div>
 
-        <div class="row">
-          <div>
-            <div style="font-weight:800;">Haptic Feedback</div>
-            <div class="muted">Vibration on signal and tap actions</div>
+        <div class="setting-row">
+          <div class="setting-left">
+            <div class="setting-title">Haptic Feedback</div>
+            <div class="setting-desc">Vibration on signal and tap actions</div>
+            <div class="notify-badge" id="hapticStateBadge"><i class="ri-smartphone-fill"></i> Enabled</div>
           </div>
-          <button class="btn secondary" style="width:auto;margin-top:0;padding:10px 14px;" onclick="toggleSwitch(this)">Enabled</button>
+          <div class="switch active" id="hapticSwitch" onclick="toggleSetting('haptic')"></div>
         </div>
       </div>
 
@@ -684,8 +656,8 @@
   </div>
 
   <div id="toast" class="toast">
-    <div id="toastTitle" class="toast-title">Готово</div>
-    <div id="toastText" class="toast-text">Сообщение</div>
+    <div id="toastTitle" class="toast-title">Ready</div>
+    <div id="toastText" class="toast-text">Message</div>
   </div>
 
   <nav class="tabbar">
@@ -696,6 +668,8 @@
     <button class="tab" onclick="openTab('settings', this)"><span class="tab-icon"><i class="ri-settings-4-line"></i></span><span class="tab-text">Settings</span></button>
   </nav>
 
+  <div id="notifyPermissionAnchor" style="display:none"></div>
+
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
   <script>
@@ -703,6 +677,11 @@
     let isBusy = false;
     const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
     const TONAPI_KEY = '';
+
+    const settingsState = {
+      push: localStorage.getItem('vhunt_push') !== '0',
+      haptic: localStorage.getItem('vhunt_haptic') !== '0'
+    };
 
     function fallbackAvatar(name){
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Trader')}&background=1e293b&color=fff`;
@@ -736,6 +715,13 @@
       showToast._t = setTimeout(() => toast.classList.remove('show'), 2800);
     }
 
+    function maybeHaptic(type='selectionChanged'){
+      if (!settingsState.haptic) return;
+      if (!tg?.HapticFeedback) return;
+      if (type === 'impact') tg.HapticFeedback.impactOccurred('medium');
+      else tg.HapticFeedback.selectionChanged();
+    }
+
     function applyTelegramProfile(){
       if (!tg) return;
       tg.ready();
@@ -758,33 +744,75 @@
       document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       el.classList.add('active');
-      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      maybeHaptic();
     }
 
     function copyReferral(){
-      const text = document.getElementById('refLink').textContent;
-      navigator.clipboard.writeText(text);
-      showToast('Скопировано', 'Реферальная ссылка скопирована');
+      navigator.clipboard.writeText(document.getElementById('refLink').textContent);
+      showToast('Copied', 'Referral link copied');
     }
 
     function copyWalletAddress(){
       const text = document.getElementById('walletAddress').textContent;
       if (!text || text.includes('Нажми Connect Wallet')) return;
       navigator.clipboard.writeText(text);
-      showToast('Скопировано', 'Адрес кошелька скопирован');
+      showToast('Copied', 'Wallet address copied');
     }
 
     function withdrawReferral(){
-      showToast('Withdraw', 'Запрос на вывод создан');
+      showToast('Withdraw', 'Withdraw request created');
+    }
+
+    function applySettingsUI(){
+      document.getElementById('pushSwitch').classList.toggle('active', settingsState.push);
+      document.getElementById('hapticSwitch').classList.toggle('active', settingsState.haptic);
+      document.getElementById('pushStateBadge').innerHTML = settingsState.push
+        ? '<i class="ri-notification-3-fill"></i> Enabled'
+        : '<i class="ri-notification-off-fill"></i> Disabled';
+      document.getElementById('hapticStateBadge').innerHTML = settingsState.haptic
+        ? '<i class="ri-smartphone-fill"></i> Enabled'
+        : '<i class="ri-smartphone-line"></i> Disabled';
+    }
+
+    async function requestPushPermission(){
+      if (!('Notification' in window)) return false;
+      if (Notification.permission === 'granted') return true;
+      if (Notification.permission === 'denied') return false;
+      const result = await Notification.requestPermission();
+      return result === 'granted';
+    }
+
+    async function toggleSetting(type){
+      if (type === 'push') {
+        const next = !settingsState.push;
+        if (next) {
+          const granted = await requestPushPermission();
+          if (!granted) {
+            settingsState.push = false;
+            localStorage.setItem('vhunt_push', '0');
+            applySettingsUI();
+            showToast('Push disabled', 'Browser permission was not granted');
+            return;
+          }
+        }
+        settingsState.push = next;
+        localStorage.setItem('vhunt_push', next ? '1' : '0');
+        applySettingsUI();
+        showToast('Push notifications', next ? 'Enabled' : 'Disabled');
+      }
+
+      if (type === 'haptic') {
+        settingsState.haptic = !settingsState.haptic;
+        localStorage.setItem('vhunt_haptic', settingsState.haptic ? '1' : '0');
+        applySettingsUI();
+        maybeHaptic();
+        showToast('Haptic feedback', settingsState.haptic ? 'Enabled' : 'Disabled');
+      }
     }
 
     function saveSettings(){
-      showToast('Настройки', 'Настройки сохранены');
-    }
-
-    function toggleSwitch(el){
-      el.textContent = el.textContent === 'Enabled' ? 'Disabled' : 'Enabled';
-      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      localStorage.setItem('vhunt_slippage', document.getElementById('slippageInput').value || '0.5');
+      showToast('Settings saved', 'Your preferences were updated');
     }
 
     function tonApiHeaders(){
@@ -794,19 +822,15 @@
     }
 
     async function tonApiFetch(path){
-      const response = await fetch('https://tonapi.io' + path, {
-        headers: tonApiHeaders()
-      });
-      if (!response.ok) {
-        throw new Error('TONAPI ' + response.status);
-      }
+      const response = await fetch('https://tonapi.io' + path, { headers: tonApiHeaders() });
+      if (!response.ok) throw new Error('TONAPI ' + response.status);
       return response.json();
     }
 
     function renderJettons(jettons){
       const root = document.getElementById('jettonsList');
       if (!jettons || !jettons.length) {
-        root.innerHTML = '<div class="empty-state">Jettons не найдены</div>';
+        root.innerHTML = '<div class="empty-state">Jettons not found</div>';
         return;
       }
 
@@ -816,11 +840,7 @@
         const decimals = Number(meta.decimals ?? 9);
         const rawBalance = item.balance || '0';
         let amount = '0';
-        try {
-          amount = (Number(rawBalance) / Math.pow(10, decimals)).toFixed(4);
-        } catch (e) {
-          amount = '0';
-        }
+        try { amount = (Number(rawBalance) / Math.pow(10, decimals)).toFixed(4); } catch(e) {}
         const img = meta.image || meta.image_url || fallbackAvatar(symbol);
         return `
           <div class="asset-item">
@@ -840,7 +860,7 @@
     function renderEvents(events){
       const root = document.getElementById('eventsList');
       if (!events || !events.length) {
-        root.innerHTML = '<div class="empty-state">Транзакции не найдены</div>';
+        root.innerHTML = '<div class="empty-state">Transactions not found</div>';
         return;
       }
 
@@ -880,7 +900,6 @@
     async function loadWalletData(address){
       try {
         showWalletLoading();
-
         const [accountData, jettonsData, eventsData] = await Promise.all([
           tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}`),
           tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}/jettons`),
@@ -890,7 +909,6 @@
         const tonBalance = ((Number(accountData.balance || 0)) / 1e9).toFixed(4);
         document.getElementById('walletBalanceBig').textContent = tonBalance + ' TON';
         document.getElementById('walletApiChip').textContent = 'Data: loaded';
-
         renderJettons(jettonsData.balances || jettonsData.jetton_balances || []);
         renderEvents(eventsData.events || []);
       } catch (e) {
@@ -898,7 +916,7 @@
         document.getElementById('walletApiChip').textContent = 'Data: error';
         document.getElementById('jettonsList').innerHTML = '<div class="empty-state">Не удалось загрузить jettons</div>';
         document.getElementById('eventsList').innerHTML = '<div class="empty-state">Не удалось загрузить историю</div>';
-        showToast('Ошибка загрузки', 'Не удалось подтянуть баланс или историю');
+        showToast('Load error', 'Could not load balance or activity');
       }
     }
 
@@ -919,7 +937,6 @@
         const rawAddr = wallet.account.address;
         const chain = wallet.account.chain || '—';
         const friendlyAddr = toFriendlyAddress(rawAddr, chain === '-3');
-
         statusEl.textContent = 'Connected';
         addressEl.textContent = friendlyAddr;
         chainChip.textContent = 'Chain: ' + chainName(chain);
@@ -944,15 +961,15 @@
     async function handleWalletButton(){
       if (isBusy) return;
       if (tonConnectUI.wallet?.account?.address) {
-        showToast('Кошелёк уже подключён', 'Нажми Disconnect, если хочешь отключить его');
+        showToast('Wallet already connected', 'Press Disconnect to remove connection');
         return;
       }
       try {
         isBusy = true;
-        showToast('Подключение', 'Открываю список TON-кошельков...');
+        showToast('Connecting', 'Opening TON wallet list...');
         await tonConnectUI.openModal();
       } catch (e) {
-        showToast('Ошибка', 'Не удалось открыть окно подключения');
+        showToast('Error', 'Could not open connect modal');
       } finally {
         isBusy = false;
       }
@@ -961,16 +978,16 @@
     async function disconnectWallet(){
       if (isBusy) return;
       if (!tonConnectUI.wallet?.account?.address) {
-        showToast('Нет подключения', 'Кошелёк уже отключён');
+        showToast('No connection', 'Wallet is already disconnected');
         return;
       }
       try {
         isBusy = true;
         await tonConnectUI.disconnect();
         clearWalletData();
-        showToast('Отключено', 'TON-кошелёк отключён');
+        showToast('Disconnected', 'TON wallet disconnected');
       } catch (e) {
-        showToast('Ошибка', 'Не удалось отключить кошелёк');
+        showToast('Error', 'Could not disconnect wallet');
       } finally {
         isBusy = false;
       }
@@ -979,29 +996,25 @@
     async function executeTrade(pair){
       if (isBusy) return;
       if (!tonConnectUI.wallet?.account?.address) {
-        showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и выполни подключение');
+        showToast('Connect wallet first', 'Open Wallet tab and connect your TON wallet');
         openTab('wallet', document.querySelectorAll('.tab')[3]);
         return;
       }
 
       try {
         isBusy = true;
-        showToast('Подготовка', 'Открываю кошелёк для тестовой TON-транзакции...');
+        maybeHaptic('impact');
+        showToast('Preparing', 'Opening wallet for test TON transaction...');
         const tx = {
           validUntil: Math.floor(Date.now() / 1000) + 300,
-          messages: [
-            {
-              address: TEST_RECEIVER_ADDRESS,
-              amount: '50000000'
-            }
-          ]
+          messages: [{ address: TEST_RECEIVER_ADDRESS, amount: '50000000' }]
         };
         const result = await tonConnectUI.sendTransaction(tx);
         console.log('TX result:', result);
-        showToast('Транзакция отправлена', 'Пара: ' + pair);
+        showToast('Transaction sent', 'Pair: ' + pair);
       } catch (e) {
         console.error(e);
-        showToast('Отмена или ошибка', 'Пользователь отменил операцию или кошелёк вернул ошибку');
+        showToast('Cancelled or error', 'User cancelled or wallet returned an error');
       } finally {
         isBusy = false;
       }
@@ -1012,6 +1025,8 @@
     }
 
     applyTelegramProfile();
+    applySettingsUI();
+    document.getElementById('slippageInput').value = localStorage.getItem('vhunt_slippage') || '0.5';
     updateWalletUi(tonConnectUI.wallet);
 
     if (tonConnectUI.wallet?.account?.address) {
@@ -1024,11 +1039,11 @@
         const rawAddr = wallet.account.address;
         const chain = wallet.account.chain || '—';
         const friendlyAddr = toFriendlyAddress(rawAddr, chain === '-3');
-        showToast('Успешно', 'Кошелёк подключён: ' + shortAddress(friendlyAddr));
+        showToast('Success', 'Wallet connected: ' + shortAddress(friendlyAddr));
         loadWalletData(rawAddr);
       }
     }, () => {
-      showToast('Ошибка', 'Проблема при смене статуса кошелька');
+      showToast('Error', 'Wallet status update problem');
     });
 
     if (tg) {
