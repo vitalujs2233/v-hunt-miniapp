@@ -70,23 +70,54 @@
     .orb-3{bottom:80px;left:38%;background:rgba(217,180,95,.45);animation-delay:-8s}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
 
-
-    .splash{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(circle at 50% 20%, rgba(0,152,234,.16), transparent 24%),radial-gradient(circle at 50% 75%, rgba(0,255,163,.10), transparent 24%),linear-gradient(180deg,#040506 0%,#0A0C10 46%,#060708 100%);transition:opacity .55s ease, visibility .55s ease}
+    .splash{
+      position:fixed; inset:0; z-index:999;
+      display:flex; align-items:center; justify-content:center; flex-direction:column;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(0,152,234,.18), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(0,255,163,.10), transparent 26%),
+        linear-gradient(180deg,#030405 0%,#080b10 100%);
+      transition:opacity .55s ease, visibility .55s ease;
+    }
     .splash.hidden{opacity:0;visibility:hidden}
-    .splash-logo{width:110px;height:110px;border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:52px;font-weight:900;color:#fff;background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.03)),linear-gradient(135deg, #0f2235, #0b4c75 56%, #107c77);border:1px solid rgba(255,255,255,.10);box-shadow:0 20px 40px rgba(0,0,0,.32),0 0 30px rgba(0,152,234,.16);position:relative;animation:logoPulse 1.6s ease-in-out infinite}
-    .splash-logo::after{content:"";position:absolute;inset:-2px;border-radius:32px;border:1px solid rgba(0,152,234,.18);box-shadow:0 0 24px rgba(0,152,234,.12)}
-    .splash-title{margin-top:18px;font-size:28px;font-weight:900;letter-spacing:.08em}
-    .splash-sub{margin-top:6px;font-size:12px;color:var(--text-2);letter-spacing:.24em;text-transform:uppercase}
-    .splash-bar{margin-top:18px;width:180px;height:6px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06)}
-    .splash-bar span{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--primary),var(--success),var(--gold));transform-origin:left center;animation:loadBar 1.8s ease forwards}
-    @keyframes loadBar{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
-    @keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-    .live-tape{display:flex;gap:10px;overflow:auto hidden;scrollbar-width:none;margin-bottom:12px;padding:2px 0 2px 1px}.live-tape::-webkit-scrollbar{display:none}
-    .live-chip{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:#dbe7f6;font-size:11px;font-weight:700;backdrop-filter:blur(16px)}
-    .live-dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 0 0 rgba(0,255,163,.55);animation:pulseDot 1.8s infinite}
-    @keyframes pulseDot{0%{box-shadow:0 0 0 0 rgba(0,255,163,.45)}70%{box-shadow:0 0 0 10px rgba(0,255,163,0)}100%{box-shadow:0 0 0 0 rgba(0,255,163,0)}}
-    .live-line{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:11px;font-weight:700;color:#d6fbee;text-transform:uppercase;letter-spacing:.04em}
-    .live-line .live-dot{width:7px;height:7px}
+    .splash-ring{
+      width:148px;height:148px;border-radius:36px;position:relative;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 28px 70px rgba(0,0,0,.40), 0 0 40px rgba(0,152,234,.10);
+    }
+    .splash-ring::before{
+      content:""; position:absolute; inset:-30%;
+      background:conic-gradient(from 0deg, transparent, rgba(0,152,234,.95), rgba(0,255,163,.6), transparent 65%);
+      animation:spin 2.8s linear infinite;
+    }
+    .splash-core{
+      position:relative; z-index:2;
+      width:84px; height:84px; border-radius:26px;
+      display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg, #0e3354, #0098EA 60%, #0b7f7a);
+      color:#fff; font-size:42px; font-weight:900;
+      box-shadow:0 12px 28px rgba(0,152,234,.22);
+    }
+    .splash-title{
+      margin-top:22px; font-size:32px; font-weight:900; letter-spacing:.06em;
+    }
+    .splash-sub{
+      margin-top:8px; font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--text-2);
+    }
+    .splash-line{
+      width:min(220px,72vw); height:8px; margin-top:20px; border-radius:999px; overflow:hidden;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.06);
+    }
+    .splash-line span{
+      display:block; width:100%; height:100%;
+      background:linear-gradient(90deg,#0e3354,#0098EA 55%,#00FFA3);
+      transform-origin:left center; animation:load 1.9s ease forwards;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes load{from{transform:scaleX(.04)}to{transform:scaleX(1)}}
+
     .app{
       position:relative;z-index:2;min-height:100vh;
       padding:14px 14px 112px;
@@ -135,6 +166,33 @@
       font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
     }
     .user-status{font-size:10px;color:var(--text-2)}
+
+    .live-strip{
+      display:flex;gap:18px;align-items:center;overflow:hidden;
+      margin-bottom:12px;padding:9px 0;
+      border-top:1px solid rgba(255,255,255,.04);
+      border-bottom:1px solid rgba(255,255,255,.04);
+      color:#dfe9f8;font-size:11px;font-weight:700;white-space:nowrap;
+    }
+    .live-track{
+      display:flex;gap:18px;align-items:center;min-width:max-content;
+      animation:ticker 20s linear infinite;
+    }
+    .live-pill{
+      display:flex;align-items:center;gap:8px;
+    }
+    .live-pulse{
+      width:7px;height:7px;border-radius:50%;
+      background:var(--warning);
+      box-shadow:0 0 0 0 rgba(255,59,48,.55);
+      animation:livePulse 1.5s infinite;
+    }
+    @keyframes livePulse{
+      0%{box-shadow:0 0 0 0 rgba(255,59,48,.45)}
+      70%{box-shadow:0 0 0 9px rgba(255,59,48,0)}
+      100%{box-shadow:0 0 0 0 rgba(255,59,48,0)}
+    }
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
     .hero{
       position:relative;overflow:hidden;
@@ -360,6 +418,11 @@
     }
     .btn.small{padding:12px 14px;font-size:13px;margin-top:10px}
 
+    .copy-address-btn{
+      width:auto;margin-top:10px;padding:10px 12px;font-size:12px;border-radius:14px;
+      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);box-shadow:none
+    }
+
     .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
 
     .wallet-address{
@@ -509,7 +572,15 @@
   </style>
 </head>
 <body>
-  <div class="splash" id="splash"><div class="splash-logo">V</div><div class="splash-title">V-HUNT</div><div class="splash-sub">live arbitrage terminal</div><div class="splash-bar"><span></span></div></div>
+  <div class="splash" id="splash">
+    <div class="splash-ring">
+      <div class="splash-core">V</div>
+    </div>
+    <div class="splash-title">V-HUNT</div>
+    <div class="splash-sub">live arbitrage terminal</div>
+    <div class="splash-line"><span></span></div>
+  </div>
+
   <div class="glow-orb orb-1"></div>
   <div class="glow-orb orb-2"></div>
   <div class="glow-orb orb-3"></div>
@@ -532,7 +603,18 @@
       </div>
     </div>
 
-    <div class="live-tape"><div class="live-chip"><span class="live-dot"></span> LIVE FEED</div><div class="live-chip">STON.fi / DeDust</div><div class="live-chip">Direct Arbitrage</div><div class="live-chip">Scanner Online</div><div class="live-chip">TON Network</div></div>
+    <div class="live-strip">
+      <div class="live-track">
+        <div class="live-pill"><span class="live-pulse"></span><span>LIVE FEED</span></div>
+        <div class="live-pill"><i class="ri-flashlight-line"></i><span>REAL-TIME SIGNALS</span></div>
+        <div class="live-pill"><i class="ri-exchange-dollar-line"></i><span>ARBITRAGE STREAM</span></div>
+        <div class="live-pill"><i class="ri-radar-line"></i><span>MARKET SCAN ACTIVE</span></div>
+        <div class="live-pill"><span class="live-pulse"></span><span>LIVE FEED</span></div>
+        <div class="live-pill"><i class="ri-flashlight-line"></i><span>REAL-TIME SIGNALS</span></div>
+        <div class="live-pill"><i class="ri-exchange-dollar-line"></i><span>ARBITRAGE STREAM</span></div>
+        <div class="live-pill"><i class="ri-radar-line"></i><span>MARKET SCAN ACTIVE</span></div>
+      </div>
+    </div>
 
     <div class="hero">
       <div class="hero-top">
@@ -648,6 +730,7 @@
             <div class="muted">Connected Wallet</div>
             <div id="walletStatus" class="wallet-state">Not connected</div>
             <div id="walletAddress" class="wallet-address">Нажми Connect Wallet, чтобы подключить TON-кошелёк</div>
+            <button id="copyAddressBtn" class="btn copy-address-btn" onclick="copyWalletAddress()" style="display:none;">Copy Address</button>
             <div id="walletBalanceBig" class="wallet-balance-big">0.0000 TON</div>
             <div class="balance-sub">Баланс подтягивается автоматически после подключения</div>
           </div>
@@ -727,11 +810,7 @@
     const tg = window.Telegram?.WebApp;
     let isBusy = false;
 
-    // МОЖЕШЬ ОСТАВИТЬ СВОЙ АДРЕС ДЛЯ TEST EXECUTE
     const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
-
-    // ЕСЛИ ЕСТЬ TONAPI KEY — ВСТАВЬ ЕГО СЮДА
-    // ЕСЛИ НЕТ — ОСТАВЬ ПУСТО
     const TONAPI_KEY = '';
 
     function fallbackAvatar(name){
@@ -795,6 +874,13 @@
       const text = document.getElementById('refLink').textContent;
       navigator.clipboard.writeText(text);
       showToast('Скопировано', 'Реферальная ссылка скопирована');
+    }
+
+    function copyWalletAddress(){
+      const text = document.getElementById('walletAddress').textContent;
+      if (!text || text.includes('Нажми Connect Wallet')) return;
+      navigator.clipboard.writeText(text);
+      showToast('Скопировано', 'Адрес кошелька скопирован');
     }
 
     function withdrawReferral(){
@@ -936,11 +1022,13 @@
       const shortChip = document.getElementById('walletShortChip');
       const connectBtn = document.getElementById('connectBtn');
       const disconnectBtn = document.getElementById('disconnectBtn');
+      const copyAddressBtn = document.getElementById('copyAddressBtn');
 
       if (wallet?.account?.address) {
         const rawAddr = wallet.account.address;
         const chain = wallet.account.chain || '—';
         const friendlyAddr = toFriendlyAddress(rawAddr, chain === '-3');
+
         statusEl.textContent = 'Connected';
         addressEl.textContent = friendlyAddr;
         chainChip.textContent = 'Chain: ' + chainName(chain);
@@ -948,6 +1036,7 @@
         connectBtn.textContent = 'Wallet Connected';
         connectBtn.classList.add('secondary');
         disconnectBtn.style.display = 'block';
+        copyAddressBtn.style.display = 'inline-flex';
       } else {
         statusEl.textContent = 'Not connected';
         addressEl.textContent = 'Нажми Connect Wallet, чтобы подключить TON-кошелёк';
@@ -956,6 +1045,7 @@
         connectBtn.textContent = 'Connect Wallet';
         connectBtn.classList.remove('secondary');
         disconnectBtn.style.display = 'none';
+        copyAddressBtn.style.display = 'none';
         clearWalletData();
       }
     }
@@ -1050,8 +1140,7 @@
       showToast('Ошибка', 'Проблема при смене статуса кошелька');
     });
 
-    setTimeout(hideSplash, 1800);
+    setTimeout(hideSplash, 1900);
   </script>
 </body>
 </html>
-
