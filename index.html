@@ -4,557 +4,264 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>V-HUNT</title>
-  <meta name="theme-color" content="#070816" />
+  <meta name="theme-color" content="#070b14" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
-
- :root{
-  --bg:#05070c;
-  --bg2:#0a1220;
-  --panel:rgba(255,255,255,.055);
-  --panel-strong:rgba(255,255,255,.075);
-  --line:rgba(255,255,255,.09);
-  --line2:rgba(255,255,255,.05);
-  --text:#f5f8ff;
-  --muted:#92a1b8;
-  --soft:#dce7f7;
-  --green:#1fd89a;
-  --green2:#12b37f;
-  --blue:#2f8fff;
-  --cyan:#59c7ff;
-  --gold:#d9b45f;
-  --gold-soft:rgba(217,180,95,.14);
-  --shadow:0 22px 54px rgba(0,0,0,.42);
-  --shadow-soft:0 12px 30px rgba(0,0,0,.28);
-  --glow-blue:0 0 0 1px rgba(89,199,255,.08), 0 10px 30px rgba(47,143,255,.12);
-  --glow-green:0 0 0 1px rgba(31,216,154,.10), 0 10px 28px rgba(31,216,154,.12);
-  --glow-gold:0 0 0 1px rgba(217,180,95,.12), 0 10px 28px rgba(217,180,95,.10);
-  --rad-xl:24px;
-  --rad-lg:20px;
-  --rad-md:16px;
-}
-
-html,body{
-  background:
-    radial-gradient(circle at 12% 8%, rgba(47,143,255,.10), transparent 24%),
-    radial-gradient(circle at 88% 12%, rgba(31,216,154,.08), transparent 22%),
-    radial-gradient(circle at 50% 100%, rgba(217,180,95,.06), transparent 28%),
-    linear-gradient(180deg,#04060a 0%,#0a1019 48%,#05080d 100%);
-  color:var(--text);
-}
-
-body::before{
-  opacity:.12;
-  background:
-    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
-  background-size:28px 28px;
-}
-
-.app{
-  padding:16px 14px 118px;
-}
-
-.orb,
-.bg-orb{
-  opacity:.18 !important;
-  filter:blur(100px) !important;
-}
-
-.topbar{
-  margin-bottom:12px;
-  align-items:center;
-}
-
-.brand-title{
-  font-weight:800;
-  letter-spacing:.02em;
-}
-
-.brand-sub,
-.badge-sub,
-.user-status,
-.profile-sub,
-.hero-text,
-.balance-sub,
-.muted,
-.metric-label,
-.stat-label,
-.hero-stat-label,
-.setting-desc,
-.asset-sub,
-.tx-sub{
-  color:var(--muted) !important;
-}
-
-.brand-mark,
-.logo{
-  border-radius:18px !important;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02)),
-    linear-gradient(135deg, #0d1f38, #10345f 48%, #1c876e 100%) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.14),
-    0 10px 30px rgba(0,0,0,.28),
-    0 0 24px rgba(47,143,255,.12) !important;
-}
-
-.profile-badge,
-.user-badge{
-  background:rgba(255,255,255,.05) !important;
-  border:1px solid rgba(255,255,255,.08) !important;
-  border-radius:18px !important;
-  box-shadow:var(--shadow-soft);
-  backdrop-filter:blur(16px);
-}
-
-.ticker,
-.marquee-wrap{
-  border-top:1px solid rgba(255,255,255,.045) !important;
-  border-bottom:1px solid rgba(255,255,255,.045) !important;
-  margin-bottom:12px;
-}
-
-.ticker-track,
-.marquee-track{
-  color:#c7d5e8 !important;
-}
-
-/* HERO — компактнее на 20–30% */
-.hero{
-  padding:15px 16px !important;
-  border-radius:24px !important;
-  margin-bottom:14px !important;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.045)),
-    linear-gradient(135deg, rgba(8,19,34,.86), rgba(9,26,43,.76)) !important;
-  border:1px solid rgba(255,255,255,.08) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 18px 40px rgba(0,0,0,.34),
-    0 0 0 1px rgba(255,255,255,.02) !important;
-  backdrop-filter:blur(18px);
-}
-
-.hero::before{
-  background:
-    radial-gradient(circle at 15% 18%, rgba(47,143,255,.12), transparent 24%),
-    radial-gradient(circle at 92% 15%, rgba(31,216,154,.10), transparent 24%),
-    linear-gradient(135deg, transparent 0%, rgba(217,180,95,.035) 100%) !important;
-}
-
-.hero-head,
-.hero-top{
-  align-items:flex-start;
-  gap:10px;
-}
-
-.hero-title{
-  font-size:28px !important;
-  line-height:1.02 !important;
-  max-width:270px !important;
-  letter-spacing:-.02em;
-}
-
-.hero-text{
-  margin:10px 0 12px !important;
-  font-size:13px !important;
-  line-height:1.42 !important;
-  max-width:92% !important;
-}
-
-.hero-grid,
-.hero-stats{
-  gap:8px !important;
-}
-
-.hero-stat,
-.stat{
-  padding:11px 12px !important;
-  border-radius:18px !important;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.035)) !important;
-  border:1px solid rgba(255,255,255,.07) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.04),
-    0 8px 20px rgba(0,0,0,.14);
-}
-
-.hero-stat-value,
-.stat-value{
-  font-size:17px !important;
-  font-weight:800 !important;
-}
-
-.hero-live,
-.hero-badge,
-.hero-chip{
-  background:
-    linear-gradient(180deg, rgba(31,216,154,.16), rgba(31,216,154,.10)) !important;
-  border:1px solid rgba(31,216,154,.22) !important;
-  color:#ebfff8 !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 0 22px rgba(31,216,154,.12) !important;
-  font-weight:800 !important;
-}
-
-/* Типографика и иерархия */
-.section-head,
-.section-title-row{
-  margin:4px 0 10px !important;
-}
-
-.section-title{
-  font-size:19px !important;
-  font-weight:800 !important;
-  letter-spacing:-.01em;
-}
-
-.tag,
-.mini-tag{
-  background:rgba(255,255,255,.05) !important;
-  border:1px solid rgba(255,255,255,.07) !important;
-  border-radius:999px !important;
-  color:#cfddf0 !important;
-  font-weight:700 !important;
-}
-
-/* Карточки премиум dashboard */
-.card{
-  border-radius:20px !important;
-  padding:14px !important;
-  margin-bottom:12px !important;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.045)) !important;
-  border:1px solid rgba(255,255,255,.08) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.05),
-    0 16px 36px rgba(0,0,0,.30) !important;
-  backdrop-filter:blur(18px);
-}
-
-.card::after{
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.04), transparent 32%) !important;
-}
-
-.signal-head,
-.signal-top{
-  gap:12px;
-}
-
-.pair{
-  font-size:18px !important;
-  letter-spacing:-.01em;
-}
-
-.pair-sub{
-  color:var(--muted) !important;
-}
-
-.profit{
-  color:#2ee7a5 !important;
-  text-shadow:0 0 20px rgba(31,216,154,.10);
-}
-
-.risk{
-  background:rgba(217,180,95,.10) !important;
-  border:1px solid rgba(217,180,95,.18) !important;
-  color:#f4db9f !important;
-  box-shadow:var(--glow-gold);
-}
-
-.metrics{
-  gap:8px !important;
-  margin-top:12px !important;
-}
-
-.metric{
-  border-radius:16px !important;
-  padding:10px 11px !important;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)) !important;
-  border:1px solid rgba(255,255,255,.06) !important;
-}
-
-/* Buttons */
-.btn{
-  border-radius:18px !important;
-  font-weight:800 !important;
-  letter-spacing:.01em;
-  background:
-    linear-gradient(135deg, #0f2946 0%, #14406d 45%, #14866e 100%) !important;
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.08),
-    0 12px 28px rgba(0,0,0,.24),
-    0 0 28px rgba(47,143,255,.08) !important;
-}
-
-.btn:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.04);
-}
-
-.btn.secondary,
-.copy-address-btn{
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04)) !important;
-  border:1px solid rgba(255,255,255,.08) !important;
-  color:#ebf4ff !important;
-  box-shadow:var(--shadow-soft) !important;
-}
-
-.btn.green{
-  background:
-    linear-gradient(135deg, #0f4e43, #128a6b 58%, #19c489 100%) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.08),
-    0 12px 28px rgba(16,138,107,.22),
-    0 0 24px rgba(31,216,154,.08) !important;
-}
-
-.btn.red{
-  background:
-    linear-gradient(135deg, #501822, #8b2437 58%, #bb4155 100%) !important;
-}
-
-.button-grid{
-  gap:10px !important;
-}
-
-/* Insights / network / wallet cards */
-.insight-card,
-.profile-card,
-.asset-item,
-.tx-item{
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04)) !important;
-  border:1px solid rgba(255,255,255,.08) !important;
-  box-shadow:var(--shadow-soft);
-  border-radius:18px !important;
-}
-
-.insight-icon{
-  background:
-    linear-gradient(135deg, rgba(47,143,255,.12), rgba(31,216,154,.08)) !important;
-  border:1px solid rgba(255,255,255,.07) !important;
-}
-
-.insight-value,
-.profile-name,
-.wallet-balance-big,
-.wallet-state{
-  letter-spacing:-.02em;
-}
-
-.wallet-network{
-  background:rgba(47,143,255,.10) !important;
-  border:1px solid rgba(47,143,255,.18) !important;
-  box-shadow:var(--glow-blue);
-}
-
-.wallet-chip{
-  background:rgba(255,255,255,.05) !important;
-  border:1px solid rgba(255,255,255,.07) !important;
-}
-
-.notice{
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.03)) !important;
-  border:1px solid rgba(255,255,255,.07) !important;
-  border-radius:16px !important;
-}
-
-/* Settings toggle premium */
-.setting-row{
-  padding:11px 0 !important;
-}
-
-.switch{
-  background:rgba(255,255,255,.09) !important;
-  border:1px solid rgba(255,255,255,.08) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
-}
-
-.switch::after{
-  background:linear-gradient(180deg, #ffffff, #dde8f9) !important;
-}
-
-.switch.active{
-  background:
-    linear-gradient(135deg, #103454, #15668d 52%, #15886c 100%) !important;
-  box-shadow:
-    0 0 0 4px rgba(31,216,154,.06),
-    0 10px 24px rgba(20,134,110,.18) !important;
-}
-
-.notify-badge{
-  background:rgba(31,216,154,.10) !important;
-  border:1px solid rgba(31,216,154,.18) !important;
-  color:#baf5dd !important;
-  box-shadow:var(--glow-green);
-}
-
-/* Input premium */
-.input{
-  width:100%;
-  margin-top:10px;
-  padding:13px 14px;
-  border-radius:16px;
-  background:rgba(255,255,255,.05);
-  color:var(--text);
-  border:1px solid rgba(255,255,255,.08);
-  outline:none;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
-}
-.input:focus{
-  border-color:rgba(89,199,255,.28);
-  box-shadow:0 0 0 4px rgba(89,199,255,.06), 0 10px 24px rgba(47,143,255,.08);
-}
-
-/* Tabs */
-.tabbar{
-  background:rgba(8,13,22,.90) !important;
-  border:1px solid rgba(255,255,255,.08) !important;
-  border-radius:24px !important;
-  box-shadow:0 20px 50px rgba(0,0,0,.36) !important;
-}
-
-.tab{
-  color:#8ea0b8 !important;
-  border-radius:16px !important;
-  transition:.18s ease;
-}
-
-.tab.active{
-  background:
-    linear-gradient(135deg, rgba(20,52,84,.78), rgba(21,102,141,.46), rgba(21,136,108,.34)) !important;
-  border:1px solid rgba(255,255,255,.08) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 10px 22px rgba(0,0,0,.16) !important;
-}
-
-/* Toast */
-.toast{
-  background:rgba(9,15,26,.94) !important;
-  border:1px solid rgba(255,255,255,.10) !important;
-  border-radius:16px !important;
-}
-
-/* Hover effects desktop only */
-@media (hover:hover){
-  .card:hover,
-  .insight-card:hover,
-  .asset-item:hover,
-  .tx-item:hover,
-  .profile-card:hover{
-    border-color:rgba(255,255,255,.11) !important;
-    transform:translateY(-1px);
-    transition:.18s ease;
-  }
-}
-
-/* Mobile compact */
-@media (max-width:420px){
-  .app{padding:14px 12px 112px}
-  .hero{padding:14px !important}
-  .hero-title{font-size:24px !important;max-width:240px !important}
-  .hero-grid,.metrics,.insight-grid,.button-grid{grid-template-columns:1fr}
+  <style>
+    :root{
+      --bg:#070b14; --bg2:#0b1220; --card:rgba(255,255,255,.08); --card-border:rgba(255,255,255,.12);
+      --text:#fff; --muted:#9fb0c9; --green:#2df7a1; --red:#ff5f7a; --blue:#4da3ff; --purple:#8b5cf6;
+      --cyan:#1ee7ff; --gold:#ffd166; --shadow:0 20px 60px rgba(0,0,0,.35); --radius:24px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{
+      margin:0;padding:0;min-height:100%;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(139,92,246,.28), transparent 22%),
+        radial-gradient(circle at 85% 12%, rgba(30,231,255,.22), transparent 24%),
+        radial-gradient(circle at 50% 100%, rgba(77,163,255,.18), transparent 35%),
+        linear-gradient(180deg, #050811 0%, #09101c 45%, #070b14 100%);
+      color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden
+    }
+    body::before{
+      content:"";position:fixed;inset:0;
+      background:
+        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+      background-size:26px 26px;pointer-events:none;opacity:.25
+    }
+    .app{position:relative;min-height:100vh;padding:18px 16px 110px;z-index:1}
+    .glow-orb{position:fixed;width:180px;height:180px;border-radius:50%;filter:blur(55px);opacity:.22;pointer-events:none;z-index:0}
+    .orb-1{top:80px;left:-40px;background:var(--purple)}
+    .orb-2{top:220px;right:-50px;background:var(--cyan)}
+    .orb-3{bottom:120px;left:40%;background:var(--blue)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .brand-wrap{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:48px;height:48px;border-radius:18px;
+      background:linear-gradient(135deg, rgba(139,92,246,.95), rgba(30,231,255,.95));
+      display:flex;align-items:center;justify-content:center;
+      font-size:22px;font-weight:900;box-shadow:0 10px 30px rgba(82,149,255,.35);flex-shrink:0
+    }
+    .brand-title{
+      font-size:26px;font-weight:900;letter-spacing:1px;line-height:1;
+      background:linear-gradient(90deg, #fff, #8ad8ff, #c4a0ff);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent
+    }
+    .brand-subtitle{color:var(--muted);font-size:12px;margin-top:4px}
+    .user-badge{
+      display:flex;align-items:center;gap:10px;min-width:124px;max-width:180px;
+      padding:8px 10px;border-radius:18px;background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(16px);box-shadow:var(--shadow)
+    }
+    .user-avatar,.profile-avatar,.token-icon{
+      border-radius:50%;object-fit:cover;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.15);flex-shrink:0
+    }
+    .user-avatar{width:34px;height:34px}
+    .user-meta{min-width:0}
+    .user-name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .user-status{font-size:11px;color:var(--muted)}
+    .hero{
+      position:relative;overflow:hidden;border-radius:30px;padding:18px;margin-bottom:16px;
+      background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(18px);box-shadow:var(--shadow)
+    }
+    .hero::before{
+      content:"";position:absolute;inset:0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(139,92,246,.22), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(30,231,255,.18), transparent 30%);
+      pointer-events:none
+    }
+    .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:relative;z-index:1}
+    .hero-title{font-size:30px;font-weight:900;line-height:1.03;margin:0;max-width:230px}
+    .hero-title span{
+      background:linear-gradient(90deg, #fff, #72d2ff, #b892ff);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent
+    }
+    .hero-chip{
+      padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;
+      background:rgba(45,247,161,.12);border:1px solid rgba(45,247,161,.25);white-space:nowrap
+    }
+    .hero-text{color:var(--muted);font-size:14px;line-height:1.45;margin:14px 0 16px;max-width:92%;position:relative;z-index:1}
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;position:relative;z-index:1}
+    .stat{border-radius:18px;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .stat-label{color:var(--muted);font-size:11px;margin-bottom:6px}
+    .stat-value{font-size:17px;font-weight:800}
+    .section{display:none;animation:fadeUp .22s ease}
+    .section.active{display:block}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .section-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}
+    .section-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}
+    .mini-tag{padding:7px 10px;border-radius:999px;font-size:11px;color:#dce9ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .card{
+      position:relative;overflow:hidden;border-radius:var(--radius);padding:15px;margin-bottom:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border:1px solid var(--card-border);backdrop-filter:blur(18px);box-shadow:var(--shadow)
+    }
+    .card::after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.05), transparent 35%);
+      pointer-events:none
+    }
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .pair{font-size:18px;font-weight:800;margin-bottom:4px}
+    .muted{color:var(--muted);font-size:13px}
+    .profit-box{text-align:right}
+    .profit{color:var(--green);font-size:20px;font-weight:900;line-height:1}
+    .risk{
+      display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:6px 10px;border-radius:999px;
+      font-size:11px;font-weight:700;color:#ffd8a8;background:rgba(255,209,102,.10);border:1px solid rgba(255,209,102,.25)
+    }
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+    .metric{padding:10px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+    .metric-label{color:var(--muted);font-size:11px;margin-bottom:5px}
+    .metric-value{font-size:14px;font-weight:800}
+    .btn{
+      width:100%;border:none;border-radius:18px;padding:14px 16px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;margin-top:14px;
+      background:linear-gradient(135deg, #7c3aed, #2563eb 55%, #06b6d4);box-shadow:0 14px 30px rgba(71,126,255,.35)
+    }
+    .btn:active{transform:scale(.99)}
+    .btn.secondary{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);box-shadow:none;color:#e9f2ff}
+    .btn.green{background:linear-gradient(135deg, #14b86f, #2df7a1);color:#06110d;box-shadow:0 14px 30px rgba(45,247,161,.22)}
+    .btn.red{background:linear-gradient(135deg, #ef4444, #ff7a7a);box-shadow:0 14px 30px rgba(255,95,122,.18)}
+    .btn.small{padding:12px 14px;font-size:14px;margin-top:10px}
+    .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .wallet-address{font-size:12px;color:var(--muted);word-break:break-all;margin-top:6px}
+    .wallet-main{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .wallet-state{font-size:36px;font-weight:900;line-height:1}
+    .wallet-network{
+      padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.20)
+    }
+    .wallet-chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .wallet-chip{
+      padding:8px 10px;border-radius:14px;font-size:12px;color:#dce9ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)
+    }
+    .wallet-balance-big{font-size:32px;font-weight:900;line-height:1;margin-top:8px}
+    .balance-sub{font-size:12px;color:var(--muted);margin-top:6px}
+    .ref-link{
+      margin-top:10px;padding:13px;border-radius:16px;background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.08);color:#dce9ff;font-size:13px;word-break:break-all
+    }
+    .profile-card{
+      display:flex;align-items:center;gap:14px;padding:14px;border-radius:20px;
+      background:linear-gradient(135deg, rgba(124,58,237,.18), rgba(6,182,212,.10));
+      border:1px solid rgba(255,255,255,.10);margin-bottom:14px
+    }
+    .profile-avatar{width:62px;height:62px}
+    .profile-title{font-size:12px;color:var(--muted)}
+    .profile-name{font-size:20px;font-weight:900;margin-top:2px}
+    .profile-sub{font-size:12px;color:var(--muted);margin-top:4px}
+    .status-pill{
+      display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
+      font-size:11px;font-weight:700;margin-top:8px;background:rgba(45,247,161,.10);border:1px solid rgba(45,247,161,.22);color:#b7ffe1
+    }
+    .notice{
+      margin-top:12px;padding:12px 14px;border-radius:16px;font-size:13px;line-height:1.45;
+      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#dce9ff
+    }
+    .subcard-title{font-size:15px;font-weight:800;margin-bottom:10px}
+    .asset-list,.tx-list{display:flex;flex-direction:column;gap:10px}
+    .asset-item,.tx-item{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:12px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)
+    }
+    .asset-left,.tx-left{display:flex;align-items:center;gap:10px;min-width:0}
+    .token-icon{width:34px;height:34px}
+    .asset-name,.tx-name{font-weight:700}
+    .asset-sub,.tx-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+    .asset-amount,.tx-status{font-weight:800}
+    .empty-state{color:var(--muted);font-size:13px;padding:6px 0}
+    .loading-shimmer{
+      height:52px;border-radius:16px;
+      background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.12), rgba(255,255,255,.05));
+      background-size:200% 100%;animation:shimmer 1.2s linear infinite
+    }
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .toast{
+      position:fixed;left:16px;right:16px;bottom:98px;z-index:60;
+      padding:12px 14px;border-radius:16px;background:rgba(9,15,26,.92);border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(18px);box-shadow:var(--shadow);display:none
+    }
+    .toast.show{display:block;animation:fadeUp .18s ease}
+    .toast-title{font-weight:800;margin-bottom:4px}
+    .toast-text{font-size:13px;color:var(--muted)}
+    .tabbar{
+      position:fixed;left:14px;right:14px;bottom:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+      padding:10px;border-radius:24px;background:rgba(9,15,26,.88);border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(24px);box-shadow:0 20px 60px rgba(0,0,0,.35);z-index:20
+    }
+    .tab{
+      border:none;border-radius:18px;background:transparent;color:#8ea2bf;padding:10px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;min-height:58px
+    }
+    .tab.active{
+      color:#fff;background:linear-gradient(135deg, rgba(124,58,237,.28), rgba(34,211,238,.18));
+      border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)
+    }
+    .tab-icon{font-size:18px;line-height:1}
+    .tab-text{font-size:11px;font-weight:700}
+    @media (max-width:420px){
+      .hero-stats,.metrics,.button-grid{grid-template-columns:1fr}
+      .hero-title{font-size:24px}
+      .user-badge{max-width:150px}
+      .wallet-main{flex-direction:column}
+      .asset-sub,.tx-sub{max-width:120px}
+    }
+  </style>
 </head>
 <body>
-  <div class="splash" id="splash">
-    <div class="splash-ring">
-      <div class="splash-core">V</div>
-    </div>
-    <div class="splash-title">V-HUNT</div>
-    <div class="splash-sub">premium crypto terminal</div>
-    <div class="splash-load"><div></div></div>
-  </div>
-
-  <div class="orb a"></div>
-  <div class="orb b"></div>
-  <div class="orb c"></div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
 
   <div class="app">
     <div class="topbar">
-      <div class="brand">
-        <div class="brand-mark">V</div>
+      <div class="brand-wrap">
+        <div class="logo">V</div>
         <div>
           <div class="brand-title">V-HUNT</div>
-          <div class="brand-sub">Professional Crypto Scanner</div>
+          <div class="brand-subtitle">Neon Arbitrage Terminal</div>
         </div>
       </div>
-
-      <div class="profile-badge">
-        <img id="headerAvatar" alt="User" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
-        <div>
-          <div id="tgUser" class="badge-name">Trader</div>
-          <div id="tgStatus" class="badge-sub">Telegram user</div>
+      <div class="user-badge">
+        <img id="headerAvatar" class="user-avatar" alt="User" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
+        <div class="user-meta">
+          <div id="tgUser" class="user-name">Trader</div>
+          <div id="tgStatus" class="user-status">Telegram user</div>
         </div>
-      </div>
-    </div>
-
-    <div class="ticker">
-      <div class="ticker-track">
-        <div class="ticker-item"><span class="live-dot"></span><span>LIVE SCANNER</span></div>
-        <div class="ticker-item"><i class="ri-flashlight-fill"></i><span>PREMIUM EXECUTION</span></div>
-        <div class="ticker-item"><i class="ri-line-chart-fill"></i><span>PROFIT MODE</span></div>
-        <div class="ticker-item"><i class="ri-wallet-3-fill"></i><span>TON CONNECT READY</span></div>
-        <div class="ticker-item"><i class="ri-vip-crown-2-fill"></i><span>BUSINESS CLASS UI</span></div>
-        <div class="ticker-item"><span class="live-dot"></span><span>LIVE SCANNER</span></div>
-        <div class="ticker-item"><i class="ri-flashlight-fill"></i><span>PREMIUM EXECUTION</span></div>
-        <div class="ticker-item"><i class="ri-line-chart-fill"></i><span>PROFIT MODE</span></div>
-        <div class="ticker-item"><i class="ri-wallet-3-fill"></i><span>TON CONNECT READY</span></div>
-        <div class="ticker-item"><i class="ri-vip-crown-2-fill"></i><span>BUSINESS CLASS UI</span></div>
       </div>
     </div>
 
     <div class="hero">
-      <div class="hero-head">
-        <h1 class="hero-title">Trade <span>profit</span> in a bright professional crypto terminal</h1>
-        <div class="hero-live">LIVE</div>
+      <div class="hero-top">
+        <h1 class="hero-title">Catch the <span>best spreads</span> before the market moves</h1>
+        <div class="hero-chip">LIVE</div>
       </div>
       <div class="hero-text">
-        Premium Telegram Mini App concept for crypto scanning, wallet control, business growth and success-focused execution.
+        Premium scanner for fast TON market opportunities, wallet execution and referral profit tracking in one terminal.
       </div>
-      <div class="hero-grid">
-        <div class="hero-stat">
-          <div class="hero-stat-label">Signals</div>
-          <div class="hero-stat-value">24</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-label">Win Rate</div>
-          <div class="hero-stat-value">91%</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-label">Today</div>
-          <div class="hero-stat-value">+3.8 TON</div>
-        </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-label">Signals</div><div class="stat-value">24</div></div>
+        <div class="stat"><div class="stat-label">Win Rate</div><div class="stat-value">91%</div></div>
+        <div class="stat"><div class="stat-label">Today</div><div class="stat-value">+3.8 TON</div></div>
       </div>
     </div>
 
     <section id="scanner" class="section active">
-      <div class="section-head">
-        <h2 class="section-title"><i class="ri-radar-line"></i>Live Scanner</h2>
-        <div class="tag">Updated 2s ago</div>
+      <div class="section-title-row">
+        <h2 class="section-title">Live Opportunities</h2>
+        <div class="mini-tag">Updated 2s ago</div>
       </div>
 
       <div class="card">
-        <div class="signal-head">
+        <div class="row">
           <div>
             <div class="pair">TON / USDT</div>
-            <div class="pair-sub">Buy: STON.fi → Sell: DeDust</div>
+            <div class="muted">Buy: STON.fi → Sell: DeDust</div>
           </div>
           <div class="profit-box">
             <div class="profit">+2.41%</div>
-            <div class="risk"><i class="ri-shield-check-line"></i>Low Risk</div>
+            <div class="risk">Low Risk</div>
           </div>
         </div>
         <div class="metrics">
@@ -562,18 +269,18 @@ body::before{
           <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">25 TON</div></div>
           <div class="metric"><div class="metric-label">Age</div><div class="metric-value">2 sec</div></div>
         </div>
-        <button class="btn" onclick="executeTrade('TON / USDT')"><i class="ri-flashlight-fill"></i> Test Execute</button>
+        <button class="btn" onclick="executeTrade('TON / USDT')">Test Execute</button>
       </div>
 
       <div class="card">
-        <div class="signal-head">
+        <div class="row">
           <div>
             <div class="pair">TON / NOT</div>
-            <div class="pair-sub">Buy: DeDust → Sell: STON.fi</div>
+            <div class="muted">Buy: DeDust → Sell: STON.fi</div>
           </div>
           <div class="profit-box">
             <div class="profit">+1.86%</div>
-            <div class="risk"><i class="ri-alert-line"></i>Medium Risk</div>
+            <div class="risk">Medium Risk</div>
           </div>
         </div>
         <div class="metrics">
@@ -581,87 +288,40 @@ body::before{
           <div class="metric"><div class="metric-label">Capital</div><div class="metric-value">18 TON</div></div>
           <div class="metric"><div class="metric-label">Age</div><div class="metric-value">3 sec</div></div>
         </div>
-        <button class="btn" onclick="executeTrade('TON / NOT')"><i class="ri-flashlight-fill"></i> Test Execute</button>
+        <button class="btn" onclick="executeTrade('TON / NOT')">Test Execute</button>
       </div>
     </section>
 
-    <section id="insights" class="section">
-      <div class="section-head">
-        <h2 class="section-title"><i class="ri-line-chart-line"></i>Insights</h2>
-        <div class="tag">Executive view</div>
+    <section id="referrals" class="section">
+      <div class="section-title-row">
+        <h2 class="section-title">Referral Network</h2>
+        <div class="mini-tag">5% reward</div>
       </div>
-
-      <div class="insight-grid">
-        <div class="insight-card">
-          <div class="insight-top">
-            <div class="insight-icon"><i class="ri-money-dollar-circle-line"></i></div>
-            <div class="insight-change">+18.2%</div>
-          </div>
-          <div class="insight-value">12.4 TON</div>
-          <div class="insight-label">Projected weekly income</div>
-        </div>
-
-        <div class="insight-card">
-          <div class="insight-top">
-            <div class="insight-icon"><i class="ri-user-star-line"></i></div>
-            <div class="insight-change">+7 users</div>
-          </div>
-          <div class="insight-value">48</div>
-          <div class="insight-label">Active premium traders</div>
-        </div>
-
-        <div class="insight-card">
-          <div class="insight-top">
-            <div class="insight-icon"><i class="ri-exchange-funds-line"></i></div>
-            <div class="insight-change">+2.9 TON</div>
-          </div>
-          <div class="insight-value">91%</div>
-          <div class="insight-label">Execution success rate</div>
-        </div>
-
-        <div class="insight-card">
-          <div class="insight-top">
-            <div class="insight-icon"><i class="ri-vip-crown-line"></i></div>
-            <div class="insight-change">VIP</div>
-          </div>
-          <div class="insight-value">A+</div>
-          <div class="insight-label">Interface quality level</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="network" class="section">
-      <div class="section-head">
-        <h2 class="section-title"><i class="ri-team-line"></i>Network</h2>
-        <div class="tag">5% reward</div>
-      </div>
-
       <div class="card">
         <div class="muted">Your personal invite link</div>
         <div class="ref-link" id="refLink">https://t.me/YOUR_BOT_USERNAME?startapp=ref_987654</div>
-        <button class="btn secondary" onclick="copyReferral()"><i class="ri-file-copy-line"></i> Copy Link</button>
+        <button class="btn secondary" onclick="copyReferral()">Copy Link</button>
       </div>
-
       <div class="card">
         <div class="muted">Referral Balance</div>
         <div class="wallet-balance-big">12.50 TON</div>
-        <button class="btn green" onclick="withdrawReferral()"><i class="ri-bank-card-line"></i> Withdraw Rewards</button>
+        <button class="btn green" onclick="withdrawReferral()">Withdraw Rewards</button>
       </div>
     </section>
 
     <section id="wallet" class="section">
-      <div class="section-head">
-        <h2 class="section-title"><i class="ri-wallet-3-line"></i>Wallet</h2>
-        <div class="tag">TON Connect + TONAPI</div>
+      <div class="section-title-row">
+        <h2 class="section-title">Wallet Terminal</h2>
+        <div class="mini-tag">TON Connect + TONAPI</div>
       </div>
 
       <div class="profile-card">
-        <img id="walletAvatar" alt="Profile" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
+        <img id="walletAvatar" class="profile-avatar" alt="Profile" src="https://ui-avatars.com/api/?name=Trader&background=1e293b&color=fff" />
         <div>
           <div class="profile-title">Telegram profile</div>
           <div id="walletUserName" class="profile-name">Trader</div>
           <div id="walletUserSub" class="profile-sub">Авторизован в Mini App</div>
-          <div class="status-pill"><i class="ri-checkbox-circle-fill"></i> Telegram authorization active</div>
+          <div class="status-pill">● Авторизация через Telegram активна</div>
         </div>
       </div>
 
@@ -671,7 +331,6 @@ body::before{
             <div class="muted">Connected Wallet</div>
             <div id="walletStatus" class="wallet-state">Not connected</div>
             <div id="walletAddress" class="wallet-address">Нажми Connect Wallet, чтобы подключить TON-кошелёк</div>
-            <button id="copyAddressBtn" class="btn copy-address-btn" onclick="copyWalletAddress()" style="display:none;">Copy Address</button>
             <div id="walletBalanceBig" class="wallet-balance-big">0.0000 TON</div>
             <div class="balance-sub">Баланс подтягивается автоматически после подключения</div>
           </div>
@@ -685,12 +344,12 @@ body::before{
         </div>
 
         <div class="button-grid">
-          <button id="connectBtn" class="btn small" onclick="handleWalletButton()"><i class="ri-plug-2-line"></i> Connect Wallet</button>
-          <button id="disconnectBtn" class="btn red small" onclick="disconnectWallet()" style="display:none;"><i class="ri-plug-line"></i> Disconnect</button>
+          <button id="connectBtn" class="btn small" onclick="handleWalletButton()">Connect Wallet</button>
+          <button id="disconnectBtn" class="btn red small" onclick="disconnectWallet()" style="display:none;">Disconnect</button>
         </div>
 
         <div class="notice">
-          Address shows in user-friendly TON wallet format.
+          Баланс, jettons и история теперь подтягиваются прямо из TONAPI без отдельного backend.
         </div>
       </div>
 
@@ -710,68 +369,52 @@ body::before{
     </section>
 
     <section id="settings" class="section">
-      <div class="section-head">
-        <h2 class="section-title"><i class="ri-settings-4-line"></i>Settings</h2>
-        <div class="tag">Live controls</div>
+      <div class="section-title-row">
+        <h2 class="section-title">Control Center</h2>
+        <div class="mini-tag">User prefs</div>
       </div>
-
       <div class="card">
-        <div style="font-weight:900;">Slippage Tolerance</div>
-        <div class="setting-desc">Adjust execution tolerance for swaps</div>
-        <input class="input" id="slippageInput" type="number" value="0.5" placeholder="0.5" />
+        <div style="font-weight:800;">Slippage Tolerance</div>
+        <div class="muted" style="margin-top:4px;">Adjust execution tolerance for swaps</div>
+        <input class="input" type="number" value="0.5" placeholder="0.5" />
       </div>
-
       <div class="card">
         <div class="setting-row">
-          <div class="setting-left">
-            <div class="setting-title">Push Notifications</div>
-            <div class="setting-desc">Get alerts for profitable opportunities</div>
-            <div class="notify-badge" id="pushStateBadge"><i class="ri-notification-3-fill"></i> Enabled</div>
-          </div>
-          <div class="switch active" id="pushSwitch" onclick="toggleSetting('push')"></div>
+          <div><div style="font-weight:800;">Push Notifications</div><div class="muted">Alerts for profitable opportunities</div></div>
+          <div class="toggle active" onclick="toggleSwitch(this)"></div>
         </div>
-
         <div class="setting-row">
-          <div class="setting-left">
-            <div class="setting-title">Haptic Feedback</div>
-            <div class="setting-desc">Vibration on signal and tap actions</div>
-            <div class="notify-badge" id="hapticStateBadge"><i class="ri-smartphone-fill"></i> Enabled</div>
-          </div>
-          <div class="switch active" id="hapticSwitch" onclick="toggleSetting('haptic')"></div>
+          <div><div style="font-weight:800;">Haptic Feedback</div><div class="muted">Vibration on signal and tap actions</div></div>
+          <div class="toggle active" onclick="toggleSwitch(this)"></div>
         </div>
       </div>
-
-      <button class="btn secondary" onclick="saveSettings()"><i class="ri-save-3-line"></i> Save Settings</button>
+      <button class="btn secondary" onclick="saveSettings()">Save Settings</button>
     </section>
   </div>
 
   <div id="toast" class="toast">
-    <div id="toastTitle" class="toast-title">Ready</div>
-    <div id="toastText" class="toast-text">Message</div>
+    <div id="toastTitle" class="toast-title">Готово</div>
+    <div id="toastText" class="toast-text">Сообщение</div>
   </div>
 
   <nav class="tabbar">
-    <button class="tab active" onclick="openTab('scanner', this)"><span class="tab-icon"><i class="ri-radar-line"></i></span><span class="tab-text">Scanner</span></button>
-    <button class="tab" onclick="openTab('insights', this)"><span class="tab-icon"><i class="ri-line-chart-line"></i></span><span class="tab-text">Insights</span></button>
-    <button class="tab" onclick="openTab('network', this)"><span class="tab-icon"><i class="ri-team-line"></i></span><span class="tab-text">Network</span></button>
-    <button class="tab" onclick="openTab('wallet', this)"><span class="tab-icon"><i class="ri-wallet-3-line"></i></span><span class="tab-text">Wallet</span></button>
-    <button class="tab" onclick="openTab('settings', this)"><span class="tab-icon"><i class="ri-settings-4-line"></i></span><span class="tab-text">Settings</span></button>
+    <button class="tab active" onclick="openTab('scanner', this)"><span class="tab-icon">⚡</span><span class="tab-text">Scanner</span></button>
+    <button class="tab" onclick="openTab('referrals', this)"><span class="tab-icon">👥</span><span class="tab-text">Network</span></button>
+    <button class="tab" onclick="openTab('wallet', this)"><span class="tab-icon">💼</span><span class="tab-text">Wallet</span></button>
+    <button class="tab" onclick="openTab('settings', this)"><span class="tab-icon">⚙️</span><span class="tab-text">Settings</span></button>
   </nav>
 
-  <div id="notifyPermissionAnchor" style="display:none"></div>
-
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-  <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
   <script>
     const tg = window.Telegram?.WebApp;
     let isBusy = false;
-    const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
-    const TONAPI_KEY = '';
 
-    const settingsState = {
-      push: localStorage.getItem('vhunt_push') !== '0',
-      haptic: localStorage.getItem('vhunt_haptic') !== '0'
-    };
+    // МОЖЕШЬ ОСТАВИТЬ СВОЙ АДРЕС ДЛЯ TEST EXECUTE
+    const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
+
+    // ЕСЛИ ЕСТЬ TONAPI KEY — ВСТАВЬ ЕГО СЮДА
+    // ЕСЛИ НЕТ — ОСТАВЬ ПУСТО
+    const TONAPI_KEY = '';
 
     function fallbackAvatar(name){
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Trader')}&background=1e293b&color=fff`;
@@ -780,14 +423,6 @@ body::before{
     function shortAddress(addr){
       if(!addr) return '—';
       return addr.slice(0, 6) + '...' + addr.slice(-6);
-    }
-
-    function toFriendlyAddress(rawAddress, isTestnet = false){
-      try {
-        return TonConnectSDK.toUserFriendlyAddress(rawAddress, isTestnet);
-      } catch (e) {
-        return rawAddress;
-      }
     }
 
     function chainName(raw){
@@ -803,13 +438,6 @@ body::before{
       toast.classList.add('show');
       clearTimeout(showToast._t);
       showToast._t = setTimeout(() => toast.classList.remove('show'), 2800);
-    }
-
-    function maybeHaptic(type='selectionChanged'){
-      if (!settingsState.haptic) return;
-      if (!tg?.HapticFeedback) return;
-      if (type === 'impact') tg.HapticFeedback.impactOccurred('medium');
-      else tg.HapticFeedback.selectionChanged();
     }
 
     function applyTelegramProfile(){
@@ -834,75 +462,26 @@ body::before{
       document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       el.classList.add('active');
-      maybeHaptic();
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
     function copyReferral(){
-      navigator.clipboard.writeText(document.getElementById('refLink').textContent);
-      showToast('Copied', 'Referral link copied');
-    }
-
-    function copyWalletAddress(){
-      const text = document.getElementById('walletAddress').textContent;
-      if (!text || text.includes('Нажми Connect Wallet')) return;
+      const text = document.getElementById('refLink').textContent;
       navigator.clipboard.writeText(text);
-      showToast('Copied', 'Wallet address copied');
+      showToast('Скопировано', 'Реферальная ссылка скопирована');
     }
 
     function withdrawReferral(){
-      showToast('Withdraw', 'Withdraw request created');
-    }
-
-    function applySettingsUI(){
-      document.getElementById('pushSwitch').classList.toggle('active', settingsState.push);
-      document.getElementById('hapticSwitch').classList.toggle('active', settingsState.haptic);
-      document.getElementById('pushStateBadge').innerHTML = settingsState.push
-        ? '<i class="ri-notification-3-fill"></i> Enabled'
-        : '<i class="ri-notification-off-fill"></i> Disabled';
-      document.getElementById('hapticStateBadge').innerHTML = settingsState.haptic
-        ? '<i class="ri-smartphone-fill"></i> Enabled'
-        : '<i class="ri-smartphone-line"></i> Disabled';
-    }
-
-    async function requestPushPermission(){
-      if (!('Notification' in window)) return false;
-      if (Notification.permission === 'granted') return true;
-      if (Notification.permission === 'denied') return false;
-      const result = await Notification.requestPermission();
-      return result === 'granted';
-    }
-
-    async function toggleSetting(type){
-      if (type === 'push') {
-        const next = !settingsState.push;
-        if (next) {
-          const granted = await requestPushPermission();
-          if (!granted) {
-            settingsState.push = false;
-            localStorage.setItem('vhunt_push', '0');
-            applySettingsUI();
-            showToast('Push disabled', 'Browser permission was not granted');
-            return;
-          }
-        }
-        settingsState.push = next;
-        localStorage.setItem('vhunt_push', next ? '1' : '0');
-        applySettingsUI();
-        showToast('Push notifications', next ? 'Enabled' : 'Disabled');
-      }
-
-      if (type === 'haptic') {
-        settingsState.haptic = !settingsState.haptic;
-        localStorage.setItem('vhunt_haptic', settingsState.haptic ? '1' : '0');
-        applySettingsUI();
-        maybeHaptic();
-        showToast('Haptic feedback', settingsState.haptic ? 'Enabled' : 'Disabled');
-      }
+      showToast('Withdraw', 'Запрос на вывод создан');
     }
 
     function saveSettings(){
-      localStorage.setItem('vhunt_slippage', document.getElementById('slippageInput').value || '0.5');
-      showToast('Settings saved', 'Your preferences were updated');
+      showToast('Настройки', 'Настройки сохранены');
+    }
+
+    function toggleSwitch(el){
+      el.classList.toggle('active');
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
     function tonApiHeaders(){
@@ -912,15 +491,19 @@ body::before{
     }
 
     async function tonApiFetch(path){
-      const response = await fetch('https://tonapi.io' + path, { headers: tonApiHeaders() });
-      if (!response.ok) throw new Error('TONAPI ' + response.status);
+      const response = await fetch('https://tonapi.io' + path, {
+        headers: tonApiHeaders()
+      });
+      if (!response.ok) {
+        throw new Error('TONAPI ' + response.status);
+      }
       return response.json();
     }
 
     function renderJettons(jettons){
       const root = document.getElementById('jettonsList');
       if (!jettons || !jettons.length) {
-        root.innerHTML = '<div class="empty-state">Jettons not found</div>';
+        root.innerHTML = '<div class="empty-state">Jettons не найдены</div>';
         return;
       }
 
@@ -930,7 +513,11 @@ body::before{
         const decimals = Number(meta.decimals ?? 9);
         const rawBalance = item.balance || '0';
         let amount = '0';
-        try { amount = (Number(rawBalance) / Math.pow(10, decimals)).toFixed(4); } catch(e) {}
+        try {
+          amount = (Number(rawBalance) / Math.pow(10, decimals)).toFixed(4);
+        } catch (e) {
+          amount = '0';
+        }
         const img = meta.image || meta.image_url || fallbackAvatar(symbol);
         return `
           <div class="asset-item">
@@ -950,7 +537,7 @@ body::before{
     function renderEvents(events){
       const root = document.getElementById('eventsList');
       if (!events || !events.length) {
-        root.innerHTML = '<div class="empty-state">Transactions not found</div>';
+        root.innerHTML = '<div class="empty-state">Транзакции не найдены</div>';
         return;
       }
 
@@ -990,6 +577,7 @@ body::before{
     async function loadWalletData(address){
       try {
         showWalletLoading();
+
         const [accountData, jettonsData, eventsData] = await Promise.all([
           tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}`),
           tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}/jettons`),
@@ -999,6 +587,7 @@ body::before{
         const tonBalance = ((Number(accountData.balance || 0)) / 1e9).toFixed(4);
         document.getElementById('walletBalanceBig').textContent = tonBalance + ' TON';
         document.getElementById('walletApiChip').textContent = 'Data: loaded';
+
         renderJettons(jettonsData.balances || jettonsData.jetton_balances || []);
         renderEvents(eventsData.events || []);
       } catch (e) {
@@ -1006,7 +595,7 @@ body::before{
         document.getElementById('walletApiChip').textContent = 'Data: error';
         document.getElementById('jettonsList').innerHTML = '<div class="empty-state">Не удалось загрузить jettons</div>';
         document.getElementById('eventsList').innerHTML = '<div class="empty-state">Не удалось загрузить историю</div>';
-        showToast('Load error', 'Could not load balance or activity');
+        showToast('Ошибка загрузки', 'Не удалось подтянуть баланс или историю');
       }
     }
 
@@ -1021,20 +610,17 @@ body::before{
       const shortChip = document.getElementById('walletShortChip');
       const connectBtn = document.getElementById('connectBtn');
       const disconnectBtn = document.getElementById('disconnectBtn');
-      const copyAddressBtn = document.getElementById('copyAddressBtn');
 
       if (wallet?.account?.address) {
-        const rawAddr = wallet.account.address;
+        const addr = wallet.account.address;
         const chain = wallet.account.chain || '—';
-        const friendlyAddr = toFriendlyAddress(rawAddr, chain === '-3');
         statusEl.textContent = 'Connected';
-        addressEl.textContent = friendlyAddr;
+        addressEl.textContent = addr;
         chainChip.textContent = 'Chain: ' + chainName(chain);
-        shortChip.textContent = 'Address: ' + shortAddress(friendlyAddr);
+        shortChip.textContent = 'Address: ' + shortAddress(addr);
         connectBtn.textContent = 'Wallet Connected';
         connectBtn.classList.add('secondary');
         disconnectBtn.style.display = 'block';
-        copyAddressBtn.style.display = 'inline-flex';
       } else {
         statusEl.textContent = 'Not connected';
         addressEl.textContent = 'Нажми Connect Wallet, чтобы подключить TON-кошелёк';
@@ -1043,7 +629,6 @@ body::before{
         connectBtn.textContent = 'Connect Wallet';
         connectBtn.classList.remove('secondary');
         disconnectBtn.style.display = 'none';
-        copyAddressBtn.style.display = 'none';
         clearWalletData();
       }
     }
@@ -1051,15 +636,15 @@ body::before{
     async function handleWalletButton(){
       if (isBusy) return;
       if (tonConnectUI.wallet?.account?.address) {
-        showToast('Wallet already connected', 'Press Disconnect to remove connection');
+        showToast('Кошелёк уже подключён', 'Нажми Disconnect, если хочешь отключить его');
         return;
       }
       try {
         isBusy = true;
-        showToast('Connecting', 'Opening TON wallet list...');
+        showToast('Подключение', 'Открываю список TON-кошельков...');
         await tonConnectUI.openModal();
       } catch (e) {
-        showToast('Error', 'Could not open connect modal');
+        showToast('Ошибка', 'Не удалось открыть окно подключения');
       } finally {
         isBusy = false;
       }
@@ -1068,16 +653,16 @@ body::before{
     async function disconnectWallet(){
       if (isBusy) return;
       if (!tonConnectUI.wallet?.account?.address) {
-        showToast('No connection', 'Wallet is already disconnected');
+        showToast('Нет подключения', 'Кошелёк уже отключён');
         return;
       }
       try {
         isBusy = true;
         await tonConnectUI.disconnect();
         clearWalletData();
-        showToast('Disconnected', 'TON wallet disconnected');
+        showToast('Отключено', 'TON-кошелёк отключён');
       } catch (e) {
-        showToast('Error', 'Could not disconnect wallet');
+        showToast('Ошибка', 'Не удалось отключить кошелёк');
       } finally {
         isBusy = false;
       }
@@ -1086,37 +671,35 @@ body::before{
     async function executeTrade(pair){
       if (isBusy) return;
       if (!tonConnectUI.wallet?.account?.address) {
-        showToast('Connect wallet first', 'Open Wallet tab and connect your TON wallet');
-        openTab('wallet', document.querySelectorAll('.tab')[3]);
+        showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и выполни подключение');
+        openTab('wallet', document.querySelectorAll('.tab')[2]);
         return;
       }
 
       try {
         isBusy = true;
-        maybeHaptic('impact');
-        showToast('Preparing', 'Opening wallet for test TON transaction...');
+        showToast('Подготовка', 'Открываю кошелёк для тестовой TON-транзакции...');
         const tx = {
           validUntil: Math.floor(Date.now() / 1000) + 300,
-          messages: [{ address: TEST_RECEIVER_ADDRESS, amount: '50000000' }]
+          messages: [
+            {
+              address: TEST_RECEIVER_ADDRESS,
+              amount: '50000000'
+            }
+          ]
         };
         const result = await tonConnectUI.sendTransaction(tx);
         console.log('TX result:', result);
-        showToast('Transaction sent', 'Pair: ' + pair);
+        showToast('Транзакция отправлена', 'Пара: ' + pair);
       } catch (e) {
         console.error(e);
-        showToast('Cancelled or error', 'User cancelled or wallet returned an error');
+        showToast('Отмена или ошибка', 'Пользователь отменил операцию или кошелёк вернул ошибку');
       } finally {
         isBusy = false;
       }
     }
 
-    function hideSplash(){
-      document.getElementById('splash').classList.add('hidden');
-    }
-
     applyTelegramProfile();
-    applySettingsUI();
-    document.getElementById('slippageInput').value = localStorage.getItem('vhunt_slippage') || '0.5';
     updateWalletUi(tonConnectUI.wallet);
 
     if (tonConnectUI.wallet?.account?.address) {
@@ -1126,22 +709,12 @@ body::before{
     tonConnectUI.onStatusChange((wallet) => {
       updateWalletUi(wallet);
       if (wallet?.account?.address) {
-        const rawAddr = wallet.account.address;
-        const chain = wallet.account.chain || '—';
-        const friendlyAddr = toFriendlyAddress(rawAddr, chain === '-3');
-        showToast('Success', 'Wallet connected: ' + shortAddress(friendlyAddr));
-        loadWalletData(rawAddr);
+        showToast('Успешно', 'Кошелёк подключён: ' + shortAddress(wallet.account.address));
+        loadWalletData(wallet.account.address);
       }
     }, () => {
-      showToast('Error', 'Wallet status update problem');
+      showToast('Ошибка', 'Проблема при смене статуса кошелька');
     });
-
-    if (tg) {
-      tg.ready();
-      tg.expand();
-    }
-
-    setTimeout(hideSplash, 2200);
   </script>
 </body>
 </html>
