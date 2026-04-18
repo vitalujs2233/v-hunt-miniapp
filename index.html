@@ -53,7 +53,7 @@
       padding:8px 10px;border-radius:18px;background:rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(16px);box-shadow:var(--shadow)
     }
-    .user-avatar,.profile-avatar{
+    .user-avatar,.profile-avatar,.token-icon{
       border-radius:50%;object-fit:cover;background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.15);flex-shrink:0
     }
@@ -127,8 +127,18 @@
     .btn.red{background:linear-gradient(135deg, #ef4444, #ff7a7a);box-shadow:0 14px 30px rgba(255,95,122,.18)}
     .btn.small{padding:12px 14px;font-size:14px;margin-top:10px}
     .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .wallet-balance{font-size:34px;font-weight:900;margin:8px 0 4px;line-height:1}
     .wallet-address{font-size:12px;color:var(--muted);word-break:break-all;margin-top:6px}
+    .wallet-main{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .wallet-state{font-size:36px;font-weight:900;line-height:1}
+    .wallet-network{
+      padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.20)
+    }
+    .wallet-chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .wallet-chip{
+      padding:8px 10px;border-radius:14px;font-size:12px;color:#dce9ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)
+    }
+    .wallet-balance-big{font-size:32px;font-weight:900;line-height:1;margin-top:8px}
+    .balance-sub{font-size:12px;color:var(--muted);margin-top:6px}
     .ref-link{
       margin-top:10px;padding:13px;border-radius:16px;background:rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.08);color:#dce9ff;font-size:13px;word-break:break-all
@@ -146,19 +156,28 @@
       display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
       font-size:11px;font-weight:700;margin-top:8px;background:rgba(45,247,161,.10);border:1px solid rgba(45,247,161,.22);color:#b7ffe1
     }
-    .wallet-main{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-    .wallet-state{font-size:36px;font-weight:900;line-height:1}
-    .wallet-network{
-      padding:8px 12px;border-radius:999px;font-size:12px;color:#e8f7ff;background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.20)
-    }
-    .wallet-chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    .wallet-chip{
-      padding:8px 10px;border-radius:14px;font-size:12px;color:#dce9ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)
-    }
     .notice{
       margin-top:12px;padding:12px 14px;border-radius:16px;font-size:13px;line-height:1.45;
       background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#dce9ff
     }
+    .subcard-title{font-size:15px;font-weight:800;margin-bottom:10px}
+    .asset-list,.tx-list{display:flex;flex-direction:column;gap:10px}
+    .asset-item,.tx-item{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:12px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)
+    }
+    .asset-left,.tx-left{display:flex;align-items:center;gap:10px;min-width:0}
+    .token-icon{width:34px;height:34px}
+    .asset-name,.tx-name{font-weight:700}
+    .asset-sub,.tx-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+    .asset-amount,.tx-status{font-weight:800}
+    .empty-state{color:var(--muted);font-size:13px;padding:6px 0}
+    .loading-shimmer{
+      height:52px;border-radius:16px;
+      background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.12), rgba(255,255,255,.05));
+      background-size:200% 100%;animation:shimmer 1.2s linear infinite
+    }
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
     .toast{
       position:fixed;left:16px;right:16px;bottom:98px;z-index:60;
       padding:12px 14px;border-radius:16px;background:rgba(9,15,26,.92);border:1px solid rgba(255,255,255,.12);
@@ -186,6 +205,7 @@
       .hero-title{font-size:24px}
       .user-badge{max-width:150px}
       .wallet-main{flex-direction:column}
+      .asset-sub,.tx-sub{max-width:120px}
     }
   </style>
 </head>
@@ -284,7 +304,7 @@
       </div>
       <div class="card">
         <div class="muted">Referral Balance</div>
-        <div class="wallet-balance">12.50 TON</div>
+        <div class="wallet-balance-big">12.50 TON</div>
         <button class="btn green" onclick="withdrawReferral()">Withdraw Rewards</button>
       </div>
     </section>
@@ -292,7 +312,7 @@
     <section id="wallet" class="section">
       <div class="section-title-row">
         <h2 class="section-title">Wallet Terminal</h2>
-        <div class="mini-tag">TON Connect</div>
+        <div class="mini-tag">TON Connect + TONAPI</div>
       </div>
 
       <div class="profile-card">
@@ -311,6 +331,8 @@
             <div class="muted">Connected Wallet</div>
             <div id="walletStatus" class="wallet-state">Not connected</div>
             <div id="walletAddress" class="wallet-address">Нажми Connect Wallet, чтобы подключить TON-кошелёк</div>
+            <div id="walletBalanceBig" class="wallet-balance-big">0.0000 TON</div>
+            <div class="balance-sub">Баланс подтягивается автоматически после подключения</div>
           </div>
           <div id="walletNetwork" class="wallet-network">TON</div>
         </div>
@@ -318,6 +340,7 @@
         <div class="wallet-chip-row">
           <div id="walletChainChip" class="wallet-chip">Chain: —</div>
           <div id="walletShortChip" class="wallet-chip">Address: —</div>
+          <div id="walletApiChip" class="wallet-chip">Data: waiting</div>
         </div>
 
         <div class="button-grid">
@@ -326,7 +349,21 @@
         </div>
 
         <div class="notice">
-          Кнопка Test Execute отправляет тестовую TON-транзакцию через подключённый кошелёк.
+          Баланс, jettons и история теперь подтягиваются прямо из TONAPI без отдельного backend.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="subcard-title">Jettons</div>
+        <div id="jettonsList" class="asset-list">
+          <div class="empty-state">Подключи кошелёк, чтобы увидеть монеты</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="subcard-title">Recent Activity</div>
+        <div id="eventsList" class="tx-list">
+          <div class="empty-state">История появится после подключения кошелька</div>
         </div>
       </div>
     </section>
@@ -372,8 +409,12 @@
     const tg = window.Telegram?.WebApp;
     let isBusy = false;
 
-    // ВСТАВЬ СЮДА СВОЙ TON-АДРЕС ДЛЯ ТЕСТОВОЙ ТРАНЗАКЦИИ
+    // МОЖЕШЬ ОСТАВИТЬ СВОЙ АДРЕС ДЛЯ TEST EXECUTE
     const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
+
+    // ЕСЛИ ЕСТЬ TONAPI KEY — ВСТАВЬ ЕГО СЮДА
+    // ЕСЛИ НЕТ — ОСТАВЬ ПУСТО
+    const TONAPI_KEY = '';
 
     function fallbackAvatar(name){
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Trader')}&background=1e293b&color=fff`;
@@ -443,6 +484,121 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
+    function tonApiHeaders(){
+      const headers = { 'Accept': 'application/json' };
+      if (TONAPI_KEY) headers['Authorization'] = 'Bearer ' + TONAPI_KEY;
+      return headers;
+    }
+
+    async function tonApiFetch(path){
+      const response = await fetch('https://tonapi.io' + path, {
+        headers: tonApiHeaders()
+      });
+      if (!response.ok) {
+        throw new Error('TONAPI ' + response.status);
+      }
+      return response.json();
+    }
+
+    function renderJettons(jettons){
+      const root = document.getElementById('jettonsList');
+      if (!jettons || !jettons.length) {
+        root.innerHTML = '<div class="empty-state">Jettons не найдены</div>';
+        return;
+      }
+
+      root.innerHTML = jettons.map(item => {
+        const meta = item.jetton || {};
+        const symbol = meta.symbol || meta.name || 'JETTON';
+        const decimals = Number(meta.decimals ?? 9);
+        const rawBalance = item.balance || '0';
+        let amount = '0';
+        try {
+          amount = (Number(rawBalance) / Math.pow(10, decimals)).toFixed(4);
+        } catch (e) {
+          amount = '0';
+        }
+        const img = meta.image || meta.image_url || fallbackAvatar(symbol);
+        return `
+          <div class="asset-item">
+            <div class="asset-left">
+              <img class="token-icon" src="${img}" alt="${symbol}" />
+              <div>
+                <div class="asset-name">${symbol}</div>
+                <div class="asset-sub">${meta.name || symbol}</div>
+              </div>
+            </div>
+            <div class="asset-amount">${amount}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderEvents(events){
+      const root = document.getElementById('eventsList');
+      if (!events || !events.length) {
+        root.innerHTML = '<div class="empty-state">Транзакции не найдены</div>';
+        return;
+      }
+
+      root.innerHTML = events.slice(0, 10).map(event => {
+        const action = Array.isArray(event.actions) && event.actions.length ? event.actions[0] : null;
+        const name = action?.simple_preview?.name || action?.type || 'Transaction';
+        const status = event.in_progress ? 'pending' : 'confirmed';
+        const date = event.timestamp ? new Date(event.timestamp * 1000).toLocaleString() : '—';
+
+        return `
+          <div class="tx-item">
+            <div class="tx-left">
+              <div>
+                <div class="tx-name">${name}</div>
+                <div class="tx-sub">${date}</div>
+              </div>
+            </div>
+            <div class="tx-status">${status}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showWalletLoading(){
+      document.getElementById('walletApiChip').textContent = 'Data: loading';
+      document.getElementById('jettonsList').innerHTML = '<div class="loading-shimmer"></div><div class="loading-shimmer"></div>';
+      document.getElementById('eventsList').innerHTML = '<div class="loading-shimmer"></div><div class="loading-shimmer"></div>';
+    }
+
+    function clearWalletData(){
+      document.getElementById('walletBalanceBig').textContent = '0.0000 TON';
+      document.getElementById('walletApiChip').textContent = 'Data: waiting';
+      document.getElementById('jettonsList').innerHTML = '<div class="empty-state">Подключи кошелёк, чтобы увидеть монеты</div>';
+      document.getElementById('eventsList').innerHTML = '<div class="empty-state">История появится после подключения кошелька</div>';
+    }
+
+    async function loadWalletData(address){
+      try {
+        showWalletLoading();
+
+        const [accountData, jettonsData, eventsData] = await Promise.all([
+          tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}`),
+          tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}/jettons`),
+          tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}/events?limit=10`)
+        ]);
+
+        const tonBalance = ((Number(accountData.balance || 0)) / 1e9).toFixed(4);
+        document.getElementById('walletBalanceBig').textContent = tonBalance + ' TON';
+        document.getElementById('walletApiChip').textContent = 'Data: loaded';
+
+        renderJettons(jettonsData.balances || jettonsData.jetton_balances || []);
+        renderEvents(eventsData.events || []);
+      } catch (e) {
+        console.error(e);
+        document.getElementById('walletApiChip').textContent = 'Data: error';
+        document.getElementById('jettonsList').innerHTML = '<div class="empty-state">Не удалось загрузить jettons</div>';
+        document.getElementById('eventsList').innerHTML = '<div class="empty-state">Не удалось загрузить историю</div>';
+        showToast('Ошибка загрузки', 'Не удалось подтянуть баланс или историю');
+      }
+    }
+
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
       manifestUrl: 'https://vitalujs2233.github.io/v-hunt-miniapp/tonconnect-manifest.json'
     });
@@ -473,6 +629,7 @@
         connectBtn.textContent = 'Connect Wallet';
         connectBtn.classList.remove('secondary');
         disconnectBtn.style.display = 'none';
+        clearWalletData();
       }
     }
 
@@ -502,6 +659,7 @@
       try {
         isBusy = true;
         await tonConnectUI.disconnect();
+        clearWalletData();
         showToast('Отключено', 'TON-кошелёк отключён');
       } catch (e) {
         showToast('Ошибка', 'Не удалось отключить кошелёк');
@@ -515,10 +673,6 @@
       if (!tonConnectUI.wallet?.account?.address) {
         showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и выполни подключение');
         openTab('wallet', document.querySelectorAll('.tab')[2]);
-        return;
-      }
-      if (TEST_RECEIVER_ADDRESS.startsWith('UQAAAAAA')) {
-        showToast('Нужен твой адрес', 'Вставь свой TON-адрес в TEST_RECEIVER_ADDRESS внутри index.html');
         return;
       }
 
@@ -548,10 +702,15 @@
     applyTelegramProfile();
     updateWalletUi(tonConnectUI.wallet);
 
+    if (tonConnectUI.wallet?.account?.address) {
+      loadWalletData(tonConnectUI.wallet.account.address);
+    }
+
     tonConnectUI.onStatusChange((wallet) => {
       updateWalletUi(wallet);
       if (wallet?.account?.address) {
         showToast('Успешно', 'Кошелёк подключён: ' + shortAddress(wallet.account.address));
+        loadWalletData(wallet.account.address);
       }
     }, () => {
       showToast('Ошибка', 'Проблема при смене статуса кошелька');
