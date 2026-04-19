@@ -1241,7 +1241,10 @@
             </div>
             <div class="deal-flow">
               <div class="pair">${pair}</div>
-              <div class="deal-route">Buy @ ${buyPrice} → Sell @ ${sellPrice}</div>
+             <div class="deal-route">
+Buy: 1 ${pair.split("/")[0]} = ${Number(buyPrice).toLocaleString(undefined, { maximumFractionDigits: 8 })} ${pair.split("/")[1]}<br>
+Sell: 1 ${pair.split("/")[0]} = ${Number(sellPrice).toLocaleString(undefined, { maximumFractionDigits: 8 })} ${pair.split("/")[1]}
+</div>
             </div>
             <div class="profit-badge">+${netSpread}%</div>
           </div>
