@@ -36,9 +36,6 @@ async function getLiveOmnistonDeals() {
       apiUrl: "wss://omni-ws.ston.fi",
     });
 
-    // Текущий live starter:
-    // STON / USDT
-    // Потом можно добавить NOT / DOGS / другие пары
     const STON_ADDRESS = "EQA2kCVNwVsil2EM2mB0SkXytxCqQjS4mttjDpnXmwG9T6bO";
     const USDT_ADDRESS = "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs";
 
@@ -57,7 +54,7 @@ async function getLiveOmnistonDeals() {
             address: USDT_ADDRESS,
           },
           amount: {
-            bidUnits: "1000000", // 1 USDT
+            bidUnits: "1000000",
           },
           settlementParams: {
             maxPriceSlippageBps: 0,
@@ -78,7 +75,6 @@ async function getLiveOmnistonDeals() {
                 const askUnits = Number(quote.askUnits || 0);
                 const bidUnits = Number(quote.bidUnits || 0);
 
-                // STON ~ 9 decimals, USDT ~ 6 decimals
                 const stonAmount = askUnits / 1e9;
                 const usdtAmount = bidUnits / 1e6;
 
@@ -137,9 +133,6 @@ async function getLiveOmnistonDeals() {
   }
 }
 
-/**
- * Простой helper для TONAPI
- */
 async function tonApiFetch(pathname) {
   const headers = {
     Accept: "application/json",
@@ -171,9 +164,6 @@ function shortenAddress(address) {
   return `${address.slice(0, 6)}...${address.slice(-6)}`;
 }
 
-/**
- * Нормализация jettons
- */
 function normalizeJettons(payload) {
   const balances = payload?.balances || payload?.jetton_balances || [];
   return balances.map((item) => {
@@ -201,9 +191,6 @@ function normalizeJettons(payload) {
   });
 }
 
-/**
- * Нормализация событий / истории
- */
 function normalizeEvents(payload) {
   const events = payload?.events || [];
   return events.slice(0, 10).map((event) => {
@@ -222,9 +209,6 @@ function normalizeEvents(payload) {
   });
 }
 
-/**
- * Простой helper для fallback scanner deals
- */
 function calculateNetSpread(buyPrice, sellPrice, capitalTon = 10) {
   const dexFeeBuy = buyPrice * 0.003;
   const dexFeeSell = sellPrice * 0.003;
@@ -246,20 +230,14 @@ function calculateNetSpread(buyPrice, sellPrice, capitalTon = 10) {
   };
 }
 
-/**
- * GET /
- */
 app.get("/", (_req, res) => {
   res.json({
     ok: true,
     service: "V-HUNT backend",
-    version: "1.1.0",
+    version: "1.2.0",
   });
 });
 
-/**
- * GET /api/health
- */
 app.get("/api/health", (_req, res) => {
   res.json({
     ok: true,
@@ -267,20 +245,15 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
-/**
- * GET /api/scanner/live
- *
- * Сначала пробуем реальный live quote через STON Omniston.
- * Если он не пришёл — отдаём fallback deals,
- * чтобы фронт всегда показывал что-то рабочее.
- */
-app.get("/api/scanner/live", async (_req, res) => {
-  return res.json({
+app.get("/api/check-new", (_req, res) => {
+  res.json({
     ok: true,
     source: "CHECK-NEW-SERVER",
-    time: Date.now()
+    time: Date.now(),
   });
 });
+
+app.get("/api/scanner/live", async (_req, res) => {
   try {
     const liveDeals = await getLiveOmnistonDeals();
 
@@ -325,7 +298,7 @@ app.get("/api/scanner/live", async (_req, res) => {
       },
     ];
 
-    res.json({
+    return res.json({
       ok: true,
       source: "mock-fallback",
       deals,
@@ -333,23 +306,13 @@ app.get("/api/scanner/live", async (_req, res) => {
   } catch (error) {
     console.error("scanner live error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: error.message || "internal server error",
     });
   }
 });
 
-/**
- * GET /api/wallet/overview?address=...
- *
- * Возвращает:
- * - address
- * - shortAddress
- * - TON balance
- * - jettons
- * - recent events
- */
 app.get("/api/wallet/overview", async (req, res) => {
   try {
     const { address } = req.query;
@@ -380,21 +343,17 @@ app.get("/api/wallet/overview", async (req, res) => {
       recentEvents: normalizeEvents(eventsData),
     };
 
-    res.json(result);
+    return res.json(result);
   } catch (error) {
     console.error("wallet overview error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: error.message || "internal server error",
     });
   }
 });
 
-/**
- * GET /api/wallet/balance?address=...
- * Только баланс TON
- */
 app.get("/api/wallet/balance", async (req, res) => {
   try {
     const { address } = req.query;
@@ -408,7 +367,7 @@ app.get("/api/wallet/balance", async (req, res) => {
 
     const accountData = await tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}`);
 
-    res.json({
+    return res.json({
       ok: true,
       address,
       tonBalance: toTon(accountData?.balance),
@@ -418,16 +377,13 @@ app.get("/api/wallet/balance", async (req, res) => {
   } catch (error) {
     console.error("wallet balance error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: error.message || "internal server error",
     });
   }
 });
 
-/**
- * GET /api/wallet/jettons?address=...
- */
 app.get("/api/wallet/jettons", async (req, res) => {
   try {
     const { address } = req.query;
@@ -441,7 +397,7 @@ app.get("/api/wallet/jettons", async (req, res) => {
 
     const jettonsData = await tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}/jettons`);
 
-    res.json({
+    return res.json({
       ok: true,
       address,
       jettons: normalizeJettons(jettonsData),
@@ -449,16 +405,13 @@ app.get("/api/wallet/jettons", async (req, res) => {
   } catch (error) {
     console.error("wallet jettons error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: error.message || "internal server error",
     });
   }
 });
 
-/**
- * GET /api/wallet/events?address=...
- */
 app.get("/api/wallet/events", async (req, res) => {
   try {
     const { address } = req.query;
@@ -472,7 +425,7 @@ app.get("/api/wallet/events", async (req, res) => {
 
     const eventsData = await tonApiFetch(`/v2/accounts/${encodeURIComponent(address)}/events?limit=10`);
 
-    res.json({
+    return res.json({
       ok: true,
       address,
       recentEvents: normalizeEvents(eventsData),
@@ -480,7 +433,7 @@ app.get("/api/wallet/events", async (req, res) => {
   } catch (error) {
     console.error("wallet events error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: error.message || "internal server error",
     });
@@ -490,4 +443,3 @@ app.get("/api/wallet/events", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`V-HUNT backend started on port ${PORT}`);
 });
-// force redeploy 1
