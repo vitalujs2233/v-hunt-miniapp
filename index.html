@@ -801,15 +801,14 @@
         const minAmountTon = getMinTradeAmount(pair);
         const effectiveAmount = savedAmount >= minAmountTon ? savedAmount : minAmountTon;
         const stateKey = getRoundtripStateKey(pair, effectiveAmount);
-        const rt = roundtripState[stateKey];
+        const roundtrip = roundtripState[stateKey];
 
-        if (rt && rt.ok) {
-          totalProfitTon += Number(rt.estimatedProfitTon || 0);
-          if (rt.canExecute) profitableDeals += 1;
+        if (roundtrip && roundtrip.ok) {
+          totalProfitTon += Number(roundtrip.estimatedProfitTon || 0);
+          if (roundtrip.canExecute) profitableDeals += 1;
         } else {
-          const fallbackProfit = calculateEstimatedProfitTon(deal.netSpreadPercent, effectiveAmount);
-          totalProfitTon += fallbackProfit;
-          if (Number(deal.netSpreadPercent || 0) > 0) profitableDeals += 1;
+          totalProfitTon += Number(deal.estimatedProfitTon || 0);
+          if (deal.canExecute) profitableDeals += 1;
         }
       });
 
@@ -829,11 +828,13 @@
       if (countEl) countEl.textContent = count + ' deals live';
     }
 
-    function handleAmountInput(pair, netSpreadPercent, inputId, profitId, badgeId, statusId, buttonId, feesId){
+    function handleAmountInput(pair, inputId, profitId, badgeId, statusId, buttonId, feesId){
       const input = document.getElementById(inputId);
       const profitEl = document.getElementById(profitId);
+      const badgeEl = document.getElementById(badgeId);
       const statusEl = document.getElementById(statusId);
       const btnEl = document.getElementById(buttonId);
+      const feesEl = document.getElementById(feesId);
       if (!input || !profitEl) return;
 
       rememberTradeAmount(pair, input.value);
@@ -843,7 +844,9 @@
 
       if (!amountTon || amountTon < minAmountTon) {
         profitEl.textContent = 'Мин. ' + minAmountTon + ' TON';
+        if (badgeEl) badgeEl.textContent = '—';
         if (statusEl) statusEl.textContent = 'MIN AMOUNT';
+        if (feesEl) feesEl.textContent = 'Введите сумму от ' + minAmountTon + ' TON';
         if (btnEl) {
           btnEl.disabled = true;
           btnEl.textContent = 'Min amount';
@@ -890,11 +893,10 @@
 
     async function refreshRoundtripUi(pair, amountTon, elements){
       const stateKey = getRoundtripStateKey(pair, amountTon);
+
       try {
         const data = await fetchRoundtripQuote(pair, amountTon);
         roundtripState[stateKey] = data;
-
-        if (!elements || !document.getElementById(elements.profitId)) return;
 
         const profitEl = document.getElementById(elements.profitId);
         const badgeEl = document.getElementById(elements.badgeId);
@@ -902,34 +904,34 @@
         const btnEl = document.getElementById(elements.buttonId);
         const feesEl = document.getElementById(elements.feesId);
 
+        if (!profitEl || !badgeEl || !statusEl || !btnEl || !feesEl) return;
+
         if (!data.ok) {
-          if (profitEl) profitEl.textContent = 'Нет quote';
-          if (statusEl) statusEl.textContent = 'QUOTE ERROR';
-          if (btnEl) {
-            btnEl.disabled = true;
-            btnEl.textContent = 'No quote';
-            btnEl.style.opacity = '0.6';
-          }
-          if (feesEl) feesEl.textContent = 'Не удалось получить расчёт';
+          profitEl.textContent = 'Нет quote';
+          badgeEl.textContent = '—';
+          statusEl.textContent = 'QUOTE ERROR';
+          feesEl.textContent = 'Не удалось получить расчёт';
+          btnEl.disabled = true;
+          btnEl.textContent = 'No quote';
+          btnEl.style.opacity = '0.6';
+          updateSummaryFromInputs();
           return;
         }
 
-        if (profitEl) profitEl.textContent = Number(data.estimatedProfitTon || 0).toFixed(3) + ' TON';
-        if (badgeEl) {
-          const pct = Number(data.estimatedProfitPercent || 0).toFixed(2);
-          badgeEl.textContent = (Number(pct) > 0 ? '+' : '') + pct + '%';
-        }
-        if (statusEl) statusEl.textContent = data.canExecute ? 'EXECUTE OK' : 'NO PROFIT';
-        if (feesEl) {
-          feesEl.textContent = 'DEX: ' + Number(data.dexFeeTon || 0).toFixed(3)
-            + ' TON · Gas: ' + Number(data.gasFeeTon || 0).toFixed(3)
-            + ' TON · Fee: ' + Number(data.serviceFeeTon || 0).toFixed(3) + ' TON';
-        }
-        if (btnEl) {
-          btnEl.disabled = !data.canExecute;
-          btnEl.textContent = data.canExecute ? 'Execute' : 'No profit';
-          btnEl.style.opacity = data.canExecute ? '1' : '0.6';
-        }
+        const profitTon = Number(data.estimatedProfitTon || 0);
+        const profitPct = Number(data.estimatedProfitPercent || 0);
+
+        profitEl.textContent = profitTon.toFixed(3) + ' TON';
+        badgeEl.textContent = (profitPct > 0 ? '+' : '') + profitPct.toFixed(2) + '%';
+        statusEl.textContent = data.canExecute ? 'EXECUTE OK' : 'NO PROFIT';
+        feesEl.textContent =
+          'DEX: ' + Number(data.dexFeeTon || 0).toFixed(3) +
+          ' TON · Gas: ' + Number(data.gasFeeTon || 0).toFixed(3) +
+          ' TON · Fee: ' + Number(data.serviceFeeTon || 0).toFixed(3) + ' TON';
+
+        btnEl.disabled = !data.canExecute;
+        btnEl.textContent = data.canExecute ? 'Execute' : 'No profit';
+        btnEl.style.opacity = data.canExecute ? '1' : '0.6';
 
         updateSummaryFromInputs();
       } catch (error) {
@@ -938,11 +940,11 @@
     }
 
     function scheduleRoundtripRefresh(pair, amountTon, elements){
-      const timerKey = pair;
-      if (roundtripTimers[timerKey]) {
-        clearTimeout(roundtripTimers[timerKey]);
+      if (roundtripTimers[pair]) {
+        clearTimeout(roundtripTimers[pair]);
       }
-      roundtripTimers[timerKey] = setTimeout(() => {
+
+      roundtripTimers[pair] = setTimeout(() => {
         refreshRoundtripUi(pair, amountTon, elements);
       }, 350);
     }
@@ -1364,16 +1366,19 @@
         const [baseSymbol, quoteSymbol] = pair.split('/');
         const buyPrice = Number(deal.buyPrice ?? 0);
         const sellPrice = Number(deal.sellPrice ?? 0);
-        const netSpreadValue = Number(deal.netSpreadPercent ?? 0);
-        const netSpread = netSpreadValue.toFixed(2);
+        const initialProfitTon = Number(deal.estimatedProfitTon ?? 0);
+        const initialProfitPercent = Number(deal.estimatedProfitPercent ?? deal.netSpreadPercent ?? 0);
         const risk = deal.risk || 'low';
-        const verified = deal.verified ? 'OK' : 'Check';
+        const verified = deal.canExecute ? 'EXECUTE OK' : (deal.verified ? 'OK' : 'NO PROFIT');
         const minAmountTon = getMinTradeAmount(pair);
         const savedAmount = getRememberedTradeAmount(pair);
-        const inputId = 'amount-' + pair.replace('/', '-');
-        const profitId = 'profit-' + pair.replace('/', '-');
-        const initialAmountTon = Number(savedAmount || 0) >= minAmountTon ? Number(savedAmount || 0) : minAmountTon;
-        const estProfit = calculateEstimatedProfitTon(netSpreadValue, initialAmountTon).toFixed(3);
+        const safePairId = pair.replace('/', '-');
+        const inputId = 'amount-' + safePairId;
+        const profitId = 'profit-' + safePairId;
+        const badgeId = 'badge-' + safePairId;
+        const statusId = 'status-' + safePairId;
+        const buttonId = 'button-' + safePairId;
+        const feesId = 'fees-' + safePairId;
 
         card.innerHTML = `
           <div class="deal-header">
@@ -1388,16 +1393,16 @@
                 Sell: 1 ${baseSymbol} = ${sellPrice.toLocaleString(undefined, { maximumFractionDigits: 8 })} ${quoteSymbol}
               </div>
             </div>
-            <div class="profit-badge" id="${badgeId}">+${netSpread}%</div>
+            <div class="profit-badge" id="${badgeId}">${initialProfitPercent > 0 ? '+' : ''}${initialProfitPercent.toFixed(2)}%</div>
           </div>
           <div class="metrics">
-            <div class="metric"><div class="metric-label">Profit</div><div class="metric-value" id="${profitId}">${estProfit} TON</div></div>
+            <div class="metric"><div class="metric-label">Real Profit</div><div class="metric-value" id="${profitId}">${initialProfitTon.toFixed(3)} TON</div></div>
             <div class="metric"><div class="metric-label">Risk</div><div class="metric-value">${risk}</div></div>
             <div class="metric"><div class="metric-label">Status</div><div class="metric-value" id="${statusId}">${verified}</div></div>
           </div>
           <div style="margin-top:10px;">
             <div class="muted" style="margin-bottom:6px;">Минимум: ${minAmountTon} TON</div>
-            <div class="muted" id="${feesId}" style="margin-bottom:6px;">Проверяю комиссии...</div>
+            <div class="muted" id="${feesId}" style="margin-bottom:6px;">DEX: ${Number(deal.dexFeeTon || 0).toFixed(3)} TON · Gas: ${Number(deal.gasFeeTon || 0).toFixed(3)} TON · Fee: ${Number(deal.serviceFeeTon || 0).toFixed(3)} TON</div>
             <input
               class="input"
               id="${inputId}"
@@ -1408,14 +1413,14 @@
               placeholder="Введите сумму в TON"
               onfocus="startEditingAmount()"
               onblur="stopEditingAmountSoon()"
-              oninput="handleAmountInput('${pair}', ${netSpread}, '${inputId}', '${profitId}', '${badgeId}', '${statusId}', '${buttonId}', '${feesId}')"
+              oninput="handleAmountInput('${pair}', '${inputId}', '${profitId}', '${badgeId}', '${statusId}', '${buttonId}', '${feesId}')"
             />
-            <button class="btn" id="${buttonId}" onclick="executeTrade('${pair}', '${inputId}')">Execute</button>
+            <button class="btn" id="${buttonId}" onclick="executeTrade('${pair}', '${inputId}')" ${deal.canExecute ? '' : 'disabled style="opacity:0.6;"'}>${deal.canExecute ? 'Execute' : 'No profit'}</button>
           </div>
         `;
 
         scannerSection.appendChild(card);
-        handleAmountInput(pair, netSpreadValue, inputId, profitId);
+        handleAmountInput(pair, inputId, profitId, badgeId, statusId, buttonId, feesId);
       });
     }
 
