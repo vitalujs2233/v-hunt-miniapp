@@ -998,29 +998,55 @@
       }
     }
 
-    async function executeTrade(pair){
+    async function executeTrade(pair, amountInputId){
       if (isBusy) return;
+
       if (!tonConnectUI.wallet?.account?.address) {
-        showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и выполни подключение');
+        showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и подключи TON-кошелёк');
         openTab('wallet', document.querySelectorAll('.tab')[2]);
+        return;
+      }
+
+      const amountInput = document.getElementById(amountInputId);
+      const amountTon = Number(amountInput?.value || 0);
+
+      if (!amountTon || amountTon <= 0) {
+        showToast('Ошибка суммы', 'Введи сумму больше 0 TON');
+        return;
+      }
+
+      if (amountTon < 0.5) {
+        showToast('Слишком мало', 'Минимальная тестовая сумма 0.5 TON');
         return;
       }
 
       try {
         isBusy = true;
-        showToast('Подготовка', 'Открываю кошелёк для тестовой TON-транзакции...');
+
+        showToast(
+          'Подготовка сделки',
+          `Пара: ${pair}, сумма: ${amountTon} TON`
+        );
+
+        const nanoAmount = String(Math.floor(amountTon * 1e9));
+
         const tx = {
           validUntil: Math.floor(Date.now() / 1000) + 300,
           messages: [
             {
               address: TEST_RECEIVER_ADDRESS,
-              amount: '50000000'
+              amount: nanoAmount
             }
           ]
         };
+
         const result = await tonConnectUI.sendTransaction(tx);
         console.log('TX result:', result);
-        showToast('Транзакция отправлена', 'Пара: ' + pair);
+
+        showToast(
+          'Тестовая отправка выполнена',
+          `${amountTon} TON подготовлены для пары ${pair}`
+        );
       } catch (e) {
         console.error(e);
         showToast('Отмена или ошибка', 'Пользователь отменил операцию или кошелёк вернул ошибку');
@@ -1147,7 +1173,18 @@
             <div class="metric"><div class="metric-label">Risk</div><div class="metric-value">${risk}</div></div>
             <div class="metric"><div class="metric-label">Status</div><div class="metric-value">${verified}</div></div>
           </div>
-          <button class="btn" onclick="executeTrade('${pair}')">Execute</button>
+          <div style="margin-top:10px;">
+            <input
+              class="input"
+              id="amount-${pair.replace('/', '-')}"
+              type="number"
+              min="0.1"
+              step="0.1"
+              value="10"
+              placeholder="Введите сумму в TON"
+            />
+            <button class="btn" onclick="executeTrade('${pair}', 'amount-${pair.replace('/', '-')}')">Execute</button>
+          </div>
         `;
 
         scannerSection.appendChild(card);
