@@ -725,6 +725,33 @@
 
     const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
     const TONAPI_KEY = '';
+    const tradeAmounts = {};
+
+    function getMinTradeAmount(pair){
+      const limits = {
+        'TON/USDT': 1
+      };
+      return limits[pair] || 1;
+    }
+
+    function rememberTradeAmount(pair, value){
+      tradeAmounts[pair] = value;
+      try {
+        localStorage.setItem('vhunt_amount_' + pair, value);
+      } catch (e) {}
+    }
+
+    function getRememberedTradeAmount(pair){
+      if (tradeAmounts[pair] !== undefined) return tradeAmounts[pair];
+      try {
+        const saved = localStorage.getItem('vhunt_amount_' + pair);
+        if (saved !== null) {
+          tradeAmounts[pair] = saved;
+          return saved;
+        }
+      } catch (e) {}
+      return '10';
+    }
 
     function fallbackAvatar(name){
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Trader')}&background=1e293b&color=fff`;
@@ -1009,16 +1036,19 @@
 
       const amountInput = document.getElementById(amountInputId);
       const amountTon = Number(amountInput?.value || 0);
+      const minAmountTon = getMinTradeAmount(pair);
 
       if (!amountTon || amountTon <= 0) {
         showToast('Ошибка суммы', 'Введи сумму больше 0 TON');
         return;
       }
 
-      if (amountTon < 0.5) {
-        showToast('Слишком мало', 'Минимальная тестовая сумма 0.5 TON');
+      if (amountTon < minAmountTon) {
+        showToast('Слишком мало', `Минимальная сумма для ${pair}: ${minAmountTon} TON`);
         return;
       }
+
+      rememberTradeAmount(pair, String(amountTon));
 
       try {
         isBusy = true;
@@ -1152,6 +1182,8 @@
         const estProfit = Number(deal.estimatedProfitTon ?? 0).toFixed(3);
         const risk = deal.risk || 'low';
         const verified = deal.verified ? 'OK' : 'Check';
+        const minAmountTon = getMinTradeAmount(pair);
+        const savedAmount = getRememberedTradeAmount(pair);
 
         card.innerHTML = `
           <div class="deal-header">
@@ -1174,14 +1206,16 @@
             <div class="metric"><div class="metric-label">Status</div><div class="metric-value">${verified}</div></div>
           </div>
           <div style="margin-top:10px;">
+            <div class="muted" style="margin-bottom:6px;">Минимум: ${minAmountTon} TON</div>
             <input
               class="input"
               id="amount-${pair.replace('/', '-')}"
               type="number"
-              min="0.1"
+              min="${minAmountTon}"
               step="0.1"
-              value="10"
+              value="${savedAmount}"
               placeholder="Введите сумму в TON"
+              oninput="rememberTradeAmount('${pair}', this.value)"
             />
             <button class="btn" onclick="executeTrade('${pair}', 'amount-${pair.replace('/', '-')}')">Execute</button>
           </div>
