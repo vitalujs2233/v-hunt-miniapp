@@ -1253,6 +1253,8 @@
       try {
         isBusy = true;
 
+        const walletAddress = tonConnectUI.wallet?.account?.address;
+
         showToast(
           'Проверка сделки',
           `Считаю roundtrip для ${pair} на ${amountTon} TON`
@@ -1283,18 +1285,41 @@
         }
 
         showToast(
-          'Сделка разрешена',
-          `Профит: +${quoteData.estimatedProfitTon} TON. Открываю кошелёк...`
+          'Подготовка STON BUY',
+          `Готовлю реальную покупку ${pair} на ${amountTon} TON`
         );
 
-        const nanoAmount = String(Math.floor(amountTon * 1e9));
+        const buyResponse = await fetch(
+          BACKEND_URL
+            + '/api/tx/ston-buy?pair=' + encodeURIComponent(pair)
+            + '&amount=' + encodeURIComponent(amountTon)
+            + '&wallet=' + encodeURIComponent(walletAddress)
+        );
+
+        if (!buyResponse.ok) {
+          throw new Error('STON BUY API ' + buyResponse.status);
+        }
+
+        const buyData = await buyResponse.json();
+        console.log('ston buy tx:', buyData);
+
+        if (!buyData.ok || !buyData.tonConnectMessage) {
+          showToast('Ошибка STON BUY', buyData.error || 'Не удалось подготовить реальную покупку');
+          return;
+        }
+
+        showToast(
+          'Открываю кошелёк',
+          `Подтверди покупку ${pair} на ${amountTon} TON`
+        );
 
         const tx = {
-          validUntil: Math.floor(Date.now() / 1000) + 300,
+          validUntil: Math.floor(Date.now() / 1000) + 600,
           messages: [
             {
-              address: TEST_RECEIVER_ADDRESS,
-              amount: nanoAmount
+              address: buyData.tonConnectMessage.address,
+              amount: buyData.tonConnectMessage.amount,
+              payload: buyData.tonConnectMessage.payload
             }
           ]
         };
@@ -1303,12 +1328,12 @@
         console.log('TX result:', result);
 
         showToast(
-          'Тестовая отправка выполнена',
-          `${amountTon} TON подтверждены для пары ${pair}`
+          'STON BUY отправлен',
+          `${amountTon} TON отправлены в swap ${pair}`
         );
       } catch (e) {
         console.error(e);
-        showToast('Отмена или ошибка', 'Пользователь отменил операцию или кошелёк вернул ошибку');
+        showToast('Отмена или ошибка', e?.message || 'Пользователь отменил операцию или кошелёк вернул ошибку');
       } finally {
         isBusy = false;
       }
