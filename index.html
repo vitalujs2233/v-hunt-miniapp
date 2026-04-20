@@ -1285,8 +1285,8 @@
         }
 
         showToast(
-          'Подготовка STON BUY',
-          `Готовлю реальную покупку ${pair} на ${amountTon} TON`
+          'Шаг 1 из 2',
+          `Готовлю BUY ${pair} на ${amountTon} TON`
         );
 
         const buyResponse = await fetch(
@@ -1309,11 +1309,11 @@
         }
 
         showToast(
-          'Открываю кошелёк',
-          `Подтверди покупку ${pair} на ${amountTon} TON`
+          'Подтверди BUY',
+          `Покупка ${pair} на ${amountTon} TON`
         );
 
-        const tx = {
+        await tonConnectUI.sendTransaction({
           validUntil: Math.floor(Date.now() / 1000) + 600,
           messages: [
             {
@@ -1322,14 +1322,58 @@
               payload: buyData.tonConnectMessage.payload
             }
           ]
-        };
+        });
 
-        const result = await tonConnectUI.sendTransaction(tx);
-        console.log('TX result:', result);
+        const sellJettonAmount = Number(quoteData.expectedTokenOut || 0);
+
+        if (!sellJettonAmount || sellJettonAmount <= 0) {
+          showToast('BUY выполнен', 'Не удалось вычислить сумму для SELL. Запусти SELL отдельно.');
+          return;
+        }
 
         showToast(
-          'STON BUY отправлен',
-          `${amountTon} TON отправлены в swap ${pair}`
+          'Шаг 2 из 2',
+          `Готовлю SELL ${sellJettonAmount.toFixed(6)} ${pair.split('/')[1]} -> TON`
+        );
+
+        const sellResponse = await fetch(
+          BACKEND_URL
+            + '/api/tx/ston-sell?pair=' + encodeURIComponent(pair)
+            + '&amount=' + encodeURIComponent(sellJettonAmount.toFixed(6))
+            + '&wallet=' + encodeURIComponent(walletAddress)
+        );
+
+        if (!sellResponse.ok) {
+          throw new Error('STON SELL API ' + sellResponse.status);
+        }
+
+        const sellData = await sellResponse.json();
+        console.log('ston sell tx:', sellData);
+
+        if (!sellData.ok || !sellData.tonConnectMessage) {
+          showToast('Ошибка STON SELL', sellData.error || 'Не удалось подготовить продажу обратно в TON');
+          return;
+        }
+
+        showToast(
+          'Подтверди SELL',
+          `Продажа ${sellJettonAmount.toFixed(6)} ${pair.split('/')[1]} обратно в TON`
+        );
+
+        await tonConnectUI.sendTransaction({
+          validUntil: Math.floor(Date.now() / 1000) + 600,
+          messages: [
+            {
+              address: sellData.tonConnectMessage.address,
+              amount: sellData.tonConnectMessage.amount,
+              payload: sellData.tonConnectMessage.payload
+            }
+          ]
+        });
+
+        showToast(
+          'Цикл отправлен',
+          `BUY и SELL для ${pair} подготовлены. Проверь результат в кошельке.`
         );
       } catch (e) {
         console.error(e);
