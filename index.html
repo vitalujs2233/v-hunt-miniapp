@@ -727,6 +727,8 @@
     const TONAPI_KEY = '';
     const tradeAmounts = {};
     let currentDeals = [];
+    let isEditingAmount = false;
+    let editAmountTimer = null;
 
 
     function fallbackAvatar(name){
@@ -831,6 +833,23 @@
       const estimatedProfitTon = calculateEstimatedProfitTon(netSpreadPercent, amountTon);
       profitEl.textContent = estimatedProfitTon.toFixed(3) + ' TON';
       updateSummaryFromInputs();
+    }
+
+    function startEditingAmount(){
+      isEditingAmount = true;
+      if (editAmountTimer) {
+        clearTimeout(editAmountTimer);
+        editAmountTimer = null;
+      }
+    }
+
+    function stopEditingAmountSoon(){
+      if (editAmountTimer) {
+        clearTimeout(editAmountTimer);
+      }
+      editAmountTimer = setTimeout(() => {
+        isEditingAmount = false;
+      }, 1200);
     }
 
     function showToast(title, text){
@@ -1262,6 +1281,8 @@
               step="0.1"
               value="${savedAmount}"
               placeholder="Введите сумму в TON"
+              onfocus="startEditingAmount()"
+              onblur="stopEditingAmountSoon()"
               oninput="handleAmountInput('${pair}', ${netSpreadValue}, '${inputId}', '${profitId}')"
             />
             <button class="btn" onclick="executeTrade('${pair}', '${inputId}')">Execute</button>
@@ -1296,7 +1317,11 @@
     setTimeout(() => {
       hideSplash();
       loadDeals();
-      setInterval(loadDeals, 5000);
+      setInterval(() => {
+        if (!isEditingAmount) {
+          loadDeals();
+        }
+      }, 5000);
     }, 1900);
   </script>
 </body>
