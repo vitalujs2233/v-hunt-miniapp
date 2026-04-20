@@ -725,6 +725,9 @@
 
     const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
     const TONAPI_KEY = '';
+    const tradeAmounts = {};
+    let currentDeals = [];
+
 
     function fallbackAvatar(name){
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Trader')}&background=1e293b&color=fff`;
@@ -747,6 +750,87 @@
       if(raw === '-3') return 'Testnet';
       if(raw === 'mainnet' || raw === '0' || raw === '-239') return 'Mainnet';
       return raw || '—';
+    }
+
+    function getMinTradeAmount(pair){
+      const limits = {
+        'TON/USDT': 1
+      };
+      return limits[pair] || 1;
+    }
+
+    function rememberTradeAmount(pair, value){
+      tradeAmounts[pair] = value;
+      try {
+        localStorage.setItem('vhunt_amount_' + pair, value);
+      } catch (e) {}
+    }
+
+    function getRememberedTradeAmount(pair){
+      if (tradeAmounts[pair] !== undefined) return tradeAmounts[pair];
+      try {
+        const saved = localStorage.getItem('vhunt_amount_' + pair);
+        if (saved !== null) {
+          tradeAmounts[pair] = saved;
+          return saved;
+        }
+      } catch (e) {}
+      return '10';
+    }
+
+    function calculateEstimatedProfitTon(netSpreadPercent, amountTon){
+      const spread = Number(netSpreadPercent || 0);
+      const amount = Number(amountTon || 0);
+      if (!spread || !amount) return 0;
+      return (spread / 100) * amount;
+    }
+
+    function updateSummaryFromInputs(){
+      const deals = Array.isArray(currentDeals) ? currentDeals : [];
+      const count = deals.length;
+      let totalProfitTon = 0;
+
+      deals.forEach((deal) => {
+        const pair = deal.pair || '';
+        const savedAmount = Number(getRememberedTradeAmount(pair) || 0);
+        const minAmountTon = getMinTradeAmount(pair);
+        const effectiveAmount = savedAmount >= minAmountTon ? savedAmount : minAmountTon;
+        totalProfitTon += calculateEstimatedProfitTon(deal.netSpreadPercent, effectiveAmount);
+      });
+
+      const profitableDeals = deals.filter(deal => Number(deal.netSpreadPercent || 0) > 0).length;
+      const winRate = count ? Math.round((profitableDeals / count) * 100) : 0;
+
+      const signalsEl = document.getElementById('summarySignals');
+      const winRateEl = document.getElementById('summaryWinRate');
+      const profitEl = document.getElementById('summaryProfit');
+      const countEl = document.getElementById('scannerDealsCount');
+
+      if (signalsEl) signalsEl.textContent = String(count);
+      if (winRateEl) winRateEl.textContent = winRate + '%';
+      if (profitEl) profitEl.textContent = '+' + totalProfitTon.toFixed(3) + ' TON';
+      if (countEl) countEl.textContent = count + ' deals live';
+    }
+
+    function handleAmountInput(pair, netSpreadPercent, inputId, profitId){
+      const input = document.getElementById(inputId);
+      const profitEl = document.getElementById(profitId);
+      if (!input || !profitEl) return;
+
+      rememberTradeAmount(pair, input.value);
+
+      const amountTon = Number(input.value || 0);
+      const minAmountTon = getMinTradeAmount(pair);
+
+      if (!amountTon || amountTon < minAmountTon) {
+        profitEl.textContent = 'Мин. ' + minAmountTon + ' TON';
+        updateSummaryFromInputs();
+        return;
+      }
+
+      const estimatedProfitTon = calculateEstimatedProfitTon(netSpreadPercent, amountTon);
+      profitEl.textContent = estimatedProfitTon.toFixed(3) + ' TON';
+      updateSummaryFromInputs();
     }
 
     function showToast(title, text){
@@ -1137,10 +1221,16 @@
         const [baseSymbol, quoteSymbol] = pair.split('/');
         const buyPrice = Number(deal.buyPrice ?? 0);
         const sellPrice = Number(deal.sellPrice ?? 0);
-        const netSpread = Number(deal.netSpreadPercent ?? 0).toFixed(2);
-        const estProfit = Number(deal.estimatedProfitTon ?? 0).toFixed(3);
+        const netSpreadValue = Number(deal.netSpreadPercent ?? 0);
+        const netSpread = netSpreadValue.toFixed(2);
         const risk = deal.risk || 'low';
         const verified = deal.verified ? 'OK' : 'Check';
+        const minAmountTon = getMinTradeAmount(pair);
+        const savedAmount = getRememberedTradeAmount(pair);
+        const inputId = 'amount-' + pair.replace('/', '-');
+        const profitId = 'profit-' + pair.replace('/', '-');
+        const initialAmountTon = Number(savedAmount || 0) >= minAmountTon ? Number(savedAmount || 0) : minAmountTon;
+        const estProfit = calculateEstimatedProfitTon(netSpreadValue, initialAmountTon).toFixed(3);
 
         card.innerHTML = `
           <div class="deal-header">
@@ -1162,7 +1252,20 @@
             <div class="metric"><div class="metric-label">Risk</div><div class="metric-value">${risk}</div></div>
             <div class="metric"><div class="metric-label">Status</div><div class="metric-value">${verified}</div></div>
           </div>
-          <button class="btn" onclick="executeTrade('${pair}')">Execute</button>
+          <div style="margin-top:10px;">
+            <div class="muted" style="margin-bottom:6px;">Минимум: ${minAmountTon} TON</div>
+            <input
+              class="input"
+              id="${inputId}"
+              type="number"
+              min="${minAmountTon}"
+              step="0.1"
+              value="${savedAmount}"
+              placeholder="Введите сумму в TON"
+              oninput="handleAmountInput('${pair}', ${netSpreadValue}, '${inputId}', '${profitId}')"
+            />
+            <button class="btn" onclick="executeTrade('${pair}', '${inputId}')">Execute</button>
+          </div>
         `;
 
         scannerSection.appendChild(card);
