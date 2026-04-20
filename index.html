@@ -1130,8 +1130,37 @@
         isBusy = true;
 
         showToast(
-          'Подготовка сделки',
-          `Пара: ${pair}, сумма: ${amountTon} TON`
+          'Проверка сделки',
+          `Считаю roundtrip для ${pair} на ${amountTon} TON`
+        );
+
+        const quoteResponse = await fetch(
+          BACKEND_URL + '/api/quote/roundtrip?pair=' + encodeURIComponent(pair) + '&amount=' + encodeURIComponent(amountTon)
+        );
+
+        if (!quoteResponse.ok) {
+          throw new Error('Roundtrip API ' + quoteResponse.status);
+        }
+
+        const quoteData = await quoteResponse.json();
+        console.log('roundtrip quote:', quoteData);
+
+        if (!quoteData.ok) {
+          showToast('Нет котировки', quoteData.error || 'Не удалось получить расчёт сделки');
+          return;
+        }
+
+        if (!quoteData.canExecute) {
+          showToast(
+            'Сделка убыточна',
+            `Ожидаемый результат: ${quoteData.estimatedProfitTon} TON. Execute заблокирован.`
+          );
+          return;
+        }
+
+        showToast(
+          'Сделка разрешена',
+          `Профит: +${quoteData.estimatedProfitTon} TON. Открываю кошелёк...`
         );
 
         const nanoAmount = String(Math.floor(amountTon * 1e9));
@@ -1151,7 +1180,7 @@
 
         showToast(
           'Тестовая отправка выполнена',
-          `${amountTon} TON подготовлены для пары ${pair}`
+          `${amountTon} TON подтверждены для пары ${pair}`
         );
       } catch (e) {
         console.error(e);
