@@ -320,7 +320,7 @@
     .deal-flow{min-width:0;}
     .deal-route{
       font-family:var(--mono);font-size:10px;color:#dbe8f7;
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      white-space:normal;overflow:visible;text-overflow:clip;line-height:1.45;
     }
     .profit-badge{
       min-width:72px;text-align:center;
@@ -573,21 +573,21 @@
     <div class="hero">
       <div class="hero-top">
         <div class="connect-status"><span class="status-dot"></span> TON Connect</div>
-        <div class="mini-tag">Dark Fintech UI</div>
+        <div class="mini-tag" id="heroMode">Live from backend</div>
       </div>
 
       <div class="daily-strip">
         <div class="stat">
           <div class="stat-label">Signals</div>
-          <div class="stat-value">24</div>
+          <div class="stat-value" id="summarySignals">0</div>
         </div>
         <div class="stat">
           <div class="stat-label">Win Rate</div>
-          <div class="stat-value">91%</div>
+          <div class="stat-value" id="summaryWinRate">0%</div>
         </div>
         <div class="stat profit-main">
           <div class="stat-label">Profit</div>
-          <div class="stat-value">+3.8 TON</div>
+          <div class="stat-value" id="summaryProfit">+0.000 TON</div>
         </div>
       </div>
     </div>
@@ -595,167 +595,11 @@
     <section id="scanner" class="section active">
       <div class="section-title-row">
         <h2 class="section-title">Live Scanner</h2>
-        <div class="mini-tag">8 deals visible</div>
+        <div class="mini-tag" id="scannerDealsCount">0 deals live</div>
       </div>
 
-      <div class="card">
-        <div class="deal-header">
-          <div class="exchange-stack">
-            <div class="exchange-icon dedust">DD</div>
-            <div class="exchange-icon ston">ST</div>
-          </div>
-          <div class="deal-flow">
-            <div class="pair">TON / USDT</div>
-            <div class="deal-route">Buy @ 2.14 → Sell @ 2.18</div>
-          </div>
-          <div class="profit-badge">+2.41%</div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.37 TON</div></div>
-          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">25 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">2 sec</div></div>
-        </div>
-        <button class="btn" onclick="executeTrade('TON / USDT')">Test Execute</button>
-      </div>
-
-      <div class="card executing">
-        <div class="deal-header">
-          <div class="exchange-stack">
-            <div class="exchange-icon dedust">DD</div>
-            <div class="exchange-icon ston">ST</div>
-          </div>
-          <div class="deal-flow">
-            <div class="pair">TON / NOT</div>
-            <div class="deal-route">Buy @ 0.184 → Sell @ 0.187</div>
-          </div>
-          <div class="profit-badge">+1.86%</div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.22 TON</div></div>
-          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">18 TON</div></div>
-          <div class="metric"><div class="metric-label">State</div><div class="metric-value">Exec</div></div>
-        </div>
-        <button class="btn" onclick="executeTrade('TON / NOT')">Test Execute</button>
-      </div>
-
-      <div class="card">
-        <div class="deal-header">
-          <div class="exchange-stack">
-            <div class="exchange-icon dedust">DD</div>
-            <div class="exchange-icon ston">ST</div>
-          </div>
-          <div class="deal-flow">
-            <div class="pair">TON / DOGS</div>
-            <div class="deal-route">Buy @ 0.0031 → Sell @ 0.0032</div>
-          </div>
-          <div class="profit-badge">+1.49%</div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.16 TON</div></div>
-          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">14 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">4 sec</div></div>
-        </div>
-        <button class="btn" onclick="executeTrade('TON / DOGS')">Test Execute</button>
-      </div>
-
-      <div class="card">
-        <div class="deal-header">
-          <div class="exchange-stack">
-            <div class="exchange-icon dedust">DD</div>
-            <div class="exchange-icon ston">ST</div>
-          </div>
-          <div class="deal-flow">
-            <div class="pair">TON / tsTON</div>
-            <div class="deal-route">Buy @ 1.01 → Sell @ 1.03</div>
-          </div>
-          <div class="profit-badge">+1.22%</div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.11 TON</div></div>
-          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">12 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">5 sec</div></div>
-        </div>
-        <button class="btn" onclick="executeTrade('TON / tsTON')">Test Execute</button>
-      </div>
-
-      <div class="card">
-        <div class="deal-header">
-          <div class="exchange-stack">
-            <div class="exchange-icon dedust">DD</div>
-            <div class="exchange-icon ston">ST</div>
-          </div>
-          <div class="deal-flow">
-            <div class="pair">TON / USDC</div>
-            <div class="deal-route">Buy @ 2.13 → Sell @ 2.16</div>
-          </div>
-          <div class="profit-badge">+1.18%</div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.13 TON</div></div>
-          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">15 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">6 sec</div></div>
-        </div>
-        <button class="btn" onclick="executeTrade('TON / USDC')">Test Execute</button>
-      </div>
-
-      <div class="card">
-        <div class="deal-header">
-          <div class="exchange-stack">
-            <div class="exchange-icon dedust">DD</div>
-            <div class="exchange-icon ston">ST</div>
-          </div>
-          <div class="deal-flow">
-            <div class="pair">TON / HMSTR</div>
-            <div class="deal-route">Buy @ 0.0082 → Sell @ 0.0083</div>
-          </div>
-          <div class="profit-badge">+0.94%</div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.08 TON</div></div>
-          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">11 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">8 sec</div></div>
-        </div>
-        <button class="btn" onclick="executeTrade('TON / HMSTR')">Test Execute</button>
-      </div>
-
-      <div class="card">
-        <div class="deal-header">
-          <div class="exchange-stack">
-            <div class="exchange-icon dedust">DD</div>
-            <div class="exchange-icon ston">ST</div>
-          </div>
-          <div class="deal-flow">
-            <div class="pair">TON / CATI</div>
-            <div class="deal-route">Buy @ 0.021 → Sell @ 0.0214</div>
-          </div>
-          <div class="profit-badge">+0.88%</div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.06 TON</div></div>
-          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">9 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">9 sec</div></div>
-        </div>
-        <button class="btn" onclick="executeTrade('TON / CATI')">Test Execute</button>
-      </div>
-
-      <div class="card">
-        <div class="deal-header">
-          <div class="exchange-stack">
-            <div class="exchange-icon dedust">DD</div>
-            <div class="exchange-icon ston">ST</div>
-          </div>
-          <div class="deal-flow">
-            <div class="pair">TON / REDO</div>
-            <div class="deal-route">Buy @ 0.0048 → Sell @ 0.0049</div>
-          </div>
-          <div class="profit-badge">+0.74%</div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Net</div><div class="metric-value">0.05 TON</div></div>
-          <div class="metric"><div class="metric-label">Cap</div><div class="metric-value">8 TON</div></div>
-          <div class="metric"><div class="metric-label">Age</div><div class="metric-value">10 sec</div></div>
-        </div>
-        <button class="btn" onclick="executeTrade('TON / REDO')">Test Execute</button>
+      <div class="card" id="scannerLoadingCard">
+        <div class="muted">Загрузка реальных данных с бирж...</div>
       </div>
     </section>
 
@@ -876,11 +720,18 @@
   <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
   <script>
     const tg = window.Telegram?.WebApp;
-    const BACKEND_URL = 'https://v-hunt-miniapp-production.up.railway.app';
+    const BACKEND_URL = 'https://v-hunt-backend-production.up.railway.app';
     let isBusy = false;
 
     const TEST_RECEIVER_ADDRESS = 'UQCWnrQ8uMswELtmUkZuC1wuqZoUe9E5XonXxVxcrUzgvnGS';
     const TONAPI_KEY = '';
+    const tradeAmounts = {};
+    let currentDeals = [];
+    let isEditingAmount = false;
+    let editAmountTimer = null;
+    const roundtripState = {};
+    const roundtripTimers = {};
+
 
     function fallbackAvatar(name){
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Trader')}&background=1e293b&color=fff`;
@@ -903,6 +754,226 @@
       if(raw === '-3') return 'Testnet';
       if(raw === 'mainnet' || raw === '0' || raw === '-239') return 'Mainnet';
       return raw || '—';
+    }
+
+    function getMinTradeAmount(pair){
+      const limits = {
+        'TON/USDT': 1
+      };
+      return limits[pair] || 1;
+    }
+
+    function rememberTradeAmount(pair, value){
+      tradeAmounts[pair] = value;
+      try {
+        localStorage.setItem('vhunt_amount_' + pair, value);
+      } catch (e) {}
+    }
+
+    function getRememberedTradeAmount(pair){
+      if (tradeAmounts[pair] !== undefined) return tradeAmounts[pair];
+      try {
+        const saved = localStorage.getItem('vhunt_amount_' + pair);
+        if (saved !== null) {
+          tradeAmounts[pair] = saved;
+          return saved;
+        }
+      } catch (e) {}
+      return '10';
+    }
+
+    function calculateEstimatedProfitTon(netSpreadPercent, amountTon){
+      const spread = Number(netSpreadPercent || 0);
+      const amount = Number(amountTon || 0);
+      if (!spread || !amount) return 0;
+      return (spread / 100) * amount;
+    }
+
+    function updateSummaryFromInputs(){
+      const deals = Array.isArray(currentDeals) ? currentDeals : [];
+      const count = deals.length;
+      let totalProfitTon = 0;
+      let profitableDeals = 0;
+
+      deals.forEach((deal) => {
+        const pair = deal.pair || '';
+        const savedAmount = Number(getRememberedTradeAmount(pair) || 0);
+        const minAmountTon = getMinTradeAmount(pair);
+        const effectiveAmount = savedAmount >= minAmountTon ? savedAmount : minAmountTon;
+        const stateKey = getRoundtripStateKey(pair, effectiveAmount);
+        const roundtrip = roundtripState[stateKey];
+
+        if (roundtrip && roundtrip.ok) {
+          totalProfitTon += Number(roundtrip.estimatedProfitTon || 0);
+          if (roundtrip.canExecute) profitableDeals += 1;
+        } else {
+          totalProfitTon += Number(deal.estimatedProfitTon || 0);
+          if (deal.canExecute) profitableDeals += 1;
+        }
+      });
+
+      const winRate = count ? Math.round((profitableDeals / count) * 100) : 0;
+
+      const signalsEl = document.getElementById('summarySignals');
+      const winRateEl = document.getElementById('summaryWinRate');
+      const profitEl = document.getElementById('summaryProfit');
+      const countEl = document.getElementById('scannerDealsCount');
+
+      if (signalsEl) signalsEl.textContent = String(count);
+      if (winRateEl) winRateEl.textContent = winRate + '%';
+      if (profitEl) {
+        const prefix = totalProfitTon >= 0 ? '+' : '';
+        profitEl.textContent = prefix + totalProfitTon.toFixed(3) + ' TON';
+      }
+      if (countEl) countEl.textContent = count + ' deals live';
+    }
+
+    function handleAmountInput(pair, inputId, profitId, badgeId, statusId, buttonId, feesId, cardId){
+      const input = document.getElementById(inputId);
+      const cardEl = document.getElementById(cardId);
+      const profitEl = document.getElementById(profitId);
+      const badgeEl = document.getElementById(badgeId);
+      const statusEl = document.getElementById(statusId);
+      const btnEl = document.getElementById(buttonId);
+      const feesEl = document.getElementById(feesId);
+      if (!input || !profitEl) return;
+
+      rememberTradeAmount(pair, input.value);
+
+      const amountTon = Number(input.value || 0);
+      const minAmountTon = getMinTradeAmount(pair);
+
+      if (!amountTon || amountTon < minAmountTon) {
+        profitEl.textContent = 'Мин. ' + minAmountTon + ' TON';
+        if (badgeEl) badgeEl.textContent = '—';
+        if (statusEl) statusEl.textContent = 'MIN AMOUNT';
+        if (feesEl) feesEl.textContent = 'Введите сумму от ' + minAmountTon + ' TON';
+        applyDealVisualState(cardEl, badgeEl, statusEl, btnEl, 0, false);
+        if (btnEl) {
+          btnEl.textContent = 'Min amount';
+        }
+        updateSummaryFromInputs();
+        return;
+      }
+
+      scheduleRoundtripRefresh(pair, amountTon, { profitId, badgeId, statusId, buttonId, feesId, cardId });
+      updateSummaryFromInputs();
+    }
+
+    function startEditingAmount(){
+      isEditingAmount = true;
+      if (editAmountTimer) {
+        clearTimeout(editAmountTimer);
+        editAmountTimer = null;
+      }
+    }
+
+    function stopEditingAmountSoon(){
+      if (editAmountTimer) {
+        clearTimeout(editAmountTimer);
+      }
+      editAmountTimer = setTimeout(() => {
+        isEditingAmount = false;
+      }, 1200);
+    }
+
+    function getRoundtripStateKey(pair, amountTon){
+      return pair + '::' + String(amountTon);
+    }
+
+    async function fetchRoundtripQuote(pair, amountTon){
+      const response = await fetch(
+        BACKEND_URL + '/api/quote/roundtrip?pair=' + encodeURIComponent(pair) + '&amount=' + encodeURIComponent(amountTon)
+      );
+      if (!response.ok) {
+        throw new Error('Roundtrip API ' + response.status);
+      }
+      return response.json();
+    }
+
+    function applyDealVisualState(cardEl, badgeEl, statusEl, btnEl, profitTon, canExecute){
+      if (cardEl) {
+        cardEl.style.borderColor = canExecute ? 'rgba(0,255,163,0.35)' : 'rgba(255,84,84,0.35)';
+        cardEl.style.boxShadow = canExecute
+          ? '0 0 0 1px rgba(0,255,163,0.12) inset'
+          : '0 0 0 1px rgba(255,84,84,0.12) inset';
+      }
+
+      if (badgeEl) {
+        badgeEl.style.background = canExecute
+          ? 'rgba(0,255,163,0.12)'
+          : 'rgba(255,84,84,0.12)';
+        badgeEl.style.borderColor = canExecute
+          ? 'rgba(0,255,163,0.28)'
+          : 'rgba(255,84,84,0.28)';
+        badgeEl.style.color = canExecute ? '#22f2a3' : '#ff6b6b';
+      }
+
+      if (statusEl) {
+        statusEl.style.color = canExecute ? '#22f2a3' : '#ff6b6b';
+      }
+
+      if (btnEl) {
+        btnEl.disabled = !canExecute;
+        btnEl.textContent = canExecute ? 'Execute' : 'No profit';
+        btnEl.style.opacity = canExecute ? '1' : '0.6';
+        btnEl.style.filter = canExecute ? 'none' : 'grayscale(0.2)';
+      }
+    }
+
+    async function refreshRoundtripUi(pair, amountTon, elements){
+      const stateKey = getRoundtripStateKey(pair, amountTon);
+
+      try {
+        const data = await fetchRoundtripQuote(pair, amountTon);
+        roundtripState[stateKey] = data;
+
+        const cardEl = document.getElementById(elements.cardId);
+        const profitEl = document.getElementById(elements.profitId);
+        const badgeEl = document.getElementById(elements.badgeId);
+        const statusEl = document.getElementById(elements.statusId);
+        const btnEl = document.getElementById(elements.buttonId);
+        const feesEl = document.getElementById(elements.feesId);
+
+        if (!profitEl || !badgeEl || !statusEl || !btnEl || !feesEl) return;
+
+        if (!data.ok) {
+          profitEl.textContent = 'Нет quote';
+          badgeEl.textContent = '—';
+          statusEl.textContent = 'QUOTE ERROR';
+          feesEl.textContent = 'Не удалось получить расчёт';
+          applyDealVisualState(cardEl, badgeEl, statusEl, btnEl, 0, false);
+          updateSummaryFromInputs();
+          return;
+        }
+
+        const profitTon = Number(data.estimatedProfitTon || 0);
+        const profitPct = Number(data.estimatedProfitPercent || 0);
+
+        profitEl.textContent = profitTon.toFixed(3) + ' TON';
+        badgeEl.textContent = (profitPct > 0 ? '+' : '') + profitPct.toFixed(2) + '%';
+        statusEl.textContent = data.canExecute ? 'EXECUTE OK' : 'NO PROFIT';
+        feesEl.textContent =
+          'DEX: ' + Number(data.dexFeeTon || 0).toFixed(3) +
+          ' TON · Gas: ' + Number(data.gasFeeTon || 0).toFixed(3) +
+          ' TON · Fee: ' + Number(data.serviceFeeTon || 0).toFixed(3) + ' TON';
+
+        applyDealVisualState(cardEl, badgeEl, statusEl, btnEl, profitTon, data.canExecute);
+
+        updateSummaryFromInputs();
+      } catch (error) {
+        console.error('refreshRoundtripUi error:', error);
+      }
+    }
+
+    function scheduleRoundtripRefresh(pair, amountTon, elements){
+      if (roundtripTimers[pair]) {
+        clearTimeout(roundtripTimers[pair]);
+      }
+
+      roundtripTimers[pair] = setTimeout(() => {
+        refreshRoundtripUi(pair, amountTon, elements);
+      }, 350);
     }
 
     function showToast(title, text){
@@ -1154,32 +1225,159 @@
       }
     }
 
-    async function executeTrade(pair){
+    async function executeTrade(pair, amountInputId){
       if (isBusy) return;
+
       if (!tonConnectUI.wallet?.account?.address) {
-        showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и выполни подключение');
+        showToast('Сначала подключи кошелёк', 'Открой вкладку Wallet и подключи TON-кошелёк');
         openTab('wallet', document.querySelectorAll('.tab')[2]);
         return;
       }
 
+      const amountInput = document.getElementById(amountInputId);
+      const amountTon = Number(amountInput?.value || 0);
+      const minAmountTon = getMinTradeAmount(pair);
+
+      if (!amountTon || amountTon <= 0) {
+        showToast('Ошибка суммы', 'Введи сумму больше 0 TON');
+        return;
+      }
+
+      if (amountTon < minAmountTon) {
+        showToast('Слишком мало', `Минимальная сумма для ${pair}: ${minAmountTon} TON`);
+        return;
+      }
+
+      rememberTradeAmount(pair, String(amountTon));
+
       try {
         isBusy = true;
-        showToast('Подготовка', 'Открываю кошелёк для тестовой TON-транзакции...');
-        const tx = {
-          validUntil: Math.floor(Date.now() / 1000) + 300,
+
+        const walletAddress = tonConnectUI.wallet?.account?.address;
+
+        showToast(
+          'Проверка сделки',
+          `Считаю roundtrip для ${pair} на ${amountTon} TON`
+        );
+
+        const quoteResponse = await fetch(
+          BACKEND_URL + '/api/quote/roundtrip?pair=' + encodeURIComponent(pair) + '&amount=' + encodeURIComponent(amountTon)
+        );
+
+        if (!quoteResponse.ok) {
+          throw new Error('Roundtrip API ' + quoteResponse.status);
+        }
+
+        const quoteData = await quoteResponse.json();
+        console.log('roundtrip quote:', quoteData);
+
+        if (!quoteData.ok) {
+          showToast('Нет котировки', quoteData.error || 'Не удалось получить расчёт сделки');
+          return;
+        }
+
+        if (!quoteData.canExecute) {
+          showToast(
+            'Сделка убыточна',
+            `Ожидаемый результат: ${quoteData.estimatedProfitTon} TON. Execute заблокирован.`
+          );
+          return;
+        }
+
+        showToast(
+          'Шаг 1 из 2',
+          `Готовлю BUY ${pair} на ${amountTon} TON`
+        );
+
+        const buyResponse = await fetch(
+          BACKEND_URL
+            + '/api/tx/ston-buy?pair=' + encodeURIComponent(pair)
+            + '&amount=' + encodeURIComponent(amountTon)
+            + '&wallet=' + encodeURIComponent(walletAddress)
+        );
+
+        if (!buyResponse.ok) {
+          throw new Error('STON BUY API ' + buyResponse.status);
+        }
+
+        const buyData = await buyResponse.json();
+        console.log('ston buy tx:', buyData);
+
+        if (!buyData.ok || !buyData.tonConnectMessage) {
+          showToast('Ошибка STON BUY', buyData.error || 'Не удалось подготовить реальную покупку');
+          return;
+        }
+
+        showToast(
+          'Подтверди BUY',
+          `Покупка ${pair} на ${amountTon} TON`
+        );
+
+        await tonConnectUI.sendTransaction({
+          validUntil: Math.floor(Date.now() / 1000) + 600,
           messages: [
             {
-              address: TEST_RECEIVER_ADDRESS,
-              amount: '50000000'
+              address: buyData.tonConnectMessage.address,
+              amount: buyData.tonConnectMessage.amount,
+              payload: buyData.tonConnectMessage.payload
             }
           ]
-        };
-        const result = await tonConnectUI.sendTransaction(tx);
-        console.log('TX result:', result);
-        showToast('Транзакция отправлена', 'Пара: ' + pair);
+        });
+
+        const sellJettonAmount = Number(quoteData.expectedTokenOut || 0);
+
+        if (!sellJettonAmount || sellJettonAmount <= 0) {
+          showToast('BUY выполнен', 'Не удалось вычислить сумму для SELL. Запусти SELL отдельно.');
+          return;
+        }
+
+        showToast(
+          'Шаг 2 из 2',
+          `Готовлю SELL ${sellJettonAmount.toFixed(6)} ${pair.split('/')[1]} -> TON`
+        );
+
+        const sellResponse = await fetch(
+          BACKEND_URL
+            + '/api/tx/ston-sell?pair=' + encodeURIComponent(pair)
+            + '&amount=' + encodeURIComponent(sellJettonAmount.toFixed(6))
+            + '&wallet=' + encodeURIComponent(walletAddress)
+        );
+
+        if (!sellResponse.ok) {
+          throw new Error('STON SELL API ' + sellResponse.status);
+        }
+
+        const sellData = await sellResponse.json();
+        console.log('ston sell tx:', sellData);
+
+        if (!sellData.ok || !sellData.tonConnectMessage) {
+          showToast('Ошибка STON SELL', sellData.error || 'Не удалось подготовить продажу обратно в TON');
+          return;
+        }
+
+        showToast(
+          'Подтверди SELL',
+          `Продажа ${sellJettonAmount.toFixed(6)} ${pair.split('/')[1]} обратно в TON`
+        );
+
+        await tonConnectUI.sendTransaction({
+          validUntil: Math.floor(Date.now() / 1000) + 600,
+          messages: [
+            {
+              address: sellData.tonConnectMessage.address,
+              amount: sellData.tonConnectMessage.amount,
+              payload: sellData.tonConnectMessage.payload
+            }
+          ]
+        });
+
+        showToast(
+          'Цикл отправлен',
+          `BUY и SELL для ${pair} подготовлены. Проверь результат в кошельке.`
+        );
       } catch (e) {
         console.error(e);
-        showToast('Отмена или ошибка', 'Пользователь отменил операцию или кошелёк вернул ошибку');
+        showToast('Отмена или ошибка', e?.message || 'Пользователь отменил операцию или кошелёк вернул ошибку');
       } finally {
         isBusy = false;
       }
@@ -1190,49 +1388,96 @@
     }
 
     async function loadDeals(){
+      const scannerSection = document.getElementById('scanner');
+      const loadingCard = document.getElementById('scannerLoadingCard');
+
       try {
-        const response = await fetch(BACKEND_URL + '/api/scanner/live');
+        if (loadingCard) {
+          loadingCard.innerHTML = '<div class="muted">Обновление котировок с бирж...</div>';
+        }
+
+        const response = await fetch(BACKEND_URL + '/api/scanner/live2?t=' + Date.now());
         if (!response.ok) throw new Error('Scanner API ' + response.status);
+
         const data = await response.json();
-        if (!data || !Array.isArray(data.deals)) return;
+        if (!data || !Array.isArray(data.deals)) {
+          throw new Error('Deals array missing');
+        }
+
         renderDeals(data.deals);
+        updateSummary(data.deals);
       } catch (error) {
         console.error('loadDeals error:', error);
+        if (scannerSection) {
+          scannerSection.innerHTML = `
+            <div class="section-title-row">
+              <h2 class="section-title">Live Scanner</h2>
+              <div class="mini-tag" id="scannerDealsCount">0 deals live</div>
+            </div>
+            <div class="card">
+              <div class="muted">Ошибка загрузки реальных данных с бирж</div>
+            </div>
+          `;
+        }
+        updateSummary([]);
       }
+    }
+
+    function updateSummary(deals){
+      currentDeals = Array.isArray(deals) ? deals : [];
+      updateSummaryFromInputs();
     }
 
     function renderDeals(deals){
       const scannerSection = document.getElementById('scanner');
       if (!scannerSection) return;
 
-      const titleRow = scannerSection.querySelector('.section-title-row');
-      const oldCards = scannerSection.querySelectorAll('.card');
-      oldCards.forEach(card => card.remove());
+      scannerSection.innerHTML = `
+        <div class="section-title-row">
+          <h2 class="section-title">Live Scanner</h2>
+          <div class="mini-tag" id="scannerDealsCount">${deals.length} deals live</div>
+        </div>
+      `;
 
-      const miniTag = titleRow ? titleRow.querySelector('.mini-tag') : null;
-      if (miniTag) {
-        miniTag.textContent = deals.length + ' deals live';
+      if (!deals.length) {
+        const emptyCard = document.createElement('div');
+        emptyCard.className = 'card';
+        emptyCard.innerHTML = '<div class="muted">Сейчас нет подходящих сделок</div>';
+        scannerSection.appendChild(emptyCard);
+        return;
       }
 
-      deals.forEach((deal, index) => {
+      deals.forEach((deal) => {
         const buyDex = (deal.buyDex || '').toLowerCase();
         const sellDex = (deal.sellDex || '').toLowerCase();
         const leftDexClass = buyDex.includes('dedust') ? 'dedust' : 'ston';
         const rightDexClass = sellDex.includes('dedust') ? 'dedust' : 'ston';
         const leftDexLabel = buyDex.includes('dedust') ? 'DD' : 'ST';
         const rightDexLabel = sellDex.includes('dedust') ? 'DD' : 'ST';
-        const isExecuting = index === 1;
+
         const card = document.createElement('div');
-        card.className = isExecuting ? 'card executing' : 'card';
+        card.className = 'card';
 
-        const pair = deal.pair || 'TON / USDT';
-        const buyPrice = deal.buyPrice ?? '—';
-        const sellPrice = deal.sellPrice ?? '—';
-        const netSpread = Number(deal.netSpreadPercent ?? 0).toFixed(2);
-        const estProfit = Number(deal.estimatedProfitTon ?? 0).toFixed(3);
+        const pair = deal.pair || 'TON/USDT';
+        const [baseSymbol, quoteSymbol] = pair.split('/');
+        const buyPrice = Number(deal.buyPrice ?? 0);
+        const sellPrice = Number(deal.sellPrice ?? 0);
+        const initialProfitTon = Number(deal.estimatedProfitTon ?? 0);
+        const initialProfitPercent = Number(deal.estimatedProfitPercent ?? deal.netSpreadPercent ?? 0);
         const risk = deal.risk || 'low';
-        const verified = deal.verified ? 'OK' : 'Check';
+        const verified = deal.canExecute ? 'EXECUTE OK' : (deal.verified ? 'OK' : 'NO PROFIT');
+        const minAmountTon = getMinTradeAmount(pair);
+        const savedAmount = getRememberedTradeAmount(pair);
+        const safePairId = pair.replace('/', '-');
+        const inputId = 'amount-' + safePairId;
+        const profitId = 'profit-' + safePairId;
+        const badgeId = 'badge-' + safePairId;
+        const statusId = 'status-' + safePairId;
+        const buttonId = 'button-' + safePairId;
+        const feesId = 'fees-' + safePairId;
+        const cardId = 'card-' + safePairId;
 
+        card.id = cardId;
         card.innerHTML = `
           <div class="deal-header">
             <div class="exchange-stack">
@@ -1241,19 +1486,39 @@
             </div>
             <div class="deal-flow">
               <div class="pair">${pair}</div>
-              <div class="deal-route">Buy @ ${buyPrice} → Sell @ ${sellPrice}</div>
+              <div class="deal-route">
+                Buy: 1 ${baseSymbol} = ${buyPrice.toLocaleString(undefined, { maximumFractionDigits: 8 })} ${quoteSymbol}<br>
+                Sell: 1 ${baseSymbol} = ${sellPrice.toLocaleString(undefined, { maximumFractionDigits: 8 })} ${quoteSymbol}
+              </div>
             </div>
-            <div class="profit-badge">+${netSpread}%</div>
+            <div class="profit-badge" id="${badgeId}" style="background:${deal.canExecute ? 'rgba(0,255,163,0.12)' : 'rgba(255,84,84,0.12)'};border-color:${deal.canExecute ? 'rgba(0,255,163,0.28)' : 'rgba(255,84,84,0.28)'};color:${deal.canExecute ? '#22f2a3' : '#ff6b6b'};">${initialProfitPercent > 0 ? '+' : ''}${initialProfitPercent.toFixed(2)}%</div>
           </div>
           <div class="metrics">
-            <div class="metric"><div class="metric-label">Profit</div><div class="metric-value">${estProfit} TON</div></div>
+            <div class="metric"><div class="metric-label">Real Profit</div><div class="metric-value" id="${profitId}">${initialProfitTon.toFixed(3)} TON</div></div>
             <div class="metric"><div class="metric-label">Risk</div><div class="metric-value">${risk}</div></div>
-            <div class="metric"><div class="metric-label">Status</div><div class="metric-value">${verified}</div></div>
+            <div class="metric"><div class="metric-label">Status</div><div class="metric-value" id="${statusId}" style="color:${deal.canExecute ? '#22f2a3' : '#ff6b6b'};">${verified}</div></div>
           </div>
-          <button class="btn" onclick="executeTrade('${pair}')">Execute</button>
+          <div style="margin-top:10px;">
+            <div class="muted" style="margin-bottom:6px;">Минимум: ${minAmountTon} TON</div>
+            <div class="muted" id="${feesId}" style="margin-bottom:6px;">DEX: ${Number(deal.dexFeeTon || 0).toFixed(3)} TON · Gas: ${Number(deal.gasFeeTon || 0).toFixed(3)} TON · Fee: ${Number(deal.serviceFeeTon || 0).toFixed(3)} TON</div>
+            <input
+              class="input"
+              id="${inputId}"
+              type="number"
+              min="${minAmountTon}"
+              step="0.1"
+              value="${savedAmount}"
+              placeholder="Введите сумму в TON"
+              onfocus="startEditingAmount()"
+              onblur="stopEditingAmountSoon()"
+              oninput="handleAmountInput('${pair}', '${inputId}', '${profitId}', '${badgeId}', '${statusId}', '${buttonId}', '${feesId}', '${cardId}')"
+            />
+            <button class="btn" id="${buttonId}" onclick="executeTrade('${pair}', '${inputId}')" ${deal.canExecute ? '' : 'disabled'} style="opacity:${deal.canExecute ? '1' : '0.6'};filter:${deal.canExecute ? 'none' : 'grayscale(0.2)'};">${deal.canExecute ? 'Execute' : 'No profit'}</button>
+          </div>
         `;
 
         scannerSection.appendChild(card);
+        handleAmountInput(pair, inputId, profitId, badgeId, statusId, buttonId, feesId, cardId);
       });
     }
 
@@ -1280,7 +1545,11 @@
     setTimeout(() => {
       hideSplash();
       loadDeals();
-      setInterval(loadDeals, 5000);
+      setInterval(() => {
+        if (!isEditingAmount) {
+          loadDeals();
+        }
+      }, 5000);
     }, 1900);
   </script>
 </body>
